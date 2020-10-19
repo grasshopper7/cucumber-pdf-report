@@ -84,6 +84,7 @@ public abstract class DetailedConfig {
 		private String durationColor;
 		private String errorMsgColor;
 		private String logMsgColor;
+		private String mediaMsgColor;
 		
 		public Color stepTextColor() {
 			return ReportConfig.createColor(stepTextColor, Color.BLACK);
@@ -103,6 +104,10 @@ public abstract class DetailedConfig {
 		
 		public Color logMsgColor() {
 			return ReportConfig.createColor(logMsgColor, Color.GREEN);
+		}
+		
+		public Color mediaMsgColor() {
+			return ReportConfig.createColor(mediaMsgColor, Color.GREEN);
 		}
 	}
 }

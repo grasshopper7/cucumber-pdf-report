@@ -30,13 +30,16 @@ public class HookRow extends StepOrHookRow {
 		LogMessageComponent.builder().logMessages(hook.getOutput())
 				.textColor(reportConfig.getDetailedStepHookConfig().logMsgColor())
 				.hasRowOrStringOrError(dividerRequired()).build().componentText(paragraphBuilder);
+		MediaMessageComponent.builder().mediaMessages(hook.getMedia())
+				.textColor(reportConfig.getDetailedStepHookConfig().mediaMsgColor())
+				.hasRowOrStringOrError(dividerRequired()).build().componentText(paragraphBuilder);
 
 		return generateParagraphCell(paragraphBuilder);
 	}
 
 	@Override
 	public boolean dividerRequired() {
-		return !hook.getOutput().isEmpty();
+		return !hook.getOutput().isEmpty() || !hook.getMedia().isEmpty();
 	}
 
 	@Override
@@ -44,6 +47,8 @@ public class HookRow extends StepOrHookRow {
 		int height = NAME_ROW_HEIGHT;
 		height = height + ErrorMessageComponent.builder().stackTrace(hook.getErrorMessage()).build().componentHeight();
 		height = height + LogMessageComponent.builder().logMessages(hook.getOutput())
+				.hasRowOrStringOrError(dividerRequired()).build().componentHeight();
+		height = height + MediaMessageComponent.builder().mediaMessages(hook.getMedia())
 				.hasRowOrStringOrError(dividerRequired()).build().componentHeight();
 		return height;
 	}

@@ -25,8 +25,11 @@ public class Step {
     private List<Hook> before = new ArrayList<>();
     @Default
     private List<Hook> after = new ArrayList<>();
+    
     @Default
     private List<String> output = new ArrayList<>();
+	@Default
+	private List<String> media = new ArrayList<>();
     
     private Status status;
     private String errorMessage;

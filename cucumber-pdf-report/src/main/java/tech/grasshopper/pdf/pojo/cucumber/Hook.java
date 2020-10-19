@@ -15,6 +15,8 @@ public class Hook {
 
 	@Default
 	private List<String> output = new ArrayList<>();
+	@Default
+	private List<String> media = new ArrayList<>();
     
     private Status status;
     private String errorMessage;

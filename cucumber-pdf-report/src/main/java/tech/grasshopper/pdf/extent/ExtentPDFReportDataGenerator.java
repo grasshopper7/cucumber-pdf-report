@@ -94,7 +94,7 @@ public class ExtentPDFReportDataGenerator {
 			} else {
 				Step step = Step.builder().name(stepTest.getName()).status(convertStatus(stepTest.getStatus()))
 						.keyword(stepTest.getBddType().getSimpleName()).errorMessage(getStackTrace(stepTest))
-						.output(getLogMessages(stepTest)).before(beforeStepHook).after(afterStepHook)
+						.output(getLogMessages(stepTest)).media(getMediaData(stepTest)).before(beforeStepHook).after(afterStepHook)
 						.startTime(DateUtil.convertToLocalDateTime(stepTest.getStartTime()))
 						.endTime(DateUtil.convertToLocalDateTime(stepTest.getEndTime())).build();
 				steps.add(step);
@@ -105,7 +105,7 @@ public class ExtentPDFReportDataGenerator {
 	private void addHookData(List<Hook> hooks, Test hookTest) {
 		hooks.add(Hook.builder().location(hookTest.getName()).hookType(HookType.valueOf(hookTest.getDescription()))
 				.status(convertStatus(hookTest.getStatus())).errorMessage(getStackTrace(hookTest))
-				.output(getLogMessages(hookTest)).startTime(DateUtil.convertToLocalDateTime(hookTest.getStartTime()))
+				.output(getLogMessages(hookTest)).media(getMediaData(hookTest)).startTime(DateUtil.convertToLocalDateTime(hookTest.getStartTime()))
 				.endTime(DateUtil.convertToLocalDateTime(hookTest.getEndTime())).build());
 	}
 
@@ -130,9 +130,18 @@ public class ExtentPDFReportDataGenerator {
 	private List<String> getLogMessages(Test test) {
 		List<String> output = new ArrayList<>();
 		for (Log log : test.getLogs()) {
-			if (log.getStatus() == com.aventstack.extentreports.Status.INFO)
+			if (log.getStatus() == com.aventstack.extentreports.Status.INFO && !log.getDetails().isEmpty())
 				output.add(log.getDetails());
 		}
 		return output;
+	}
+	
+	private List<String> getMediaData(Test test) {
+		List<String> media = new ArrayList<>();
+		for (Log log : test.getLogs()) {
+			if (log.getStatus() == com.aventstack.extentreports.Status.INFO && log.getMedia() != null)
+				media.add(log.getMedia().getPath());
+		}
+		return media;
 	}
 }
