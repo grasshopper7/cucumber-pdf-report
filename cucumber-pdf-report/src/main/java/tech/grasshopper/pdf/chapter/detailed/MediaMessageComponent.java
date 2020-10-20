@@ -13,6 +13,7 @@ import org.vandeseer.easytable.structure.cell.paragraph.StyledText;
 import lombok.Builder;
 import lombok.Builder.Default;
 import lombok.Data;
+import tech.grasshopper.pdf.optimizer.TextContentSanitizer;
 import tech.grasshopper.pdf.optimizer.TextLengthOptimizer;
 
 @Data
@@ -33,9 +34,10 @@ public class MediaMessageComponent implements StepOrHookComponent {
 	private static final int FONT_SIZE = 9;
 	private static final int WIDTH = 290;
 
-	@Builder.Default
 	private final TextLengthOptimizer messageOptimizer = TextLengthOptimizer.builder().font(FONT).fontsize(FONT_SIZE)
 			.spaceWidth(WIDTH).build();
+	
+	private final TextContentSanitizer textSanitizer = TextContentSanitizer.builder().font(FONT).build();
 
 	@Override
 	public int componentHeight() {
@@ -57,7 +59,9 @@ public class MediaMessageComponent implements StepOrHookComponent {
 								.text(String.join("", Collections.nCopies(SEP_CHAR_REPEAT_COUNT, "-"))).build())
 						.appendNewLine();
 			for (String media : mediaMessages)
-				paragraphBuilder.append(StyledText.builder().text(messageOptimizer.optimizeText("Media saved - " + (new File(media)).getName()))
+				paragraphBuilder.append(StyledText.builder()
+						.text(messageOptimizer.optimizeText(
+								textSanitizer.sanitizeText("Media saved - " + (new File(media)).getName())))
 						.fontSize((float) FONT_SIZE).color(textColor).build()).appendNewLine();
 		}
 	}

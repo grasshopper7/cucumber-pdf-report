@@ -70,7 +70,7 @@ public class ExtentPDFReportDataGenerator {
 		for (Test stepTest : scenarioTest.getChildren()) {
 
 			if (stepTest.getBddType() == Asterisk.class) {
-				HookType type = HookType.valueOf(stepTest.getDescription());
+				HookType type = HookType.valueOf(stepTest.getDescription().toUpperCase());
 				switch (type) {
 				case BEFORE:
 					addHookData(beforeHook, stepTest);

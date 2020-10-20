@@ -23,8 +23,8 @@ public class StepRow extends StepOrHookRow {
 		ParagraphBuilder paragraphBuilder = Paragraph.builder();
 
 		generateName(paragraphBuilder, step.getName(), reportConfig.getDetailedStepHookConfig().stepTextColor());
-		DataTableComponent.builder().rows(step.getRows()).build().componentText(paragraphBuilder);
-		DocStringComponent.builder().docString(step.getDocString()).build().componentText(paragraphBuilder);
+		//DataTableComponent.builder().rows(step.getRows()).build().componentText(paragraphBuilder);
+		//DocStringComponent.builder().docString(step.getDocString()).build().componentText(paragraphBuilder);
 		ErrorMessageComponent.builder().stackTrace(step.getErrorMessage())
 				.textColor(reportConfig.getDetailedStepHookConfig().errorMsgColor()).build()
 				.componentText(paragraphBuilder);
@@ -42,8 +42,8 @@ public class StepRow extends StepOrHookRow {
 	public int getRowHeight() {
 		int height = NAME_ROW_HEIGHT;
 		height = height + ErrorMessageComponent.builder().stackTrace(step.getErrorMessage()).build().componentHeight();
-		height = height + DataTableComponent.builder().rows(step.getRows()).build().componentHeight();
-		height = height + DocStringComponent.builder().docString(step.getDocString()).build().componentHeight();
+		//height = height + DataTableComponent.builder().rows(step.getRows()).build().componentHeight();
+		//height = height + DocStringComponent.builder().docString(step.getDocString()).build().componentHeight();
 		height = height + LogMessageComponent.builder().logMessages(step.getOutput())
 				.hasRowOrStringOrError(dividerRequired()).build().componentHeight();
 		height = height + MediaMessageComponent.builder().mediaMessages(step.getMedia())

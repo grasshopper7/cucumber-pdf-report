@@ -11,6 +11,7 @@ import org.vandeseer.easytable.structure.cell.paragraph.StyledText;
 
 import lombok.Builder;
 import lombok.Builder.Default;
+import tech.grasshopper.pdf.optimizer.TextContentSanitizer;
 import tech.grasshopper.pdf.optimizer.TextLengthOptimizer;
 import lombok.Data;
 
@@ -32,9 +33,10 @@ public class LogMessageComponent implements StepOrHookComponent {
 	private static final int FONT_SIZE = 9;
 	private static final int WIDTH = 290;
 
-	@Builder.Default
 	private final TextLengthOptimizer messageOptimizer = TextLengthOptimizer.builder().font(FONT).fontsize(FONT_SIZE)
 			.spaceWidth(WIDTH).build();
+	
+	private final TextContentSanitizer textSanitizer = TextContentSanitizer.builder().font(FONT).build();
 
 	@Override
 	public int componentHeight() {
@@ -56,7 +58,7 @@ public class LogMessageComponent implements StepOrHookComponent {
 								.text(String.join("", Collections.nCopies(SEP_CHAR_REPEAT_COUNT, "-"))).build())
 						.appendNewLine();
 			for (String output : logMessages)
-				paragraphBuilder.append(StyledText.builder().text(messageOptimizer.optimizeText(output))
+				paragraphBuilder.append(StyledText.builder().text(messageOptimizer.optimizeText(textSanitizer.sanitizeText(output)))
 						.fontSize((float) FONT_SIZE).color(textColor).build()).appendNewLine();
 		}
 	}
