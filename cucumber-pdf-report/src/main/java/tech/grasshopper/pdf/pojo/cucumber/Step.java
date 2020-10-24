@@ -49,4 +49,12 @@ public class Step {
     	hooks.addAll(after);
     	return hooks;
     }
+    
+    public void addBeforeStepHook(Hook hook) {
+    	before.add(hook);
+    }
+    
+    public void addAfterStepHook(Hook hook) {
+    	after.add(hook);
+    }
 }

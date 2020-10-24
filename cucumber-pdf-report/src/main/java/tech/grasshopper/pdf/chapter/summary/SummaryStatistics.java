@@ -33,28 +33,30 @@ public class SummaryStatistics extends Component {
 	}
 
 	private void createTestStartedTextBox() {
-		createTestStatisticsTextBox("Started At :", DateUtil.formatDateTimeWOYear(summaryData.getTestRunStartTime()),
-				45, 40, reportConfig.getSummaryConfig().startTimeColor());
+		createTestStatisticsTextBox("Started At :  " + DateUtil.formatDateWOYear(summaryData.getTestRunStartTime()) + ",",
+				DateUtil.formatTimeWithMillis(summaryData.getTestRunStartTime()), 50, 40,
+				reportConfig.getSummaryConfig().startTimeColor());
 	}
 
 	private void createTestFinishedTextBox() {
-		createTestStatisticsTextBox("Finished At :", DateUtil.formatDateTimeWOYear(summaryData.getTestRunEndTime()),
-				225, 220, reportConfig.getSummaryConfig().endTimeColor());
+		createTestStatisticsTextBox("Finished At :  " + DateUtil.formatDateWOYear(summaryData.getTestRunEndTime()) + ",",
+				DateUtil.formatTimeWithMillis(summaryData.getTestRunEndTime()), 230, 220,
+				reportConfig.getSummaryConfig().endTimeColor());
 	}
 
 	private void createTestDurationTextBox() {
-		createTestStatisticsTextBox("Duration :", DateUtil.durationValue(summaryData.getTestRunDuration()), 405, 400,
+		createTestStatisticsTextBox("Duration :", DateUtil.durationValue(summaryData.getTestRunDuration()), 410, 400,
 				reportConfig.getSummaryConfig().durationColor());
 	}
 
-	private void createTestStatisticsTextBox(String title, String details, float xTextOffset, float xBoxOffset,
+	private void createTestStatisticsTextBox(String topRow, String bottomRow, float xTextOffset, float xBoxOffset,
 			Color valueTextColor) {
 
 		List<Text> texts = new ArrayList<>();
-		texts.add(Text.builder().fontSize(12).font(PDType1Font.HELVETICA).xoffset(xTextOffset).yoffset(705).text(title)
+		texts.add(Text.builder().fontSize(13).font(PDType1Font.HELVETICA_BOLD_OBLIQUE).xoffset(xTextOffset).yoffset(705).text(topRow)
 				.build());
-		texts.add(Text.builder().fontSize(14).textColor(valueTextColor).font(PDType1Font.HELVETICA_BOLD).xoffset(xTextOffset)
-				.yoffset(685).text(details).build());
+		texts.add(Text.builder().fontSize(15).textColor(valueTextColor).font(PDType1Font.HELVETICA_BOLD_OBLIQUE)
+				.xoffset(xTextOffset).yoffset(685).text(bottomRow).build());
 
 		Component component = MultiLineTextComponent.builder().content(content).texts(texts).build();
 		component = BackgroundDecorator.builder().component(component).content(content).xContainerBottomLeft(xBoxOffset)

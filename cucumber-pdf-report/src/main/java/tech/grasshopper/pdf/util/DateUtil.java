@@ -11,6 +11,13 @@ public class DateUtil {
 	private static final DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("MMM dd, yyyy h:mm:ss a");
 	
 	private static final DateTimeFormatter dateTimeWOYearFormatter = DateTimeFormatter.ofPattern("MMM dd, h:mm:ss a");
+	
+	private static final DateTimeFormatter dateWOYearFormatter = DateTimeFormatter.ofPattern("MMM dd");
+	
+	private static final DateTimeFormatter timeWithMillisFormatter = DateTimeFormatter.ofPattern("h:mm:ss.SSS a");
+	
+	private static final DateTimeFormatter  dateTimeWithMillisFormatter = DateTimeFormatter.ofPattern("MMM dd, h:mm:ss.SSS a");
+	
 
 	public static String durationValue(LocalDateTime start, LocalDateTime end) {
 		Duration duration = Duration.between(start, end);
@@ -37,6 +44,18 @@ public class DateUtil {
 	
 	public static String formatDateTimeWOYear(LocalDateTime dateTime) {
 		return dateTime.format(dateTimeWOYearFormatter);
+	}
+	
+	public static String formatDateWOYear(LocalDateTime dateTime) {
+		return dateTime.format(dateWOYearFormatter);
+	}
+	
+	public static String formatTimeWithMillis(LocalDateTime dateTime) {
+		return dateTime.format(timeWithMillisFormatter);
+	}
+	
+	public static String formatDateTimeWithMillis(LocalDateTime dateTime) {
+		return dateTime.format(dateTimeWithMillisFormatter);
 	}
 	
 	public static LocalDateTime convertToLocalDateTime(Date dateToConvert) {

@@ -103,8 +103,8 @@ public class DetailedScenarioComponent extends ChartComponent implements Destina
 
 		texts.add(Text.builder().textColor(reportConfig.getDetailedScenarioConfig().startEndTimeColor())
 				.font(PDType1Font.HELVETICA_OBLIQUE).fontSize(12).xoffset(50).yoffset(startHeight - 60)
-				.text("//  " + DateUtil.formatDateTimeWOYear(scenario.getStartTime()) + "  //  "
-						+ DateUtil.formatDateTimeWOYear(scenario.getEndTime()) + "  //")
+				.text("//  " + DateUtil.formatDateTimeWithMillis(scenario.getStartTime()) + "  //  "
+						+ DateUtil.formatDateTimeWithMillis(scenario.getEndTime()) + "  //")
 				.build());
 
 		Collections.sort(scenario.getTags());
@@ -197,10 +197,10 @@ public class DetailedScenarioComponent extends ChartComponent implements Destina
 
 	private void updateBarChartStyler(CategoryStyler styler, List<Double> data) {
 		double maxVal = data.stream().max(Comparator.naturalOrder()).get();
-		//styler.setYAxisMax(Math.floor(maxVal) + 1);
-		if(maxVal <= 0.25)
+		// styler.setYAxisMax(Math.floor(maxVal) + 1);
+		if (maxVal <= 0.25)
 			styler.setYAxisMax(0.5);
-		else if(maxVal <= 0.5)
+		else if (maxVal <= 0.5)
 			styler.setYAxisMax(0.75);
 		else
 			styler.setYAxisMax(Math.floor(maxVal) + 1);

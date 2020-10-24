@@ -81,8 +81,8 @@ public class DetailedFeatureComponent extends ChartComponent implements Destinat
 
 		texts.add(Text.builder().textColor(reportConfig.getDetailedFeatureConfig().startEndTimeColor())
 				.font(PDType1Font.HELVETICA_OBLIQUE).fontSize(12).xoffset(50).yoffset(startHeight - 50)
-				.text("//  " + DateUtil.formatDateTimeWOYear(feature.getStartTime()) + "  //  "
-						+ DateUtil.formatDateTimeWOYear(feature.getEndTime()) + "  //")
+				.text("//  " + DateUtil.formatDateTimeWithMillis(feature.getStartTime()) + "  //  "
+						+ DateUtil.formatDateTimeWithMillis(feature.getEndTime()) + "  //")
 				.build());
 
 		Collections.sort(feature.getTags());
