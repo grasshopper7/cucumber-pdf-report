@@ -1,17 +1,17 @@
 package tech.grasshopper.pdf.pojo.cucumber;
 
-import java.time.Duration;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
-import lombok.Builder;
 import lombok.Builder.Default;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.experimental.SuperBuilder;
 
 @Data
-@Builder
-public class Hook {
+@SuperBuilder
+@EqualsAndHashCode(callSuper = true)
+public class Hook extends TimeDetails {
 
 	@Default
 	private List<String> output = new ArrayList<>();
@@ -19,17 +19,13 @@ public class Hook {
 	private List<String> media = new ArrayList<>();
     
     private Status status;
-    private String errorMessage;
-    private String location;
+    @Default
+    private String errorMessage="";
+    @Default
+    private String location="";
     
     private HookType hookType;
     
-    private LocalDateTime startTime;
-    private LocalDateTime endTime;
-
-    public Duration getDuration() {
-		return Duration.between(startTime, endTime);
-	}
     
     public static enum HookType {
     	BEFORE, AFTER, BEFORE_STEP, AFTER_STEP;

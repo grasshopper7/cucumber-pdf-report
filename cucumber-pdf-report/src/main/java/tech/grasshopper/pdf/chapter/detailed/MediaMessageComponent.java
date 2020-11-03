@@ -1,7 +1,6 @@
 package tech.grasshopper.pdf.chapter.detailed;
 
 import java.awt.Color;
-import java.io.File;
 import java.util.Collections;
 import java.util.List;
 
@@ -58,10 +57,11 @@ public class MediaMessageComponent implements StepOrHookComponent {
 						.append(StyledText.builder()
 								.text(String.join("", Collections.nCopies(SEP_CHAR_REPEAT_COUNT, "-"))).build())
 						.appendNewLine();
+
 			for (String media : mediaMessages)
 				paragraphBuilder.append(StyledText.builder()
 						.text(messageOptimizer.optimizeText(
-								textSanitizer.sanitizeText("Media saved - " + (new File(media)).getName())))
+								textSanitizer.sanitizeText("Media saved - " + media)))
 						.fontSize((float) FONT_SIZE).color(textColor).build()).appendNewLine();
 		}
 	}

@@ -1,22 +1,21 @@
 package tech.grasshopper.pdf.pojo.cucumber;
 
-
-import java.time.Duration;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.pdfbox.pdmodel.interactive.annotation.PDAnnotationLink;
 import org.apache.pdfbox.pdmodel.interactive.documentnavigation.destination.PDPageXYZDestination;
 
-import lombok.Builder;
 import lombok.Builder.Default;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.experimental.SuperBuilder;
 import tech.grasshopper.pdf.chapter.detailed.StepOrHookRow;
 
 @Data
-@Builder
-public class Scenario {
+@SuperBuilder
+@EqualsAndHashCode(callSuper = true)
+public class Scenario extends TimeDetails {
 
 	private String name;
 	private Feature feature;
@@ -44,13 +43,6 @@ public class Scenario {
     
     private Status status;
     
-    private LocalDateTime startTime;
-    private LocalDateTime endTime;
-    
-    
-    public Duration getDuration() {
-		return Duration.between(startTime, endTime);
-	}
     
     public List<Hook> getBeforeAfterHooks() {
     	List<Hook> hooks = new ArrayList<>();

@@ -3,6 +3,7 @@ package tech.grasshopper.pdf.util;
 import java.time.Duration;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
+import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Date;
 
@@ -58,7 +59,11 @@ public class DateUtil {
 		return dateTime.format(dateTimeWithMillisFormatter);
 	}
 	
-	public static LocalDateTime convertToLocalDateTime(Date dateToConvert) {
+	public static LocalDateTime convertToLocalDateTimeFromDate(Date dateToConvert) {
 		return dateToConvert.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime();
+	}
+	
+	public static LocalDateTime convertToLocalDateTimeFromTimeStamp(String timestamp) {
+		return ZonedDateTime.parse(timestamp).withZoneSameInstant(ZoneId.systemDefault()).toLocalDateTime();
 	}
 }

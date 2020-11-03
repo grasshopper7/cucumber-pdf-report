@@ -1,18 +1,17 @@
 package tech.grasshopper.pdf.pojo.cucumber;
 
-
-import java.time.Duration;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
-import lombok.Builder;
 import lombok.Builder.Default;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.experimental.SuperBuilder;
 
 @Data
-@Builder
-public class Step {
+@SuperBuilder
+@EqualsAndHashCode(callSuper = true)
+public class Step extends TimeDetails {
 
     private String name;
     private String keyword;
@@ -32,16 +31,11 @@ public class Step {
 	private List<String> media = new ArrayList<>();
     
     private Status status;
-    private String errorMessage;
-    private String location;
-    
-    private LocalDateTime startTime;
-    private LocalDateTime endTime;
+    @Default
+    private String errorMessage="";
+    @Default
+    private String location="";
 
-    
-    public Duration getDuration() {
-		return Duration.between(startTime, endTime);
-	}
     
     public List<Hook> getBeforeAfterHooks() {
     	List<Hook> hooks = new ArrayList<>();

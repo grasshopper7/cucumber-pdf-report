@@ -93,7 +93,7 @@ public class FeatureScenarioDetails extends Component implements AnnotationAware
 							.textColor(reportConfig.failedColor()).build())
 					.add(TextCell.builder().text(String.valueOf(feature.getSkippedScenarios()))
 							.textColor(reportConfig.skippedColor()).build())
-					.add(TextCell.builder().text(DateUtil.durationValue(feature.getDuration()))
+					.add(TextCell.builder().text(DateUtil.durationValue(feature.calculatedDuration()))
 							.textColor(reportConfig.getFeatureConfig().durationColor())
 							.horizontalAlignment(HorizontalAlignment.LEFT).build())
 					.build());

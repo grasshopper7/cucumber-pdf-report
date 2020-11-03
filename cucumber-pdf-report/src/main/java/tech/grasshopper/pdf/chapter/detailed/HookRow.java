@@ -60,7 +60,7 @@ public class HookRow extends StepOrHookRow {
 
 	@Override
 	public String getDuration() {
-		return DateUtil.durationValue(hook.getDuration());
+		return DateUtil.durationValue(hook.calculatedDuration());
 	}
 
 	@Override

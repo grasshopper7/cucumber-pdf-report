@@ -105,7 +105,7 @@ public class ScenarioStepDetails extends Component implements AnnotationAware {
 							.textColor(reportConfig.failedColor()).build())
 					.add(TextCell.builder().text(String.valueOf(scenario.getSkippedSteps()))
 							.textColor(reportConfig.skippedColor()).build())
-					.add(TextCell.builder().text(DateUtil.durationValue(scenario.getDuration()))
+					.add(TextCell.builder().text(DateUtil.durationValue(scenario.calculatedDuration()))
 							.textColor(reportConfig.getFeatureConfig().durationColor())
 							.horizontalAlignment(HorizontalAlignment.LEFT).build())
 					.build());

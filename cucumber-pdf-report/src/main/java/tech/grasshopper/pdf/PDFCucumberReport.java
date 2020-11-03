@@ -39,22 +39,29 @@ public class PDFCucumberReport {
 	private ReportConfig reportConfig;
 
 	List<Chapter> chapters = new ArrayList<>();
-
-	public PDFCucumberReport(ReportData reportData) {
-		this(reportData, new File("index.pdf"));
+	
+	public PDFCucumberReport(ReportData reportData, String reportDirectory) {
+		this(reportData, new File(reportDirectory + "/report.pdf"));
 	}
-
+	
 	public PDFCucumberReport(ReportData reportData, File reportFile) {
 		this.reportData = reportData;
 		this.reportFile = reportFile;
 		this.document = new PDDocument();
 		this.destinations = new ChapterDestinationStore();
-
+		
+		createReportDirectory(this.reportFile.getParent());
 		collectReportConfiguration();
 		reportData.populateChapterData();
 		collectChapters();
 	}
 
+	private void createReportDirectory(String reportDirectory) {
+		File dir = new File(reportDirectory);
+		if(!dir.exists())
+			dir.mkdirs();			
+	}
+	
 	private void collectReportConfiguration() {
 
 		Yaml yaml = new Yaml(new Constructor(ReportConfig.class));

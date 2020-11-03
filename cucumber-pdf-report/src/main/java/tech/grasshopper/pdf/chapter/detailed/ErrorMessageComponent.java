@@ -17,7 +17,8 @@ import tech.grasshopper.pdf.optimizer.TextLengthOptimizer;
 @Builder
 public class ErrorMessageComponent implements StepOrHookComponent {
 
-	private String stackTrace;
+	@Default
+	private String stackTrace = "";
 	@Default
 	private boolean hasRowOrString = false;
 	@Default
@@ -37,7 +38,7 @@ public class ErrorMessageComponent implements StepOrHookComponent {
 	@Override
 	public int componentHeight() {
 		int height = 0;
-		if (!stackTrace.isEmpty()) {
+		if (stackTrace!= null && !stackTrace.isEmpty()) {
 			String[] lines = stackTrace.split("\\r?\\n");
 			height = lines.length * ERROR_MSG_LINE_HEIGHT;
 		}
@@ -46,7 +47,7 @@ public class ErrorMessageComponent implements StepOrHookComponent {
 
 	@Override
 	public void componentText(ParagraphBuilder paragraphBuilder) {
-		if (!stackTrace.isEmpty()) {
+		if (stackTrace!= null && !stackTrace.isEmpty()) {
 			String[] lines = stackTrace.split("\\r?\\n");
 
 			for (int i = 0; i < lines.length; i++) {

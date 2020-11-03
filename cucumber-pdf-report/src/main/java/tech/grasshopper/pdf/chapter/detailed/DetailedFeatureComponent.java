@@ -102,7 +102,7 @@ public class DetailedFeatureComponent extends ChartComponent implements Destinat
 				.text("Duration").build());
 		texts.add(Text.builder().textColor(reportConfig.getDetailedFeatureConfig().durationColor())
 				.font(PDType1Font.HELVETICA_BOLD_OBLIQUE).fontSize(11).xoffset(450).yoffset(startHeight - 60)
-				.text(DateUtil.durationValue(feature.getDuration())).build());
+				.text(DateUtil.durationValue(feature.calculatedDuration())).build());
 
 		Component component = MultiLineTextComponent.builder().content(content).texts(texts).build();
 		component = BackgroundDecorator.builder().component(component).content(content)
