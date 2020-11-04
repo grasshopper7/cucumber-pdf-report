@@ -1,6 +1,10 @@
 # Changelog
 All notable changes to this project will be documented in this file.
 
+## 1.5.0 (2020-11-3)
+
+* Refactored time duration and default report name
+
 ## 1.4.0 (2020-10-24)
 
 * Capability to add step hooks individually to step [Issue 5](https://github.com/grasshopper7/cucumber-pdf-report/issues/5)
