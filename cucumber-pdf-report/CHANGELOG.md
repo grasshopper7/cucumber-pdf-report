@@ -1,6 +1,10 @@
 # Changelog
 All notable changes to this project will be documented in this file.
 
+## 1.6.0 (2020-11-18)
+
+* Reduce number of exception stacktrace lines to 10 [Issue 8](https://github.com/grasshopper7/cucumber-pdf-report/issues/8)
+
 ## 1.5.0 (2020-11-3)
 
 * Refactored time duration and default report name
