@@ -29,6 +29,8 @@ public class ErrorMessageComponent implements StepOrHookComponent {
 	private static final PDFont FONT = PDType1Font.HELVETICA_OBLIQUE;
 	private static final int FONT_SIZE = 9;
 	private static final int WIDTH = 290;
+	
+	private static final int MAX_EXCEPTION_LINES = 10;
 
 	private final TextLengthOptimizer messageOptimizer = TextLengthOptimizer.builder().font(FONT).fontsize(FONT_SIZE)
 			.spaceWidth(WIDTH).build();
@@ -40,7 +42,7 @@ public class ErrorMessageComponent implements StepOrHookComponent {
 		int height = 0;
 		if (stackTrace!= null && !stackTrace.isEmpty()) {
 			String[] lines = stackTrace.split("\\r?\\n");
-			height = lines.length * ERROR_MSG_LINE_HEIGHT;
+			height = (lines.length > MAX_EXCEPTION_LINES ? MAX_EXCEPTION_LINES : lines.length) * ERROR_MSG_LINE_HEIGHT;
 		}
 		return height;
 	}
@@ -49,8 +51,9 @@ public class ErrorMessageComponent implements StepOrHookComponent {
 	public void componentText(ParagraphBuilder paragraphBuilder) {
 		if (stackTrace!= null && !stackTrace.isEmpty()) {
 			String[] lines = stackTrace.split("\\r?\\n");
-
-			for (int i = 0; i < lines.length; i++) {
+			int dispayCount= (lines.length > MAX_EXCEPTION_LINES ? MAX_EXCEPTION_LINES : lines.length);
+			
+			for (int i = 0; i < dispayCount; i++) {
 				paragraphBuilder.append(
 						StyledText.builder().text(messageOptimizer.optimizeText(textSanitizer.sanitizeText(lines[i])))
 								.font(FONT).fontSize((float) FONT_SIZE).color(textColor).build())

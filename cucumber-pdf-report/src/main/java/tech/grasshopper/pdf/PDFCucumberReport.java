@@ -38,7 +38,7 @@ public class PDFCucumberReport {
 	private ChapterDestinationStore destinations;
 	private ReportConfig reportConfig;
 
-	List<Chapter> chapters = new ArrayList<>();
+	private List<Chapter> chapters = new ArrayList<>();
 	
 	public PDFCucumberReport(ReportData reportData, String reportDirectory) {
 		this(reportData, new File(reportDirectory + "/report.pdf"));
