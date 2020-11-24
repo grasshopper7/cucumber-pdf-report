@@ -5,7 +5,6 @@ import java.io.IOException;
 import java.util.List;
 
 import org.apache.pdfbox.pdmodel.font.PDFont;
-import org.apache.pdfbox.pdmodel.font.PDType1Font;
 import org.apache.pdfbox.pdmodel.interactive.annotation.PDAnnotationLink;
 import org.vandeseer.easytable.TableDrawer;
 import org.vandeseer.easytable.settings.HorizontalAlignment;
@@ -24,7 +23,7 @@ import tech.grasshopper.pdf.chapter.page.PaginationData;
 import tech.grasshopper.pdf.component.Component;
 import tech.grasshopper.pdf.data.FeatureData;
 import tech.grasshopper.pdf.exception.PdfReportException;
-import tech.grasshopper.pdf.optimizer.TextContentSanitizer;
+import tech.grasshopper.pdf.font.ReportFont;
 import tech.grasshopper.pdf.optimizer.TextLengthOptimizer;
 import tech.grasshopper.pdf.pojo.cucumber.Feature;
 import tech.grasshopper.pdf.util.DateUtil;
@@ -41,7 +40,7 @@ public class FeatureScenarioDetails extends Component implements AnnotationAware
 	private static final float TABLE_HEADER_HEIGHT = 30f;
 	private static final float TABLE_ROW_HEIGHT = 25f;
 
-	private static final PDFont NAME_FONT = PDType1Font.HELVETICA_OBLIQUE;
+	private static final PDFont NAME_FONT = ReportFont.ITALIC_FONT;
 	private static final int NAME_FONT_SIZE = 10;
 
 	private static final int FEATURE_NAME_COLUMN_WIDTH = 225;
@@ -50,13 +49,12 @@ public class FeatureScenarioDetails extends Component implements AnnotationAware
 	private final TextLengthOptimizer featureNameTextOptimizer = TextLengthOptimizer.builder().font(NAME_FONT)
 			.fontsize(NAME_FONT_SIZE).spaceWidth(FEATURE_NAME_COLUMN_WIDTH - 2 * PADDING).build();
 
-	private final TextContentSanitizer textSanitizer = TextContentSanitizer.builder().font(NAME_FONT).build();
 
 	@Override
 	public void display() {
 		TableBuilder myTableBuilder = Table.builder()
 				.addColumnsOfWidth(25, FEATURE_NAME_COLUMN_WIDTH, 35, 35, 35, 35, 110).padding(PADDING)
-				.borderColor(Color.LIGHT_GRAY).borderWidth(1).font(PDType1Font.HELVETICA_BOLD_OBLIQUE).fontSize(12)
+				.borderColor(Color.LIGHT_GRAY).borderWidth(1).font(ReportFont.BOLD_ITALIC_FONT).fontSize(12)
 
 				.addRow(Row.builder().horizontalAlignment(HorizontalAlignment.CENTER)
 						.verticalAlignment(VerticalAlignment.MIDDLE).height(TABLE_HEADER_HEIGHT)
@@ -79,7 +77,7 @@ public class FeatureScenarioDetails extends Component implements AnnotationAware
 		for (int i = 0; i < features.size(); i++) {
 			Feature feature = features.get(i);
 
-			String featureName = featureNameTextOptimizer.optimizeText(textSanitizer.sanitizeText(feature.getName()));
+			String featureName = featureNameTextOptimizer.optimizeText(feature.getName());
 
 			myTableBuilder.addRow(Row.builder().font(NAME_FONT).fontSize(NAME_FONT_SIZE).height(TABLE_ROW_HEIGHT)
 					.horizontalAlignment(HorizontalAlignment.CENTER).verticalAlignment(VerticalAlignment.MIDDLE)

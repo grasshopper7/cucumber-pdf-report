@@ -8,7 +8,6 @@ import java.util.logging.Logger;
 import org.apache.pdfbox.pdmodel.PDPage;
 import org.apache.pdfbox.pdmodel.PDPageContentStream;
 import org.apache.pdfbox.pdmodel.common.PDRectangle;
-import org.apache.pdfbox.pdmodel.font.PDType1Font;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -18,6 +17,7 @@ import tech.grasshopper.pdf.component.text.TextComponent;
 import tech.grasshopper.pdf.destination.Destination;
 import tech.grasshopper.pdf.destination.DestinationAware;
 import tech.grasshopper.pdf.exception.PdfReportException;
+import tech.grasshopper.pdf.font.ReportFont;
 import tech.grasshopper.pdf.pojo.report.Text;
 
 @Data
@@ -49,7 +49,7 @@ public class ScenarioPage extends PaginatedPage implements DestinationAware {
 	}
 
 	private void createTitle() {
-		Text text = Text.builder().textColor(Color.LIGHT_GRAY).font(PDType1Font.HELVETICA_OBLIQUE).fontSize(12)
+		Text text = Text.builder().textColor(Color.LIGHT_GRAY).font(ReportFont.ITALIC_FONT).fontSize(12)
 				.xoffset(40).yoffset(775).text("SCENARIOS SUMMARY " + (paginationData.getItemFromIndex() + 1) + " - "
 						+ paginationData.getItemToIndex())
 				.build();

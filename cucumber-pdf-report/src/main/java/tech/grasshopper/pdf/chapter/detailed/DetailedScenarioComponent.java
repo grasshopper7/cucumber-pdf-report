@@ -26,7 +26,7 @@ import tech.grasshopper.pdf.component.decorator.BackgroundDecorator;
 import tech.grasshopper.pdf.component.text.MultiLineTextComponent;
 import tech.grasshopper.pdf.destination.Destination;
 import tech.grasshopper.pdf.destination.DestinationAware;
-import tech.grasshopper.pdf.optimizer.TextContentSanitizer;
+import tech.grasshopper.pdf.font.ReportFont;
 import tech.grasshopper.pdf.optimizer.TextLengthOptimizer;
 import tech.grasshopper.pdf.pojo.cucumber.Feature;
 import tech.grasshopper.pdf.pojo.cucumber.Scenario;
@@ -45,9 +45,9 @@ public class DetailedScenarioComponent extends ChartComponent implements Destina
 	private Feature feature;
 	private int startHeight;
 
-	private static final PDFont FEATURE_NAME_FONT = PDType1Font.HELVETICA;
+	private static final PDFont FEATURE_NAME_FONT = ReportFont.REGULAR_FONT;
 	private static final int FEATURE_NAME_FONT_SIZE = 12;
-	private static final PDFont SCENARIO_NAME_FONT = PDType1Font.HELVETICA_BOLD;
+	private static final PDFont SCENARIO_NAME_FONT = ReportFont.BOLD_FONT;
 	private static final int SCENARIO_NAME_FONT_SIZE = 15;
 
 	private static final int NAME_WIDTH = 400;
@@ -59,11 +59,6 @@ public class DetailedScenarioComponent extends ChartComponent implements Destina
 	private final TextLengthOptimizer scenarioNameTextOptimizer = TextLengthOptimizer.builder().font(SCENARIO_NAME_FONT)
 			.fontsize(SCENARIO_NAME_FONT_SIZE).spaceWidth(NAME_WIDTH - 2 * PADDING).build();
 
-	private final TextContentSanitizer textSanitizerFeature = TextContentSanitizer.builder().font(FEATURE_NAME_FONT)
-			.build();
-
-	private final TextContentSanitizer textSanitizerScenario = TextContentSanitizer.builder().font(SCENARIO_NAME_FONT)
-			.build();
 
 	@Override
 	public void display() {
@@ -86,20 +81,13 @@ public class DetailedScenarioComponent extends ChartComponent implements Destina
 	private void createHeader() {
 		List<Text> texts = new ArrayList<>();
 
-		texts.add(
-				Text.builder().textColor(reportConfig.getDetailedScenarioConfig().featureNameColor())
-						.font(FEATURE_NAME_FONT).fontSize(FEATURE_NAME_FONT_SIZE).xoffset(50).yoffset(startHeight - 25)
-						.text(featureNameTextOptimizer
-								.optimizeText("(F) - " + textSanitizerFeature.sanitizeText(feature.getName())))
-						.build());
+		texts.add(Text.builder().textColor(reportConfig.getDetailedScenarioConfig().featureNameColor())
+				.font(FEATURE_NAME_FONT).fontSize(FEATURE_NAME_FONT_SIZE).xoffset(50).yoffset(startHeight - 25)
+				.text(featureNameTextOptimizer.optimizeText("(F) - " + feature.getName())).build());
 
-		texts.add(
-				Text.builder().textColor(reportConfig.getDetailedScenarioConfig().scenarioNameColor())
-						.font(SCENARIO_NAME_FONT).fontSize(SCENARIO_NAME_FONT_SIZE).xoffset(50)
-						.yoffset(startHeight - 45)
-						.text(scenarioNameTextOptimizer
-								.optimizeText("(S) - " + textSanitizerScenario.sanitizeText(scenario.getName())))
-						.build());
+		texts.add(Text.builder().textColor(reportConfig.getDetailedScenarioConfig().scenarioNameColor())
+				.font(SCENARIO_NAME_FONT).fontSize(SCENARIO_NAME_FONT_SIZE).xoffset(50).yoffset(startHeight - 45)
+				.text(scenarioNameTextOptimizer.optimizeText("(S) - " + scenario.getName())).build());
 
 		texts.add(Text.builder().textColor(reportConfig.getDetailedScenarioConfig().startEndTimeColor())
 				.font(PDType1Font.HELVETICA_OBLIQUE).fontSize(12).xoffset(50).yoffset(startHeight - 60)
@@ -111,7 +99,7 @@ public class DetailedScenarioComponent extends ChartComponent implements Destina
 		String tags = "@Tags - " + scenario.getTags().stream().collect(Collectors.joining(" "));
 		texts.add(Text.builder().font(PDType1Font.HELVETICA).fontSize(11)
 				.textColor(reportConfig.getDetailedScenarioConfig().tagColor()).xoffset(50).yoffset(startHeight - 75)
-				.text(featureNameTextOptimizer.optimizeText(textSanitizerFeature.sanitizeText(tags))).build());
+				.text(featureNameTextOptimizer.optimizeText(tags)).build());
 
 		MultiLineTextComponent.builder().content(content).texts(texts).build().display();
 	}

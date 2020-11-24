@@ -27,6 +27,7 @@ import tech.grasshopper.pdf.config.ReportConfig;
 import tech.grasshopper.pdf.data.ReportData;
 import tech.grasshopper.pdf.destination.Destination.ChapterDestinationStore;
 import tech.grasshopper.pdf.exception.PdfReportException;
+import tech.grasshopper.pdf.font.ReportFont;
 
 public class PDFCucumberReport {
 
@@ -50,6 +51,7 @@ public class PDFCucumberReport {
 		this.document = new PDDocument();
 		this.destinations = new ChapterDestinationStore();
 		
+		ReportFont.loadReportFontFamily(document);
 		createReportDirectory(this.reportFile.getParent());
 		collectReportConfiguration();
 		reportData.populateChapterData();

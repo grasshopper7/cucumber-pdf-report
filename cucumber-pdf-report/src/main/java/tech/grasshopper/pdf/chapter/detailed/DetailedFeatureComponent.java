@@ -24,7 +24,7 @@ import tech.grasshopper.pdf.component.line.HorizontalLineComponent;
 import tech.grasshopper.pdf.component.text.MultiLineTextComponent;
 import tech.grasshopper.pdf.destination.Destination;
 import tech.grasshopper.pdf.destination.DestinationAware;
-import tech.grasshopper.pdf.optimizer.TextContentSanitizer;
+import tech.grasshopper.pdf.font.ReportFont;
 import tech.grasshopper.pdf.optimizer.TextLengthOptimizer;
 import tech.grasshopper.pdf.pojo.cucumber.Feature;
 import tech.grasshopper.pdf.pojo.report.Text;
@@ -40,7 +40,7 @@ public class DetailedFeatureComponent extends ChartComponent implements Destinat
 	private Feature feature;
 	private int startHeight;
 
-	private static final PDFont NAME_FONT = PDType1Font.HELVETICA_BOLD;
+	private static final PDFont NAME_FONT = ReportFont.BOLD_FONT;
 	private static final int NAME_FONT_SIZE = 16;
 
 	private static final int FEATURE_NAME_WIDTH = 400;
@@ -49,7 +49,6 @@ public class DetailedFeatureComponent extends ChartComponent implements Destinat
 	private final TextLengthOptimizer featureNameTextOptimizer = TextLengthOptimizer.builder().font(NAME_FONT)
 			.fontsize(NAME_FONT_SIZE).spaceWidth(FEATURE_NAME_WIDTH - 2 * PADDING).build();
 
-	private final TextContentSanitizer textSanitizer = TextContentSanitizer.builder().font(NAME_FONT).build();
 
 	@Override
 	public void display() {
@@ -76,8 +75,7 @@ public class DetailedFeatureComponent extends ChartComponent implements Destinat
 
 		texts.add(Text.builder().textColor(reportConfig.getDetailedFeatureConfig().featureNameColor()).font(NAME_FONT)
 				.fontSize(NAME_FONT_SIZE).xoffset(50).yoffset(startHeight - 30)
-				.text(featureNameTextOptimizer.optimizeText("(F) - " + textSanitizer.sanitizeText(feature.getName())))
-				.build());
+				.text(featureNameTextOptimizer.optimizeText("(F) - " + feature.getName())).build());
 
 		texts.add(Text.builder().textColor(reportConfig.getDetailedFeatureConfig().startEndTimeColor())
 				.font(PDType1Font.HELVETICA_OBLIQUE).fontSize(12).xoffset(50).yoffset(startHeight - 50)
@@ -89,7 +87,7 @@ public class DetailedFeatureComponent extends ChartComponent implements Destinat
 		String tags = "@Tags - " + feature.getTags().stream().collect(Collectors.joining(" "));
 		texts.add(Text.builder().font(PDType1Font.HELVETICA).fontSize(11)
 				.textColor(reportConfig.getDetailedFeatureConfig().tagColor()).xoffset(50).yoffset(startHeight - 70)
-				.text(featureNameTextOptimizer.optimizeText(textSanitizer.sanitizeText(tags))).build());
+				.text(featureNameTextOptimizer.optimizeText(tags)).build());
 
 		MultiLineTextComponent.builder().content(content).texts(texts).build().display();
 	}

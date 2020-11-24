@@ -4,8 +4,6 @@ import java.awt.Color;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.pdfbox.pdmodel.font.PDType1Font;
-
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.experimental.SuperBuilder;
@@ -14,6 +12,7 @@ import tech.grasshopper.pdf.component.decorator.BackgroundDecorator;
 import tech.grasshopper.pdf.component.decorator.BorderDecorator;
 import tech.grasshopper.pdf.component.text.MultiLineTextComponent;
 import tech.grasshopper.pdf.data.SummaryData;
+import tech.grasshopper.pdf.font.ReportFont;
 import tech.grasshopper.pdf.pojo.report.Text;
 import tech.grasshopper.pdf.util.DateUtil;
 
@@ -53,9 +52,9 @@ public class SummaryStatistics extends Component {
 			Color valueTextColor) {
 
 		List<Text> texts = new ArrayList<>();
-		texts.add(Text.builder().fontSize(13).font(PDType1Font.HELVETICA_BOLD_OBLIQUE).xoffset(xTextOffset).yoffset(705).text(topRow)
+		texts.add(Text.builder().fontSize(13).font(ReportFont.BOLD_ITALIC_FONT).xoffset(xTextOffset).yoffset(705).text(topRow)
 				.build());
-		texts.add(Text.builder().fontSize(15).textColor(valueTextColor).font(PDType1Font.HELVETICA_BOLD_OBLIQUE)
+		texts.add(Text.builder().fontSize(15).textColor(valueTextColor).font(ReportFont.BOLD_ITALIC_FONT)
 				.xoffset(xTextOffset).yoffset(685).text(bottomRow).build());
 
 		Component component = MultiLineTextComponent.builder().content(content).texts(texts).build();

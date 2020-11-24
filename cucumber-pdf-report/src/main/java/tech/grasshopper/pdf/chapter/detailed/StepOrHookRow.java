@@ -3,7 +3,6 @@ package tech.grasshopper.pdf.chapter.detailed;
 import java.awt.Color;
 
 import org.apache.pdfbox.pdmodel.font.PDFont;
-import org.apache.pdfbox.pdmodel.font.PDType1Font;
 import org.vandeseer.easytable.settings.HorizontalAlignment;
 import org.vandeseer.easytable.structure.Row;
 import org.vandeseer.easytable.structure.cell.TextCell;
@@ -15,6 +14,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.experimental.SuperBuilder;
 import tech.grasshopper.pdf.config.ReportConfig;
+import tech.grasshopper.pdf.font.ReportFont;
 import tech.grasshopper.pdf.optimizer.TextLengthOptimizer;
 import tech.grasshopper.pdf.pojo.cucumber.Hook;
 import tech.grasshopper.pdf.pojo.cucumber.Status;
@@ -24,7 +24,7 @@ import tech.grasshopper.pdf.pojo.cucumber.Step;
 @SuperBuilder
 public abstract class StepOrHookRow {
 
-	protected static final PDFont FONT = PDType1Font.HELVETICA_OBLIQUE;
+	protected static final PDFont FONT = ReportFont.ITALIC_FONT;
 	protected static final int FONT_SIZE = 10;
 	protected static final int COLUMN_WIDTH = 315;
 	protected static final int PADDING = 5;
