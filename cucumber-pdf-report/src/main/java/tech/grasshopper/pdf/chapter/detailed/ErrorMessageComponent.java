@@ -10,6 +10,7 @@ import lombok.Builder;
 import lombok.Builder.Default;
 import lombok.Data;
 import tech.grasshopper.pdf.font.ReportFont;
+import tech.grasshopper.pdf.optimizer.StackTraceSanitizer;
 import tech.grasshopper.pdf.optimizer.TextLengthOptimizer;
 
 @Data
@@ -25,7 +26,7 @@ public class ErrorMessageComponent implements StepOrHookComponent {
 
 	private static final int ERROR_MSG_LINE_HEIGHT = 15;
 
-	private static final PDFont FONT = ReportFont.ITALIC_FONT;
+	private static final PDFont FONT = ReportFont.REGULAR_FONT;
 	private static final int FONT_SIZE = 9;
 	private static final int WIDTH = 290;
 
@@ -46,12 +47,14 @@ public class ErrorMessageComponent implements StepOrHookComponent {
 
 	@Override
 	public void componentText(ParagraphBuilder paragraphBuilder) {
+		final StackTraceSanitizer sanitizer = StackTraceSanitizer.builder().font(FONT).build();
 		if (stackTrace != null && !stackTrace.isEmpty()) {
 			String[] lines = stackTrace.split("\\r?\\n");
 			int dispayCount = (lines.length > MAX_EXCEPTION_LINES ? MAX_EXCEPTION_LINES : lines.length);
 
 			for (int i = 0; i < dispayCount; i++) {
-				paragraphBuilder.append(StyledText.builder().text(messageOptimizer.optimizeText(lines[i])).font(FONT)
+				String sanitizedLine = sanitizer.sanitizeText(lines[i]);
+				paragraphBuilder.append(StyledText.builder().text(messageOptimizer.optimizeText(sanitizedLine)).font(FONT)
 						.fontSize((float) FONT_SIZE).color(textColor).build()).appendNewLine();
 			}
 		}
