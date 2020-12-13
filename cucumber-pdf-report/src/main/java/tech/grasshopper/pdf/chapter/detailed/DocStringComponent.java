@@ -1,12 +1,12 @@
 package tech.grasshopper.pdf.chapter.detailed;
 
 import org.apache.pdfbox.pdmodel.font.PDFont;
-import org.apache.pdfbox.pdmodel.font.PDType1Font;
 import org.vandeseer.easytable.structure.cell.paragraph.ParagraphCell.Paragraph.ParagraphBuilder;
 import org.vandeseer.easytable.structure.cell.paragraph.StyledText;
 
 import lombok.Builder;
 import lombok.Data;
+import tech.grasshopper.pdf.font.ReportFont;
 import tech.grasshopper.pdf.optimizer.TextLengthOptimizer;
 
 @Data
@@ -17,7 +17,7 @@ public class DocStringComponent implements StepOrHookComponent {
 
 	private static final int LINE_HEIGHT = 15;
 	private static final int MAX_LINES = 4;
-	private static final PDFont FONT = PDType1Font.HELVETICA;
+	private static final PDFont FONT = ReportFont.REGULAR_FONT;
 	private static final int FONT_SIZE = 8;
 	private static final int WIDTH = 290;
 

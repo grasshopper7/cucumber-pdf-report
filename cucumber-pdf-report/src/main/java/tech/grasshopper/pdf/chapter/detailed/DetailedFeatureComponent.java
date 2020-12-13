@@ -9,7 +9,6 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 import org.apache.pdfbox.pdmodel.font.PDFont;
-import org.apache.pdfbox.pdmodel.font.PDType1Font;
 import org.knowm.xchart.style.PieStyler;
 
 import lombok.Data;
@@ -49,7 +48,6 @@ public class DetailedFeatureComponent extends ChartComponent implements Destinat
 	private final TextLengthOptimizer featureNameTextOptimizer = TextLengthOptimizer.builder().font(NAME_FONT)
 			.fontsize(NAME_FONT_SIZE).spaceWidth(FEATURE_NAME_WIDTH - 2 * PADDING).build();
 
-
 	@Override
 	public void display() {
 
@@ -78,14 +76,14 @@ public class DetailedFeatureComponent extends ChartComponent implements Destinat
 				.text(featureNameTextOptimizer.optimizeText("(F) - " + feature.getName())).build());
 
 		texts.add(Text.builder().textColor(reportConfig.getDetailedFeatureConfig().startEndTimeColor())
-				.font(PDType1Font.HELVETICA_OBLIQUE).fontSize(12).xoffset(50).yoffset(startHeight - 50)
+				.font(ReportFont.ITALIC_FONT).fontSize(12).xoffset(50).yoffset(startHeight - 50)
 				.text("//  " + DateUtil.formatDateTimeWithMillis(feature.getStartTime()) + "  //  "
 						+ DateUtil.formatDateTimeWithMillis(feature.getEndTime()) + "  //")
 				.build());
 
 		Collections.sort(feature.getTags());
 		String tags = "@Tags - " + feature.getTags().stream().collect(Collectors.joining(" "));
-		texts.add(Text.builder().font(PDType1Font.HELVETICA).fontSize(11)
+		texts.add(Text.builder().font(ReportFont.REGULAR_FONT).fontSize(11)
 				.textColor(reportConfig.getDetailedFeatureConfig().tagColor()).xoffset(50).yoffset(startHeight - 70)
 				.text(featureNameTextOptimizer.optimizeText(tags)).build());
 
@@ -96,10 +94,10 @@ public class DetailedFeatureComponent extends ChartComponent implements Destinat
 		List<Text> texts = new ArrayList<>();
 
 		texts.add(Text.builder().textColor(reportConfig.getDetailedFeatureConfig().durationColor())
-				.font(PDType1Font.HELVETICA_BOLD_OBLIQUE).fontSize(10).xoffset(450).yoffset(startHeight - 40)
-				.text("Duration").build());
+				.font(ReportFont.BOLD_ITALIC_FONT).fontSize(10).xoffset(450).yoffset(startHeight - 40).text("Duration")
+				.build());
 		texts.add(Text.builder().textColor(reportConfig.getDetailedFeatureConfig().durationColor())
-				.font(PDType1Font.HELVETICA_BOLD_OBLIQUE).fontSize(11).xoffset(450).yoffset(startHeight - 60)
+				.font(ReportFont.BOLD_ITALIC_FONT).fontSize(11).xoffset(450).yoffset(startHeight - 60)
 				.text(DateUtil.durationValue(feature.calculatedDuration())).build());
 
 		Component component = MultiLineTextComponent.builder().content(content).texts(texts).build();
@@ -157,16 +155,16 @@ public class DetailedFeatureComponent extends ChartComponent implements Destinat
 		List<Text> texts = new ArrayList<>();
 
 		texts.add(Text.builder().textColor(reportConfig.getDetailedFeatureConfig().dataHeaderColor())
-				.font(PDType1Font.HELVETICA_BOLD).fontSize(11).xoffset(xOffset).yoffset(startHeight - 95).text(title)
+				.font(ReportFont.BOLD_FONT).fontSize(11).xoffset(xOffset).yoffset(startHeight - 95).text(title)
 				.build());
 		texts.add(Text.builder().textColor(reportConfig.getDetailedFeatureConfig().totalColor())
-				.font(PDType1Font.HELVETICA_BOLD).fontSize(9).xoffset(xOffset).yoffset(startHeight - 115)
+				.font(ReportFont.BOLD_FONT).fontSize(9).xoffset(xOffset).yoffset(startHeight - 115)
 				.text("Total " + total).build());
-		texts.add(Text.builder().textColor(reportConfig.passedColor()).font(PDType1Font.HELVETICA_BOLD).fontSize(9)
+		texts.add(Text.builder().textColor(reportConfig.passedColor()).font(ReportFont.BOLD_FONT).fontSize(9)
 				.xoffset(xOffset).yoffset(startHeight - 135).text("Pass " + pass).build());
-		texts.add(Text.builder().textColor(reportConfig.failedColor()).font(PDType1Font.HELVETICA_BOLD).fontSize(9)
+		texts.add(Text.builder().textColor(reportConfig.failedColor()).font(ReportFont.BOLD_FONT).fontSize(9)
 				.xoffset(xOffset).yoffset(startHeight - 155).text("Fail " + fail).build());
-		texts.add(Text.builder().textColor(reportConfig.skippedColor()).font(PDType1Font.HELVETICA_BOLD).fontSize(9)
+		texts.add(Text.builder().textColor(reportConfig.skippedColor()).font(ReportFont.BOLD_FONT).fontSize(9)
 				.xoffset(xOffset).yoffset(startHeight - 175).text("Skip " + skip).build());
 
 		Component component = MultiLineTextComponent.builder().content(content).texts(texts).build();

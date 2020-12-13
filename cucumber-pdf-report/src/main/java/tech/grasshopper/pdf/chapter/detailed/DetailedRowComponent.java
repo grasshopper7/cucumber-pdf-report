@@ -4,7 +4,6 @@ import java.awt.Color;
 import java.util.List;
 
 import org.apache.pdfbox.pdmodel.font.PDFont;
-import org.apache.pdfbox.pdmodel.font.PDType1Font;
 import org.vandeseer.easytable.TableDrawer;
 import org.vandeseer.easytable.settings.HorizontalAlignment;
 import org.vandeseer.easytable.settings.VerticalAlignment;
@@ -18,6 +17,7 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.experimental.SuperBuilder;
 import tech.grasshopper.pdf.component.Component;
+import tech.grasshopper.pdf.font.ReportFont;
 import tech.grasshopper.pdf.optimizer.TextLengthOptimizer;
 import tech.grasshopper.pdf.pojo.cucumber.Feature;
 import tech.grasshopper.pdf.pojo.cucumber.Scenario;
@@ -33,11 +33,11 @@ public class DetailedRowComponent extends Component {
 	private int startHeight;
 	private int initialSno;
 
-	private static final PDFont NAME_FONT = PDType1Font.HELVETICA_OBLIQUE;
+	private static final PDFont NAME_FONT = ReportFont.REGULAR_FONT;
 	private static final int NAME_FONT_SIZE = 10;
-	private static final PDFont TABLE_DOCSTRING_FONT = PDType1Font.HELVETICA;
+	private static final PDFont TABLE_DOCSTRING_FONT = ReportFont.REGULAR_FONT;
 	private static final int TABLE_DOCSTRING_FONT_SIZE = 8;
-	private static final PDFont OUTPUT_MSG_FONT = PDType1Font.HELVETICA;
+	private static final PDFont OUTPUT_MSG_FONT = ReportFont.REGULAR_FONT;
 	private static final int OUTPUT_MSG_FONT_SIZE = 9;
 
 	private static final int STEP_COLUMN_WIDTH = 340;
@@ -68,7 +68,7 @@ public class DetailedRowComponent extends Component {
 	public void display() {
 
 		TableBuilder myTableBuilder = Table.builder().addColumnsOfWidth(25, STEP_COLUMN_WIDTH, 50, 85).padding(PADDING)
-				.borderColor(Color.LIGHT_GRAY).borderWidth(1).font(PDType1Font.HELVETICA_OBLIQUE).fontSize(12)
+				.borderColor(Color.LIGHT_GRAY).borderWidth(1).font(ReportFont.ITALIC_FONT).fontSize(12)
 
 				.addRow(Row.builder().height((float) HEADER_ROW_HEIGHT).horizontalAlignment(HorizontalAlignment.CENTER)
 						.verticalAlignment(VerticalAlignment.MIDDLE).add(TextCell.builder().text("#").build())

@@ -10,7 +10,6 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 import org.apache.pdfbox.pdmodel.font.PDFont;
-import org.apache.pdfbox.pdmodel.font.PDType1Font;
 import org.knowm.xchart.style.CategoryStyler;
 import org.knowm.xchart.style.PieStyler;
 
@@ -59,7 +58,6 @@ public class DetailedScenarioComponent extends ChartComponent implements Destina
 	private final TextLengthOptimizer scenarioNameTextOptimizer = TextLengthOptimizer.builder().font(SCENARIO_NAME_FONT)
 			.fontsize(SCENARIO_NAME_FONT_SIZE).spaceWidth(NAME_WIDTH - 2 * PADDING).build();
 
-
 	@Override
 	public void display() {
 
@@ -90,14 +88,14 @@ public class DetailedScenarioComponent extends ChartComponent implements Destina
 				.text(scenarioNameTextOptimizer.optimizeText("(S) - " + scenario.getName())).build());
 
 		texts.add(Text.builder().textColor(reportConfig.getDetailedScenarioConfig().startEndTimeColor())
-				.font(PDType1Font.HELVETICA_OBLIQUE).fontSize(12).xoffset(50).yoffset(startHeight - 60)
+				.font(ReportFont.ITALIC_FONT).fontSize(12).xoffset(50).yoffset(startHeight - 60)
 				.text("//  " + DateUtil.formatDateTimeWithMillis(scenario.getStartTime()) + "  //  "
 						+ DateUtil.formatDateTimeWithMillis(scenario.getEndTime()) + "  //")
 				.build());
 
 		Collections.sort(scenario.getTags());
 		String tags = "@Tags - " + scenario.getTags().stream().collect(Collectors.joining(" "));
-		texts.add(Text.builder().font(PDType1Font.HELVETICA).fontSize(11)
+		texts.add(Text.builder().font(ReportFont.REGULAR_FONT).fontSize(11)
 				.textColor(reportConfig.getDetailedScenarioConfig().tagColor()).xoffset(50).yoffset(startHeight - 75)
 				.text(featureNameTextOptimizer.optimizeText(tags)).build());
 
@@ -108,10 +106,10 @@ public class DetailedScenarioComponent extends ChartComponent implements Destina
 		List<Text> texts = new ArrayList<>();
 
 		texts.add(Text.builder().textColor(reportConfig.getDetailedScenarioConfig().durationColor())
-				.font(PDType1Font.HELVETICA_BOLD_OBLIQUE).fontSize(10).xoffset(450).yoffset(startHeight - 35)
-				.text("Duration").build());
+				.font(ReportFont.BOLD_ITALIC_FONT).fontSize(10).xoffset(450).yoffset(startHeight - 35).text("Duration")
+				.build());
 		texts.add(Text.builder().textColor(reportConfig.getDetailedScenarioConfig().durationColor())
-				.font(PDType1Font.HELVETICA_BOLD_OBLIQUE).fontSize(11).xoffset(450).yoffset(startHeight - 55)
+				.font(ReportFont.BOLD_ITALIC_FONT).fontSize(11).xoffset(450).yoffset(startHeight - 55)
 				.text(DateUtil.durationValue(scenario.getStartTime(), scenario.getEndTime())).build());
 
 		Component component = MultiLineTextComponent.builder().content(content).texts(texts).build();
@@ -142,16 +140,15 @@ public class DetailedScenarioComponent extends ChartComponent implements Destina
 		List<Text> texts = new ArrayList<>();
 
 		texts.add(Text.builder().textColor(reportConfig.getDetailedScenarioConfig().dataHeaderColor())
-				.font(PDType1Font.HELVETICA_BOLD).fontSize(11).xoffset(395).yoffset(startHeight - 95).text("Steps")
-				.build());
+				.font(ReportFont.BOLD_FONT).fontSize(11).xoffset(395).yoffset(startHeight - 95).text("Steps").build());
 		texts.add(Text.builder().textColor(reportConfig.getDetailedScenarioConfig().totalColor())
-				.font(PDType1Font.HELVETICA_BOLD).fontSize(9).xoffset(395).yoffset(startHeight - 115)
+				.font(ReportFont.BOLD_FONT).fontSize(9).xoffset(395).yoffset(startHeight - 115)
 				.text("Total " + scenario.getTotalSteps()).build());
-		texts.add(Text.builder().textColor(reportConfig.passedColor()).font(PDType1Font.HELVETICA_BOLD).fontSize(9)
+		texts.add(Text.builder().textColor(reportConfig.passedColor()).font(ReportFont.BOLD_FONT).fontSize(9)
 				.xoffset(395).yoffset(startHeight - 135).text("Pass " + scenario.getPassedSteps()).build());
-		texts.add(Text.builder().textColor(reportConfig.failedColor()).font(PDType1Font.HELVETICA_BOLD).fontSize(9)
+		texts.add(Text.builder().textColor(reportConfig.failedColor()).font(ReportFont.BOLD_FONT).fontSize(9)
 				.xoffset(395).yoffset(startHeight - 155).text("Fail " + scenario.getFailedSteps()).build());
-		texts.add(Text.builder().textColor(reportConfig.skippedColor()).font(PDType1Font.HELVETICA_BOLD).fontSize(9)
+		texts.add(Text.builder().textColor(reportConfig.skippedColor()).font(ReportFont.BOLD_FONT).fontSize(9)
 				.xoffset(395).yoffset(startHeight - 175).text("Skip " + scenario.getSkippedSteps()).build());
 
 		Component component = MultiLineTextComponent.builder().content(content).texts(texts).build();

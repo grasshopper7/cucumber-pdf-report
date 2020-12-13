@@ -5,7 +5,6 @@ import java.io.IOException;
 import java.util.List;
 
 import org.apache.pdfbox.pdmodel.font.PDFont;
-import org.apache.pdfbox.pdmodel.font.PDType1Font;
 import org.apache.pdfbox.pdmodel.interactive.annotation.PDAnnotationLink;
 import org.vandeseer.easytable.TableDrawer;
 import org.vandeseer.easytable.settings.HorizontalAlignment;
@@ -59,7 +58,7 @@ public class ScenarioStepDetails extends Component implements AnnotationAware {
 	public void display() {
 		TableBuilder myTableBuilder = Table.builder()
 				.addColumnsOfWidth(25, FEATURE_NAME_COLUMN_WIDTH, SCENARIO_NAME_COLUMN_WIDTH, 30, 30, 30, 30, 85)
-				.padding(PADDING).borderColor(Color.LIGHT_GRAY).borderWidth(1).font(PDType1Font.HELVETICA_BOLD_OBLIQUE)
+				.padding(PADDING).borderColor(Color.LIGHT_GRAY).borderWidth(1).font(ReportFont.BOLD_ITALIC_FONT)
 				.fontSize(11)
 
 				.addRow(Row.builder().horizontalAlignment(HorizontalAlignment.CENTER)
