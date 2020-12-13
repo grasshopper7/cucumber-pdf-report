@@ -1,6 +1,10 @@
 # Changelog
 All notable changes to this project will be documented in this file.
 
+## 1.7.0 (2020-12-13)
+
+* Handled special characters by using Liberation font [Issue 9](https://github.com/grasshopper7/cucumber-pdf-report/issues/9)
+
 ## 1.6.0 (2020-11-18)
 
 * Reduce number of exception stacktrace lines to 10 [Issue 8](https://github.com/grasshopper7/cucumber-pdf-report/issues/8)
