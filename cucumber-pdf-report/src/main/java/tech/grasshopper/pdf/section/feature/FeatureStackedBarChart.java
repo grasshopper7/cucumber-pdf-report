@@ -19,7 +19,7 @@ import tech.grasshopper.pdf.structure.Display;
 @EqualsAndHashCode(callSuper = false)
 public class FeatureStackedBarChart extends Display {
 
-	private int itemCount;
+	private int maxFeatures;
 	private int fromXData;
 	private int toXData;
 
@@ -49,7 +49,7 @@ public class FeatureStackedBarChart extends Display {
 		styler.setSeriesColors(
 				new Color[] { reportConfig.passedColor(), reportConfig.failedColor(), reportConfig.skippedColor() });
 
-		styler.setAvailableSpaceFill(0.4 * (toXData - fromXData) / 10);
+		styler.setAvailableSpaceFill(0.4 * (toXData - fromXData) / 8);
 	}
 
 	private void createStackedBarChartData(int[] passed, int[] failed, int[] skipped) {

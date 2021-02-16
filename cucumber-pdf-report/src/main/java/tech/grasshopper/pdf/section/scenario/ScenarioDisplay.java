@@ -48,7 +48,7 @@ public class ScenarioDisplay extends PaginatedDisplay implements DestinationAwar
 
 	private void createStackedBarChart() {
 		ScenarioStackedBarChart.builder().document(document).content(content).displayData(displayData)
-				.reportConfig(reportConfig).itemCount(paginationData.getItemsPerPage())
+				.reportConfig(reportConfig).maxScenarios(reportConfig.getScenarioConfig().getItemcount())
 				.fromXData(paginationData.getItemFromIndex()).toXData(paginationData.getItemToIndex()).build()
 				.display();
 	}

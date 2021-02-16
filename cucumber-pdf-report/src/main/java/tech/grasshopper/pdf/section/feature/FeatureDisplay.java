@@ -49,7 +49,7 @@ public class FeatureDisplay extends PaginatedDisplay implements DestinationAware
 	private void createStackedBarChart() {
 
 		FeatureStackedBarChart.builder().document(document).content(content).displayData(displayData)
-				.reportConfig(reportConfig).itemCount(paginationData.getItemsPerPage())
+				.reportConfig(reportConfig).maxFeatures(reportConfig.getFeatureConfig().getItemcount())
 				.fromXData(paginationData.getItemFromIndex()).toXData(paginationData.getItemToIndex()).build()
 				.display();
 	}
