@@ -38,10 +38,8 @@ public class Trial {
 		medias.add("src/main/resources/embedded2.png");
 
 		Step step1 = Step.builder().keyword("Given").name("Step One").startTime(LocalDateTime.now())
-				.endTime(LocalDateTime.now().plusSeconds(25)).status(Status.PASSED).docString(docString)
-				/*
-				 * .output(logs) .errorMessage(error).media(medias)
-				 */.build();
+				.endTime(LocalDateTime.now().plusSeconds(25)).status(Status.PASSED).docString(docString).output(logs)
+				.errorMessage(error).media(medias).build();
 		Step step2 = Step.builder().keyword("When").name("Step Two").startTime(LocalDateTime.now())
 				.endTime(LocalDateTime.now().plusSeconds(25)).status(Status.FAILED).build();
 		Step step3 = Step.builder().keyword("Then").name("Step Three").startTime(LocalDateTime.now())

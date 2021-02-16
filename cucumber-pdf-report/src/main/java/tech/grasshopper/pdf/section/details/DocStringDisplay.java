@@ -32,7 +32,7 @@ public class DocStringDisplay {
 		final TextSanitizer sanitizer = TextSanitizer.builder().font(ReportFont.REGULAR_FONT).build();
 
 		String sanitizedText = sanitizer.sanitizeText(step.getDocString());
-		String stripNewLineTab = sanitizedText.replaceAll("[\\t\\n\\r ]+", " ");
+		String stripNewLineTab = sanitizedText.replaceAll("[\\t\\n\\r ]+", " ").trim();
 
 		List<String> lines = PdfUtil.getOptimalTextBreakLines(stripNewLineTab, ReportFont.REGULAR_FONT, 10, 580f);
 
