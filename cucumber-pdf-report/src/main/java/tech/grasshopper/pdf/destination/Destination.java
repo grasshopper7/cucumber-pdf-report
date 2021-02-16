@@ -30,18 +30,18 @@ public class Destination {
 	}
 
 	@Data
-	public static class ChapterDestinationStore {
+	public static class DestinationStore {
 
-		private Destination summaryChapterDestination;
-		private List<Destination> featureChapterDestinations = new ArrayList<>();
-		private List<Destination> scenarioChapterDestinations = new ArrayList<>();
+		private Destination dashboardDestination;
+		private List<Destination> featuresDestinations = new ArrayList<>();
+		private List<Destination> scenariosDestinations = new ArrayList<>();
 
-		public void addFeatureChapterDestinations(Destination destination) {
-			featureChapterDestinations.add(destination);
+		public void addFeatureDestination(Destination destination) {
+			featuresDestinations.add(destination);
 		}
 
-		public void addScenarioChapterDestinations(Destination destination) {
-			scenarioChapterDestinations.add(destination);
+		public void addScenarioDestination(Destination destination) {
+			scenariosDestinations.add(destination);
 		}
 	}
 }

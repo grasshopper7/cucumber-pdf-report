@@ -8,7 +8,7 @@ import tech.grasshopper.pdf.util.NumberUtil;
 @Data
 public class SummaryConfig {
 
-	private String title = "Cucumber Report";
+	private String title = "Grasshopper Cucumber Report";
 	private String titleColor;
 	private String dateColor;
 	private String startTimeColor;
@@ -20,23 +20,23 @@ public class SummaryConfig {
 	public Color dataBackgroundColor() {
 		return ReportConfig.createColor(dataBackgroundColor, Color.DARK_GRAY);
 	}
-	
+
 	public Color titleColor() {
 		return ReportConfig.createColor(titleColor, Color.BLACK);
 	}
-	
+
 	public Color dateColor() {
 		return ReportConfig.createColor(dateColor, Color.BLUE);
 	}
-	
+
 	public Color startTimeColor() {
 		return ReportConfig.createColor(startTimeColor, Color.RED);
 	}
-	
+
 	public Color endTimeColor() {
 		return ReportConfig.createColor(endTimeColor, Color.RED);
 	}
-	
+
 	public Color durationColor() {
 		return ReportConfig.createColor(durationColor, Color.RED);
 	}

@@ -47,18 +47,18 @@ public class ReportConfig {
 	@Data
 	public static class FeatureConfig {
 		// min 6 max 12
-		private int itemcount = 8;
+		private int itemcount = 10;
 		private String totalColor;
 		private String durationColor;
 
 		public int getItemcount() {
-			if (itemcount < 6)
-				itemcount = 6;
-			else if (itemcount > 12)
-				itemcount = 12;
-			return itemcount;
+			/*
+			 * if (itemcount < 6) itemcount = 6; else if (itemcount > 10) itemcount = 10;
+			 * return itemcount;
+			 */
+			return 10;
 		}
-		
+
 		public Color totalColor() {
 			return createColor(totalColor, Color.BLACK);
 		}
@@ -71,18 +71,18 @@ public class ReportConfig {
 	@Data
 	public static class ScenarioConfig {
 		// min 8 max 15
-		private int itemcount = 12;
+		private int itemcount = 7;
 		private String totalColor;
 		private String durationColor;
-		
+
 		public int getItemcount() {
-			if (itemcount < 8)
-				itemcount = 8;
-			else if (itemcount > 15)
-				itemcount = 15;
-			return itemcount;
+			/*
+			 * if (itemcount < 8) itemcount = 8; else if (itemcount > 12) itemcount = 12;
+			 * return itemcount;
+			 */
+			return 10;
 		}
-		
+
 		public Color totalColor() {
 			return createColor(totalColor, Color.BLACK);
 		}

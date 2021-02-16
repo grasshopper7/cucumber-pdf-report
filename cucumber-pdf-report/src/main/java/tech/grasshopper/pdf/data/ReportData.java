@@ -6,6 +6,7 @@ import java.util.stream.Collectors;
 
 import lombok.Builder;
 import lombok.Data;
+import tech.grasshopper.pdf.pojo.cucumber.Executable;
 import tech.grasshopper.pdf.pojo.cucumber.Feature;
 import tech.grasshopper.pdf.pojo.cucumber.Scenario;
 import tech.grasshopper.pdf.pojo.cucumber.Status;
@@ -22,18 +23,36 @@ public class ReportData {
 	private FeatureData featureData;
 
 	private ScenarioData scenarioData;
-	
 
-	public void populateChapterData() {
+	public void checkData() {
+
+		for (Feature feature : features) {
+			feature.checkData();
+
+			for (Scenario scenario : feature.getScenarios()) {
+				scenario.checkData();
+
+				for (Executable executable : scenario.getStepsAndHooks()) {
+					executable.checkData();
+				}
+			}
+		}
+	}
+
+	public void populateSectionData() {
+
 		populateCounts();
-		populateSummaryChapterData();
-		populateFeatureChapterData();
-		populateScenarioChapterData();
+		populateDashboardData();
+		populateFeaturesData();
+		populateScenariosData();
 	}
 
 	private void populateCounts() {
+
 		for (Feature feature : features) {
+
 			for (Scenario scenario : feature.getScenarios()) {
+
 				for (Step step : scenario.getSteps()) {
 
 					if (step.getStatus() == Status.PASSED) {
@@ -63,7 +82,8 @@ public class ReportData {
 		}
 	}
 
-	private void populateSummaryChapterData() {
+	private void populateDashboardData() {
+
 		summaryData = SummaryData.builder()
 				.testRunStartTime(
 						Collections.min(features.stream().map(Feature::getStartTime).collect(Collectors.toList())))
@@ -93,11 +113,12 @@ public class ReportData {
 		}
 	}
 
-	private void populateFeatureChapterData() {
+	private void populateFeaturesData() {
 		featureData = FeatureData.builder().features(features).build();
 	}
 
-	private void populateScenarioChapterData() {
+	private void populateScenariosData() {
+
 		scenarioData = ScenarioData.builder().build();
 		for (Feature feature : features) {
 			for (Scenario scenario : feature.getScenarios()) {

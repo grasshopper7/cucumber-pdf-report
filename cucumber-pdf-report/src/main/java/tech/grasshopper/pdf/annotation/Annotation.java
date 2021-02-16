@@ -1,5 +1,8 @@
 package tech.grasshopper.pdf.annotation;
 
+import java.io.IOException;
+
+import org.apache.pdfbox.pdmodel.PDPage;
 import org.apache.pdfbox.pdmodel.common.PDRectangle;
 import org.apache.pdfbox.pdmodel.interactive.action.PDActionGoTo;
 import org.apache.pdfbox.pdmodel.interactive.annotation.PDAnnotationLink;
@@ -8,6 +11,7 @@ import org.apache.pdfbox.pdmodel.interactive.annotation.PDBorderStyleDictionary;
 import lombok.Builder;
 import lombok.Data;
 import tech.grasshopper.pdf.data.ReportData;
+import tech.grasshopper.pdf.destination.Destination;
 import tech.grasshopper.pdf.pojo.cucumber.Feature;
 import tech.grasshopper.pdf.pojo.cucumber.Scenario;
 
@@ -16,10 +20,11 @@ import tech.grasshopper.pdf.pojo.cucumber.Scenario;
 public class Annotation {
 
 	private String title;
-	private int xBottom;
-	private int yBottom;
-	private int width;
-	private int height;
+	private float xBottom;
+	private float yBottom;
+	private float width;
+	private float height;
+	private PDPage page;
 
 	public PDAnnotationLink createPDAnnotationLink() {
 
@@ -27,8 +32,6 @@ public class Annotation {
 		PDAnnotationLink link = new PDAnnotationLink();
 
 		PDBorderStyleDictionary borderULine = new PDBorderStyleDictionary();
-		borderULine.setStyle(PDBorderStyleDictionary.STYLE_UNDERLINE);
-		borderULine.setWidth(1f);
 		link.setBorderStyle(borderULine);
 
 		link.setRectangle(position);
@@ -39,18 +42,29 @@ public class Annotation {
 
 		for (Feature feature : reportData.getFeatures()) {
 			feature.getAnnotations().forEach(a -> {
-				PDActionGoTo action = new PDActionGoTo();
-				action.setDestination(feature.getDestination());
-				a.setAction(action);
+				updateDestination(a, feature.getDestination());
 			});
 
 			for (Scenario scenario : feature.getScenarios()) {
 				scenario.getAnnotations().forEach(a -> {
-					PDActionGoTo action = new PDActionGoTo();
-					action.setDestination(scenario.getDestination());
-					a.setAction(action);
+					updateDestination(a, scenario.getDestination());
 				});
 			}
+		}
+	}
+
+	private static void updateDestination(Annotation annotation, Destination destination) {
+
+		PDActionGoTo action = new PDActionGoTo();
+		action.setDestination(destination.createPDPageDestination());
+		PDAnnotationLink link = annotation.createPDAnnotationLink();
+		link.setAction(action);
+
+		try {
+			annotation.getPage().getAnnotations().add(link);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
 	}
 }
