@@ -3,6 +3,7 @@ package tech.grasshopper.pdf.section.details;
 import java.awt.Color;
 import java.util.List;
 
+import org.apache.pdfbox.pdmodel.font.PDFont;
 import org.vandeseer.easytable.settings.HorizontalAlignment;
 import org.vandeseer.easytable.settings.VerticalAlignment;
 import org.vandeseer.easytable.structure.Row;
@@ -26,6 +27,10 @@ import tech.grasshopper.pdf.structure.TableCreator;
 public class DetailedStepHookDisplay extends Display {
 
 	private List<Executable> executables;
+
+	static final float STEP_HOOK_TEXT_COLUMN_WIDTH = 580f;
+	static final PDFont STEP_HOOK_TEXT_FONT = ReportFont.REGULAR_FONT;
+	static final int STEP_HOOK_TEXT_FONT_SIZE = 10;
 
 	@Getter
 	private float finalY;

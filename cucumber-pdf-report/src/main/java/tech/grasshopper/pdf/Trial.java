@@ -53,9 +53,9 @@ public class Trial {
 		scenTags.add("ScenTag1");
 		scenTags.add("ScenTag2");
 		Scenario scenario = Scenario.builder().name(
-				"Scenario One Scenario One Scenario One Scenario One Scenario One Scenario One Scenario One Scenario One Scenario One Scenario One Scenario One Scenario One Scenario One Scenario One Scenario One Scenario One")
+				"Scenario One Scenario One Scenario One Scenario One Scenario One Scenario One Scenario One Scenario One Scenario One Scenario One Scenario One Scenario One Scenario One")
 				.steps(steps).startTime(LocalDateTime.now()).endTime(LocalDateTime.now().plusSeconds(75))
-				.status(Status.PASSED).tags(scenTags).build();
+				.status(Status.SKIPPED).tags(scenTags).build();
 		List<Scenario> scenarios = new ArrayList<>();
 		scenarios.add(scenario);
 
@@ -69,12 +69,16 @@ public class Trial {
 		featTags.add("FeatureTag7");
 		featTags.add("FeatureTag8");
 		featTags.add("FeatureTag9");
+
 		/*
 		 * featTags.add("FeatureTag10"); featTags.add("FeatureTag11");
 		 * featTags.add("FeatureTag12"); featTags.add("FeatureTag13");
 		 * featTags.add("FeatureTag14"); featTags.add("FeatureTag15");
 		 * featTags.add("FeatureTag16"); featTags.add("FeatureTag17");
-		 * featTags.add("FeatureTag18");
+		 * featTags.add("FeatureTag18"); featTags.add("FeatureTag19");
+		 * featTags.add("FeatureTag20"); featTags.add("FeatureTag21");
+		 * featTags.add("FeatureTag22"); featTags.add("FeatureTag23");
+		 * featTags.add("FeatureTag24"); featTags.add("FeatureTag25");
 		 */
 
 		Feature feature = Feature.builder().name("Feature One Feature One").scenarios(scenarios)

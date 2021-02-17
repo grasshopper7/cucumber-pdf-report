@@ -10,9 +10,7 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.SneakyThrows;
 import lombok.experimental.SuperBuilder;
-import tech.grasshopper.pdf.config.ReportConfig;
 import tech.grasshopper.pdf.pojo.cucumber.Executable;
-import tech.grasshopper.pdf.pojo.cucumber.Status;
 import tech.grasshopper.pdf.structure.Display;
 
 @Data
@@ -32,9 +30,9 @@ public abstract class ExecutableDisplay extends Display {
 		int rowSpan = getRowSpan();
 
 		tableBuilder.addRow(Row.builder().add(TextCell.builder().rowSpan(rowSpan).text(getSerialNumber()).build())
-				.add(TextCell.builder().text(executableName()).build())
+				.add(TextCell.builder().text(executableName()).textColor(executableNameColor()).build())
 				.add(TextCell.builder().rowSpan(rowSpan).text(executable.getStatus().toString())
-						.textColor(getStatusColor(reportConfig)).build())
+						.textColor(statusColor(executable.getStatus())).build())
 				.add(TextCell.builder().rowSpan(rowSpan).text(getDuration())
 						.textColor(reportConfig.getDetailedStepHookConfig().durationColor()).build())
 				.build());
@@ -55,6 +53,8 @@ public abstract class ExecutableDisplay extends Display {
 	protected abstract String getDuration();
 
 	protected abstract String executableName();
+
+	protected abstract Color executableNameColor();
 
 	protected int getSubTypeRowSpanCount() {
 		return 0;
@@ -85,8 +85,11 @@ public abstract class ExecutableDisplay extends Display {
 		if (executable.getOutput().isEmpty())
 			return;
 
-		tableBuilder.addRow(
-				Row.builder().add(LogMessageDisplay.builder().executable(executable).build().display()).build());
+		tableBuilder
+				.addRow(Row.builder()
+						.add(LogMessageDisplay.builder().executable(executable)
+								.color(reportConfig.getDetailedStepHookConfig().logMsgColor()).build().display())
+						.build());
 	}
 
 	protected void displayStackTrace() {
@@ -94,8 +97,11 @@ public abstract class ExecutableDisplay extends Display {
 		if (executable.getErrorMessage() == null || executable.getErrorMessage().isEmpty())
 			return;
 
-		tableBuilder.addRow(
-				Row.builder().add(StackTraceDisplay.builder().executable(executable).build().display()).build());
+		tableBuilder
+				.addRow(Row.builder()
+						.add(StackTraceDisplay.builder().executable(executable)
+								.color(reportConfig.getDetailedStepHookConfig().errorMsgColor()).build().display())
+						.build());
 	}
 
 	@SneakyThrows
@@ -107,19 +113,4 @@ public abstract class ExecutableDisplay extends Display {
 		tableBuilder.addRow(Row.builder()
 				.add(MediaDisplay.builder().executable(executable).document(document).build().display()).build());
 	}
-
-	protected Color getStatusColor(ReportConfig reportConfig) {
-
-		Color color = Color.BLACK;
-		Status status = executable.getStatus();
-
-		if (status == Status.PASSED)
-			color = reportConfig.passedColor();
-		else if (status == Status.FAILED)
-			color = reportConfig.failedColor();
-		else if (status == Status.SKIPPED)
-			color = reportConfig.skippedColor();
-		return color;
-	}
-
 }

@@ -1,5 +1,7 @@
 package tech.grasshopper.pdf.section.details;
 
+import java.awt.Color;
+
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.experimental.SuperBuilder;
@@ -32,5 +34,10 @@ public class HookDisplay extends ExecutableDisplay {
 	@Override
 	protected String getSerialNumber() {
 		return "";
+	}
+
+	@Override
+	protected Color executableNameColor() {
+		return reportConfig.getDetailedStepHookConfig().hookTextColor();
 	}
 }

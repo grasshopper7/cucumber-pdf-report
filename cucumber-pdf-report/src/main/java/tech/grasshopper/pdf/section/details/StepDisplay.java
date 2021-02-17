@@ -1,5 +1,7 @@
 package tech.grasshopper.pdf.section.details;
 
+import java.awt.Color;
+
 import org.vandeseer.easytable.structure.Row;
 
 import lombok.Data;
@@ -47,6 +49,14 @@ public class StepDisplay extends ExecutableDisplay {
 		if (step.getDocString() == null || step.getDocString().isEmpty())
 			return;
 
-		tableBuilder.addRow(Row.builder().add(DocStringDisplay.builder().step(step).build().display()).build());
+		tableBuilder.addRow(Row.builder()
+				.add(DocStringDisplay.builder().step(step)
+						.stepTextColor(reportConfig.getDetailedStepHookConfig().stepTextColor()).build().display())
+				.build());
+	}
+
+	@Override
+	protected Color executableNameColor() {
+		return reportConfig.getDetailedStepHookConfig().stepTextColor();
 	}
 }

@@ -58,16 +58,20 @@ public class DetailedFeatureDisplay extends Display implements DestinationAware 
 				.borderColor(Color.LIGHT_GRAY).horizontalAlignment(HorizontalAlignment.LEFT)
 				.verticalAlignment(VerticalAlignment.TOP).font(ReportFont.REGULAR_FONT)
 
-				.addRow(Row.builder().font(ReportFont.BOLD_FONT).fontSize(13).borderWidth(0f)
+				.addRow(Row.builder().font(ReportFont.BOLD_FONT).fontSize(14).borderWidth(0f).padding(7f)
 						.add(TextCell.builder().colSpan(6).wordBreak(true).text("(F)- " + feature.getName())
 								.textColor(reportConfig.getDetailedFeatureConfig().featureNameColor()).build())
 						.build())
 
-				.addRow(Row.builder().fontSize(13).add(TextCell.builder().text(feature.getStatus().toString()).build())
+				.addRow(Row.builder().fontSize(13).font(ReportFont.ITALIC_FONT)
+						.add(TextCell.builder().text(feature.getStatus().toString())
+								.backgroundColor(statusColor(feature.getStatus())).build())
 						.add(TextCell.builder()
-								.text("DURATION - " + DateUtil.durationValue(feature.calculatedDuration())).build())
+								.text("DURATION - " + DateUtil.durationValue(feature.calculatedDuration()))
+								.textColor(reportConfig.getDetailedFeatureConfig().durationColor()).build())
 
-						.add(ParagraphCell.builder().lineSpacing(1.4f).rowSpan(3).paragraph(scenariosData()).build())
+						.add(ParagraphCell.builder().lineSpacing(1.4f).rowSpan(3).paragraph(scenariosData())
+								.font(ReportFont.REGULAR_FONT).build())
 						.add(ImageCell.builder().rowSpan(3).image(scenariosDonut())
 								.horizontalAlignment(HorizontalAlignment.CENTER)
 								.verticalAlignment(VerticalAlignment.MIDDLE).build())
@@ -78,11 +82,11 @@ public class DetailedFeatureDisplay extends Display implements DestinationAware 
 								.verticalAlignment(VerticalAlignment.MIDDLE).build())
 						.build())
 
-				.addRow(Row.builder().fontSize(12)
+				.addRow(Row.builder().fontSize(12).font(ReportFont.ITALIC_FONT)
 						.add(TextCell.builder().colSpan(2)
 								.text("/ " + DateUtil.formatTimeWithMillis(feature.getStartTime()) + " // "
 										+ DateUtil.formatTimeWithMillis(feature.getEndTime()) + " /")
-								.build())
+								.textColor(reportConfig.getDetailedFeatureConfig().durationColor()).build())
 						.build())
 
 				.addRow(Row.builder().fontSize(11).add(TextCell.builder().colSpan(2).text(tags).build()).build());

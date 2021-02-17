@@ -53,6 +53,8 @@ public class DetailedScenarioDisplay extends Display implements DestinationAware
 
 	private int destinationY;
 
+	private static final float STEP_DURATION_BAR_COLUMN_WIDTH = 340f;
+
 	@Override
 	public void display() {
 
@@ -61,32 +63,37 @@ public class DetailedScenarioDisplay extends Display implements DestinationAware
 
 		String tags = scenario.getTags().stream().collect(Collectors.joining(" "));
 
-		TableBuilder tableBuilder = Table.builder().addColumnsOfWidth(100f, 180f, 320f, 60f, 100f).borderWidth(1f)
+		TableBuilder tableBuilder = Table.builder()
+				.addColumnsOfWidth(75f, 185f, STEP_DURATION_BAR_COLUMN_WIDTH, 60f, 100f).borderWidth(1f)
 				.borderColor(Color.LIGHT_GRAY).horizontalAlignment(HorizontalAlignment.LEFT)
 				.verticalAlignment(VerticalAlignment.TOP).font(ReportFont.REGULAR_FONT)
 
-				.addRow(Row.builder().font(ReportFont.BOLD_FONT).fontSize(13).borderWidth(0f)
+				.addRow(Row.builder().font(ReportFont.BOLD_FONT).fontSize(14).borderWidth(0f).padding(7f)
 						.add(TextCell.builder().colSpan(5).wordBreak(true).text("(S)- " + scenario.getName())
 								.textColor(reportConfig.getDetailedScenarioConfig().scenarioNameColor()).build())
 						.build())
 
-				.addRow(Row.builder().fontSize(13).add(TextCell.builder().text(scenario.getStatus().toString()).build())
-						.add(TextCell.builder()
-								.text("DURATION - " + DateUtil.durationValue(scenario.calculatedDuration())).build())
+				.addRow(Row.builder().fontSize(13).font(ReportFont.ITALIC_FONT)
+						.add(TextCell.builder().text(scenario.getStatus().toString())
+								.backgroundColor(statusColor(scenario.getStatus())).build())
+						.add(TextCell.builder().fontSize(12)
+								.text("DURATION - " + DateUtil.durationValue(scenario.calculatedDuration()))
+								.textColor(reportConfig.getDetailedScenarioConfig().durationColor()).build())
 
 						.add(ImageCell.builder().rowSpan(4).image(stepsChart()).build())
 
-						.add(ParagraphCell.builder().lineSpacing(1.5f).rowSpan(4).paragraph(stepsData()).build())
+						.add(ParagraphCell.builder().lineSpacing(1.5f).rowSpan(4).paragraph(stepsData())
+								.font(ReportFont.REGULAR_FONT).build())
 						.add(ImageCell.builder().rowSpan(4).image(stepsDonut())
 								.horizontalAlignment(HorizontalAlignment.CENTER)
 								.verticalAlignment(VerticalAlignment.MIDDLE).build())
 						.build())
 
-				.addRow(Row.builder().fontSize(12)
+				.addRow(Row.builder().fontSize(12).font(ReportFont.ITALIC_FONT)
 						.add(TextCell.builder().colSpan(2)
 								.text("/ " + DateUtil.formatTimeWithMillis(scenario.getStartTime()) + " // "
 										+ DateUtil.formatTimeWithMillis(scenario.getEndTime()) + " /")
-								.build())
+								.textColor(reportConfig.getDetailedScenarioConfig().durationColor()).build())
 						.build())
 
 				.addRow(Row.builder().fontSize(11)
@@ -148,14 +155,13 @@ public class DetailedScenarioDisplay extends Display implements DestinationAware
 
 	private PDImageXObject stepsChart() {
 
-		ReportBarChart chart = new ReportBarChart(320, 110);
+		ReportBarChart chart = new ReportBarChart((int) STEP_DURATION_BAR_COLUMN_WIDTH, 110);
 
 		List<Double> data = scenario.getSteps().stream().map(s -> DateUtil.duration(s.getStartTime(), s.getEndTime()))
 				.collect(Collectors.toList());
 
-		/*
-		 * if (data.size() > MAX_CHART_COUNT) data = data.subList(0, MAX_CHART_COUNT);
-		 */
+		if (data.size() > reportConfig.getDetailedStepHookConfig().getItemcount())
+			data = data.subList(0, reportConfig.getDetailedStepHookConfig().getItemcount());
 
 		updateBarChartStyler(chart.getStyler(), data);
 		chart.updateData(data);
@@ -166,13 +172,15 @@ public class DetailedScenarioDisplay extends Display implements DestinationAware
 	private void updateBarChartStyler(CategoryStyler styler, List<Double> data) {
 
 		double maxVal = data.stream().max(Comparator.naturalOrder()).get();
-		// styler.setYAxisMax(Math.floor(maxVal) + 1);
-		if (maxVal <= 0.25)
-			styler.setYAxisMax(0.5);
+
+		if (maxVal <= 0.1)
+			styler.setYAxisMax(0.15);
+		else if (maxVal <= 0.25)
+			styler.setYAxisMax(0.35);
 		else if (maxVal <= 0.5)
-			styler.setYAxisMax(0.75);
+			styler.setYAxisMax(0.65);
 		else
-			styler.setYAxisMax(Math.floor(maxVal) + 1);
+			styler.setYAxisMax(1.1 * Math.floor(maxVal));
 		styler.setSeriesColors(new Color[] { reportConfig.getDetailedScenarioConfig().stepChartBarColor() });
 
 		Font axisFont = new Font(Font.DIALOG, Font.PLAIN, 8);
@@ -182,22 +190,24 @@ public class DetailedScenarioDisplay extends Display implements DestinationAware
 	private Paragraph createData(String header, int total, int pass, int fail, int skip) {
 
 		return Paragraph.builder().append(StyledText.builder().fontSize(11f).text(header).build()).appendNewLine()
-				.append(StyledText.builder().fontSize(10f).text("Total - ").build())
-				.append(StyledText.builder().fontSize(11f).text(String.valueOf(total)).build()).appendNewLine()
-
-				.append(StyledText.builder().fontSize(10f).text("Pass - ").color(reportConfig.passedColor()).build())
-				.append(StyledText.builder().fontSize(11f).text(String.valueOf(pass)).color(reportConfig.passedColor())
-						.build())
+				.append(createDataTitle("Total", Color.BLACK)).append(createDataValue(total, Color.BLACK))
 				.appendNewLine()
 
-				.append(StyledText.builder().fontSize(10f).text("Fail - ").color(reportConfig.failedColor()).build())
-				.append(StyledText.builder().fontSize(11f).text(String.valueOf(fail)).color(reportConfig.failedColor())
-						.build())
-				.appendNewLine()
+				.append(createDataTitle("Pass", reportConfig.passedColor()))
+				.append(createDataValue(pass, reportConfig.passedColor())).appendNewLine()
 
-				.append(StyledText.builder().fontSize(10f).text("Skip - ").color(reportConfig.skippedColor()).build())
-				.append(StyledText.builder().fontSize(11f).text(String.valueOf(skip)).color(reportConfig.skippedColor())
-						.build())
-				.appendNewLine().build();
+				.append(createDataTitle("Fail", reportConfig.failedColor()))
+				.append(createDataValue(fail, reportConfig.failedColor())).appendNewLine()
+
+				.append(createDataTitle("Skip", reportConfig.skippedColor()))
+				.append(createDataValue(skip, reportConfig.skippedColor())).appendNewLine().build();
+	}
+
+	private StyledText createDataTitle(String text, Color color) {
+		return StyledText.builder().fontSize(10f).text(text + " - ").color(color).build();
+	}
+
+	private StyledText createDataValue(int value, Color color) {
+		return StyledText.builder().fontSize(11f).text(String.valueOf(value)).color(color).build();
 	}
 }

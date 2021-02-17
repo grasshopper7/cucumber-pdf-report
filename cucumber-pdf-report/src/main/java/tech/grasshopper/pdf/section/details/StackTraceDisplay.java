@@ -20,6 +20,8 @@ public class StackTraceDisplay {
 
 	private Executable executable;
 
+	private Color color;
+
 	private static final int MAX_EXCEPTION_LINES = 6;
 
 	public AbstractCell display() {
@@ -34,7 +36,7 @@ public class StackTraceDisplay {
 			for (int i = 0; i < dispayCount; i++) {
 				String sanitizedLine = sanitizer.sanitizeText(lines[i]);
 				paragraphBuilder.append(StyledText.builder().font(ReportFont.REGULAR_FONT).fontSize(10f)
-						.text(sanitizedLine).color(Color.RED).build()).appendNewLine();
+						.text(sanitizedLine).color(color).build()).appendNewLine();
 			}
 		}
 		return ParagraphCell.builder().paragraph(paragraphBuilder.build()).lineSpacing(1.1f).build();

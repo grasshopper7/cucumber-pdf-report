@@ -16,6 +16,7 @@ import tech.grasshopper.pdf.config.ReportConfig;
 import tech.grasshopper.pdf.data.DisplayData;
 import tech.grasshopper.pdf.destination.Destination.DestinationStore;
 import tech.grasshopper.pdf.font.ReportFont;
+import tech.grasshopper.pdf.pojo.cucumber.Status;
 
 @Data
 @SuperBuilder
@@ -64,5 +65,17 @@ public abstract class Display {
 				.y(HEADER_START_Y).text(text).font(ReportFont.ITALIC_FONT).fontSize(11).color(Color.LIGHT_GRAY).build();
 
 		DrawingUtil.drawText(content, textDetails);
+	}
+
+	public Color statusColor(Status status) {
+
+		Color color = Color.BLACK;
+		if (status == Status.PASSED)
+			color = reportConfig.passedColor();
+		if (status == Status.FAILED)
+			color = reportConfig.failedColor();
+		if (status == Status.SKIPPED)
+			color = reportConfig.skippedColor();
+		return color;
 	}
 }

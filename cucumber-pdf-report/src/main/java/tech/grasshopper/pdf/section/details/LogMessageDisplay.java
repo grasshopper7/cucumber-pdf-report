@@ -1,5 +1,7 @@
 package tech.grasshopper.pdf.section.details;
 
+import java.awt.Color;
+
 import org.vandeseer.easytable.structure.cell.AbstractCell;
 import org.vandeseer.easytable.structure.cell.paragraph.ParagraphCell;
 import org.vandeseer.easytable.structure.cell.paragraph.ParagraphCell.Paragraph;
@@ -17,6 +19,8 @@ public class LogMessageDisplay {
 
 	private Executable executable;
 
+	private Color color;
+
 	public AbstractCell display() {
 
 		ParagraphBuilder paragraphBuilder = Paragraph.builder();
@@ -28,7 +32,8 @@ public class LogMessageDisplay {
 			else
 				paragraphBuilder.appendNewLine();
 
-			paragraphBuilder.append(StyledText.builder().font(ReportFont.REGULAR_FONT).fontSize(10f).text(log).build());
+			paragraphBuilder.append(
+					StyledText.builder().font(ReportFont.REGULAR_FONT).fontSize(10f).text(log).color(color).build());
 		}
 
 		return ParagraphCell.builder().paragraph(paragraphBuilder.build()).lineSpacing(1.1f).build();
