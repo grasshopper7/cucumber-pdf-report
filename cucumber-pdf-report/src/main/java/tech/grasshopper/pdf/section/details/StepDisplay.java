@@ -49,9 +49,9 @@ public class StepDisplay extends ExecutableDisplay {
 		if (step.getDocString() == null || step.getDocString().isEmpty())
 			return;
 
-		tableBuilder.addRow(Row.builder()
-				.add(DocStringDisplay.builder().step(step)
-						.stepTextColor(reportConfig.getDetailedStepHookConfig().stepTextColor()).build().display())
+		tableBuilder.addRow(Row.builder().add(DocStringDisplay.builder().step(step)
+				.textColor(reportConfig.getDetailedStepHookConfig().stepTextColor())
+				.backgroundColor(reportConfig.getDetailedStepHookConfig().stepBackgroundColor()).build().display())
 				.build());
 	}
 

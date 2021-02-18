@@ -25,7 +25,8 @@ import tech.grasshopper.pdf.pojo.cucumber.Step;
 public class DocStringDisplay {
 
 	private Step step;
-	private Color stepTextColor;
+	private Color textColor;
+	private Color backgroundColor;
 
 	private static final int MAX_LINES = 5;
 
@@ -44,8 +45,9 @@ public class DocStringDisplay {
 
 		for (int i = 0; i < index; i++) {
 			paragraphBuilder.append(StyledText.builder().text(lines.get(i)).font(STEP_HOOK_TEXT_FONT)
-					.fontSize((float) STEP_HOOK_TEXT_FONT_SIZE).color(stepTextColor).build()).appendNewLine();
+					.fontSize((float) STEP_HOOK_TEXT_FONT_SIZE).color(textColor).build()).appendNewLine();
 		}
-		return ParagraphCell.builder().paragraph(paragraphBuilder.build()).lineSpacing(1.1f).build();
+		return ParagraphCell.builder().paragraph(paragraphBuilder.build()).lineSpacing(1.1f)
+				.backgroundColor(backgroundColor).build();
 	}
 }
