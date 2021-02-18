@@ -65,7 +65,7 @@ public class DetailedScenarioDisplay extends Display implements DestinationAware
 
 		TableBuilder tableBuilder = Table.builder()
 				.addColumnsOfWidth(75f, 185f, STEP_DURATION_BAR_COLUMN_WIDTH, 60f, 100f).borderWidth(1f)
-				.borderColor(Color.LIGHT_GRAY).horizontalAlignment(HorizontalAlignment.LEFT)
+				.borderColor(Color.GRAY).horizontalAlignment(HorizontalAlignment.LEFT)
 				.verticalAlignment(VerticalAlignment.TOP).font(ReportFont.REGULAR_FONT)
 
 				.addRow(Row.builder().font(ReportFont.BOLD_FONT).fontSize(14).borderWidth(0f).padding(7f)
@@ -78,12 +78,16 @@ public class DetailedScenarioDisplay extends Display implements DestinationAware
 								.backgroundColor(statusColor(scenario.getStatus())).build())
 						.add(TextCell.builder().fontSize(12)
 								.text("DURATION - " + DateUtil.durationValue(scenario.calculatedDuration()))
-								.textColor(reportConfig.getDetailedScenarioConfig().durationColor()).build())
+								.textColor(reportConfig.getDetailedScenarioConfig().durationColor())
+								.backgroundColor(reportConfig.getDetailedScenarioConfig().durationBackgroundColor())
+								.build())
 
 						.add(ImageCell.builder().rowSpan(4).image(stepsChart()).build())
 
 						.add(ParagraphCell.builder().lineSpacing(1.5f).rowSpan(4).paragraph(stepsData())
-								.font(ReportFont.REGULAR_FONT).build())
+								.font(ReportFont.REGULAR_FONT)
+								.backgroundColor(reportConfig.getDetailedScenarioConfig().dataBackgroundColor())
+								.build())
 						.add(ImageCell.builder().rowSpan(4).image(stepsDonut())
 								.horizontalAlignment(HorizontalAlignment.CENTER)
 								.verticalAlignment(VerticalAlignment.MIDDLE).build())
@@ -180,7 +184,8 @@ public class DetailedScenarioDisplay extends Display implements DestinationAware
 		else if (maxVal <= 0.5)
 			styler.setYAxisMax(0.65);
 		else
-			styler.setYAxisMax(1.1 * Math.floor(maxVal));
+			styler.setYAxisMax(Math.floor(maxVal) + 1);
+
 		styler.setSeriesColors(new Color[] { reportConfig.getDetailedScenarioConfig().stepChartBarColor() });
 
 		Font axisFont = new Font(Font.DIALOG, Font.PLAIN, 8);
@@ -189,9 +194,11 @@ public class DetailedScenarioDisplay extends Display implements DestinationAware
 
 	private Paragraph createData(String header, int total, int pass, int fail, int skip) {
 
-		return Paragraph.builder().append(StyledText.builder().fontSize(11f).text(header).build()).appendNewLine()
-				.append(createDataTitle("Total", Color.BLACK)).append(createDataValue(total, Color.BLACK))
-				.appendNewLine()
+		return Paragraph.builder()
+				.append(StyledText.builder().fontSize(11f).text(header)
+						.color(reportConfig.getDetailedScenarioConfig().dataHeaderColor()).build())
+				.appendNewLine().append(createDataTitle("Total", reportConfig.getDetailedScenarioConfig().totalColor()))
+				.append(createDataValue(total, reportConfig.getDetailedScenarioConfig().totalColor())).appendNewLine()
 
 				.append(createDataTitle("Pass", reportConfig.passedColor()))
 				.append(createDataValue(pass, reportConfig.passedColor())).appendNewLine()

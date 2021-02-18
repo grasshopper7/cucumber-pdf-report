@@ -30,7 +30,8 @@ public abstract class ExecutableDisplay extends Display {
 		int rowSpan = getRowSpan();
 
 		tableBuilder.addRow(Row.builder().add(TextCell.builder().rowSpan(rowSpan).text(getSerialNumber()).build())
-				.add(TextCell.builder().text(executableName()).textColor(executableNameColor()).build())
+				.add(TextCell.builder().text(executableName()).textColor(executableNameColor())
+						.backgroundColor(executableBackgroundColor()).build())
 				.add(TextCell.builder().rowSpan(rowSpan).text(executable.getStatus().toString())
 						.textColor(statusColor(executable.getStatus())).build())
 				.add(TextCell.builder().rowSpan(rowSpan).text(getDuration())
@@ -55,6 +56,8 @@ public abstract class ExecutableDisplay extends Display {
 	protected abstract String executableName();
 
 	protected abstract Color executableNameColor();
+
+	protected abstract Color executableBackgroundColor();
 
 	protected int getSubTypeRowSpanCount() {
 		return 0;

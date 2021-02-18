@@ -59,4 +59,9 @@ public class StepDisplay extends ExecutableDisplay {
 	protected Color executableNameColor() {
 		return reportConfig.getDetailedStepHookConfig().stepTextColor();
 	}
+
+	@Override
+	protected Color executableBackgroundColor() {
+		return reportConfig.getDetailedStepHookConfig().stepBackgroundColor();
+	}
 }

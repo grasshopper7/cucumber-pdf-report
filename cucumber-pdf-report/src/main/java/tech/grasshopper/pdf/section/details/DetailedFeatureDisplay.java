@@ -55,7 +55,7 @@ public class DetailedFeatureDisplay extends Display implements DestinationAware 
 		String tags = feature.getTags().stream().collect(Collectors.joining(" "));
 
 		TableBuilder tableBuilder = Table.builder().addColumnsOfWidth(100f, 300f, 70f, 110f, 70f, 110f).borderWidth(1f)
-				.borderColor(Color.LIGHT_GRAY).horizontalAlignment(HorizontalAlignment.LEFT)
+				.borderColor(Color.GRAY).horizontalAlignment(HorizontalAlignment.LEFT)
 				.verticalAlignment(VerticalAlignment.TOP).font(ReportFont.REGULAR_FONT)
 
 				.addRow(Row.builder().font(ReportFont.BOLD_FONT).fontSize(14).borderWidth(0f).padding(7f)
@@ -68,15 +68,20 @@ public class DetailedFeatureDisplay extends Display implements DestinationAware 
 								.backgroundColor(statusColor(feature.getStatus())).build())
 						.add(TextCell.builder()
 								.text("DURATION - " + DateUtil.durationValue(feature.calculatedDuration()))
-								.textColor(reportConfig.getDetailedFeatureConfig().durationColor()).build())
+								.textColor(reportConfig.getDetailedFeatureConfig().durationColor())
+								.backgroundColor(reportConfig.getDetailedScenarioConfig().durationBackgroundColor())
+								.build())
 
 						.add(ParagraphCell.builder().lineSpacing(1.4f).rowSpan(3).paragraph(scenariosData())
-								.font(ReportFont.REGULAR_FONT).build())
+								.font(ReportFont.REGULAR_FONT)
+								.backgroundColor(reportConfig.getDetailedFeatureConfig().dataBackgroundColor()).build())
 						.add(ImageCell.builder().rowSpan(3).image(scenariosDonut())
 								.horizontalAlignment(HorizontalAlignment.CENTER)
 								.verticalAlignment(VerticalAlignment.MIDDLE).build())
 
-						.add(ParagraphCell.builder().lineSpacing(1.4f).rowSpan(3).paragraph(stepsData()).build())
+						.add(ParagraphCell.builder().lineSpacing(1.4f).rowSpan(3).paragraph(stepsData())
+								.font(ReportFont.REGULAR_FONT)
+								.backgroundColor(reportConfig.getDetailedFeatureConfig().dataBackgroundColor()).build())
 						.add(ImageCell.builder().rowSpan(3).image(stepsDonut())
 								.horizontalAlignment(HorizontalAlignment.CENTER)
 								.verticalAlignment(VerticalAlignment.MIDDLE).build())
@@ -160,23 +165,27 @@ public class DetailedFeatureDisplay extends Display implements DestinationAware 
 
 	private Paragraph createData(String header, int total, int pass, int fail, int skip) {
 
-		return Paragraph.builder().append(StyledText.builder().fontSize(11f).text(header).build()).appendNewLine()
-				.append(StyledText.builder().fontSize(10f).text("Total - ").build())
-				.append(StyledText.builder().fontSize(11f).text(String.valueOf(total)).build()).appendNewLine()
+		return Paragraph.builder()
+				.append(StyledText.builder().fontSize(11f).text(header)
+						.color(reportConfig.getDetailedFeatureConfig().dataHeaderColor()).build())
+				.appendNewLine().append(createDataTitle("Total", reportConfig.getDetailedFeatureConfig().totalColor()))
+				.append(createDataValue(total, reportConfig.getDetailedFeatureConfig().totalColor())).appendNewLine()
 
-				.append(StyledText.builder().fontSize(10f).text("Pass - ").color(reportConfig.passedColor()).build())
-				.append(StyledText.builder().fontSize(11f).text(String.valueOf(pass)).color(reportConfig.passedColor())
-						.build())
-				.appendNewLine()
+				.append(createDataTitle("Pass", reportConfig.passedColor()))
+				.append(createDataValue(pass, reportConfig.passedColor())).appendNewLine()
 
-				.append(StyledText.builder().fontSize(10f).text("Fail - ").color(reportConfig.failedColor()).build())
-				.append(StyledText.builder().fontSize(11f).text(String.valueOf(fail)).color(reportConfig.failedColor())
-						.build())
-				.appendNewLine()
+				.append(createDataTitle("Fail", reportConfig.failedColor()))
+				.append(createDataValue(fail, reportConfig.failedColor())).appendNewLine()
 
-				.append(StyledText.builder().fontSize(10f).text("Skip - ").color(reportConfig.skippedColor()).build())
-				.append(StyledText.builder().fontSize(11f).text(String.valueOf(skip)).color(reportConfig.skippedColor())
-						.build())
-				.appendNewLine().build();
+				.append(createDataTitle("Skip", reportConfig.skippedColor()))
+				.append(createDataValue(skip, reportConfig.skippedColor())).appendNewLine().build();
+	}
+
+	private StyledText createDataTitle(String text, Color color) {
+		return StyledText.builder().fontSize(10f).text(text + " - ").color(color).build();
+	}
+
+	private StyledText createDataValue(int value, Color color) {
+		return StyledText.builder().fontSize(11f).text(String.valueOf(value)).color(color).build();
 	}
 }

@@ -107,11 +107,11 @@ public class FeatureScenarioDetails extends Display /* implements AnnotationAwar
 
 			tableBuilder.addRow(Row.builder().padding(DATA_PADDING).font(NAME_FONT).fontSize(NAME_FONT_SIZE)
 					.horizontalAlignment(HorizontalAlignment.CENTER).verticalAlignment(VerticalAlignment.TOP)
-					
+
 					.add(TextCell.builder().text(String.valueOf(sNo)).fontSize(8).build())
-					
+
 					.add(createFeatureNameCell(featureName, annotation))
-					
+
 					.add(TextCell.builder().text(String.valueOf(feature.getTotalScenarios()))
 							.textColor(reportConfig.getFeatureConfig().totalColor()).build())
 					.add(TextCell.builder().text(String.valueOf(feature.getPassedScenarios()))
@@ -120,7 +120,7 @@ public class FeatureScenarioDetails extends Display /* implements AnnotationAwar
 							.textColor(reportConfig.failedColor()).build())
 					.add(TextCell.builder().text(String.valueOf(feature.getSkippedScenarios()))
 							.textColor(reportConfig.skippedColor()).build())
-					
+
 					.add(TextCell.builder().text(DateUtil.durationValue(feature.calculatedDuration()))
 							.textColor(reportConfig.getFeatureConfig().durationColor())
 							.horizontalAlignment(HorizontalAlignment.LEFT).build())

@@ -40,4 +40,9 @@ public class HookDisplay extends ExecutableDisplay {
 	protected Color executableNameColor() {
 		return reportConfig.getDetailedStepHookConfig().hookTextColor();
 	}
+
+	@Override
+	protected Color executableBackgroundColor() {
+		return reportConfig.getDetailedStepHookConfig().hookBackgroundColor();
+	}
 }

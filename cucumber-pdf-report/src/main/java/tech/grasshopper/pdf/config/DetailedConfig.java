@@ -25,7 +25,7 @@ public abstract class DetailedConfig {
 	}
 
 	public Color dataHeaderColor() {
-		return ReportConfig.createColor(dataHeaderColor, Color.LIGHT_GRAY);
+		return ReportConfig.createColor(dataHeaderColor, Color.BLACK);
 	}
 
 	public Color dataBackgroundColor() {
@@ -33,7 +33,7 @@ public abstract class DetailedConfig {
 	}
 
 	public Color totalColor() {
-		return ReportConfig.createColor(totalColor, Color.BLACK);
+		return ReportConfig.createColor(totalColor, Color.WHITE);
 	}
 
 	public Color durationColor() {
@@ -41,7 +41,7 @@ public abstract class DetailedConfig {
 	}
 
 	public Color durationBackgroundColor() {
-		return ReportConfig.createColor(durationBackgroundColor, Color.DARK_GRAY);
+		return ReportConfig.createColor(durationBackgroundColor, Color.LIGHT_GRAY);
 	}
 
 	@Data
@@ -80,7 +80,9 @@ public abstract class DetailedConfig {
 	public static class DetailedStepHookConfig {
 
 		private String stepTextColor;
+		private String stepBackgroundColor;
 		private String hookTextColor;
+		private String hookBackgroundColor;
 		private String durationColor;
 		private String errorMsgColor;
 		private String logMsgColor;
@@ -93,8 +95,16 @@ public abstract class DetailedConfig {
 			return ReportConfig.createColor(stepTextColor, Color.BLACK);
 		}
 
+		public Color stepBackgroundColor() {
+			return ReportConfig.createColor(stepBackgroundColor, Color.LIGHT_GRAY);
+		}
+
 		public Color hookTextColor() {
 			return ReportConfig.createColor(hookTextColor, Color.BLACK);
+		}
+
+		public Color hookBackgroundColor() {
+			return ReportConfig.createColor(hookBackgroundColor, Color.WHITE);
 		}
 
 		public Color durationColor() {

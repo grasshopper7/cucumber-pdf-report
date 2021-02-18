@@ -38,7 +38,7 @@ public class DetailedStepHookDisplay extends Display {
 	@Override
 	public void display() {
 
-		TableBuilder tableBuilder = Table.builder().addColumnsOfWidth(25f, 580f, 70f, 85f).borderColor(Color.LIGHT_GRAY)
+		TableBuilder tableBuilder = Table.builder().addColumnsOfWidth(25f, 580f, 70f, 85f).borderColor(Color.GRAY)
 				.borderWidth(1).font(ReportFont.REGULAR_FONT).fontSize(10).horizontalAlignment(HorizontalAlignment.LEFT)
 				.verticalAlignment(VerticalAlignment.TOP)
 
