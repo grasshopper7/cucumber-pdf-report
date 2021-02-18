@@ -105,7 +105,8 @@ public class DetailedScenarioDisplay extends Display implements DestinationAware
 								.textColor(reportConfig.getDetailedFeatureConfig().featureNameColor()).build())
 						.build())
 
-				.addRow(Row.builder().fontSize(11).add(TextCell.builder().colSpan(2).text(tags).build()).build());
+				.addRow(Row.builder().fontSize(11).add(TextCell.builder().colSpan(2).text(tags)
+						.textColor(reportConfig.getDetailedScenarioConfig().tagColor()).build()).build());
 
 		TableCreator tableCreator = TableCreator.builder().tableBuilder(tableBuilder).document(document)
 				.startX(CONTENT_START_X).startY(ylocation).repeatRows(5)
