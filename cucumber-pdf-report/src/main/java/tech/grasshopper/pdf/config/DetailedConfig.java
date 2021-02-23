@@ -108,7 +108,7 @@ public abstract class DetailedConfig {
 		}
 
 		public Color durationColor() {
-			return ReportConfig.createColor(durationColor, Color.RED);
+			return ReportConfig.createColor(durationColor, Color.BLACK);
 		}
 
 		public Color errorMsgColor() {

@@ -8,7 +8,7 @@ import tech.grasshopper.pdf.util.NumberUtil;
 @Data
 public class SummaryConfig {
 
-	private String title = "Grasshopper Cucumber Report";
+	private String title = "Grasshopper Cucumber Report Grasshopper Cucumber Report Grasshopper Cucumber Report";
 	private String titleColor;
 	private String dateColor;
 	private String startTimeColor;

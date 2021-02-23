@@ -90,13 +90,10 @@ public class DataTableDisplay {
 				textWidths[j][i] = PdfUtil.getStringWidth(row.getCells().get(j), ReportFont.REGULAR_FONT, fontsize);
 		}
 
-		System.out.println(Arrays.deepToString(textWidths));
-
 		List<Float> maxColWidths = new ArrayList<>();
 		for (Float[] width : textWidths)
 			maxColWidths.add(Collections.max(Arrays.asList(width)));
 
-		System.out.println("Initial max - " + maxColWidths);
 		return maxColWidths;
 	}
 
@@ -122,8 +119,6 @@ public class DataTableDisplay {
 			}
 		}
 
-		System.out.println("resized - " + columnMaxWidths);
-
 		if (columnMaxWidths.stream().reduce(Float::sum)
 				.get() > (AVAILABLE_COLUMN_WIDTH - (columnMaxWidths.size() * (2 * PADDING)))
 				&& columnMaxWidths.stream().filter(w -> w > MAX_COLUMN_WIDTH).count() > 0)
@@ -148,7 +143,6 @@ public class DataTableDisplay {
 				}
 			}
 		}
-		System.out.println("removed - " + columnWidths);
 		return columnWidths;
 	}
 }
