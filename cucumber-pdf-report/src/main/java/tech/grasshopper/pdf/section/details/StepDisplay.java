@@ -39,20 +39,31 @@ public class StepDisplay extends ExecutableDisplay {
 
 	@Override
 	protected int getSubTypeRowSpanCount() {
-		if (step.getDocString() == null || step.getDocString().isEmpty())
-			return 0;
-		return 1;
+		int span = 0;
+		if (step.getDocString() != null && !step.getDocString().isEmpty())
+			span++;
+		if (step.getRows() != null && !step.getRows().isEmpty())
+			span++;
+		return span;
 	}
 
 	@Override
 	protected void displaySubTypeDetails() {
-		if (step.getDocString() == null || step.getDocString().isEmpty())
-			return;
 
-		tableBuilder.addRow(Row.builder().add(DocStringDisplay.builder().step(step)
-				.textColor(reportConfig.getDetailedStepHookConfig().stepTextColor())
-				.backgroundColor(reportConfig.getDetailedStepHookConfig().stepBackgroundColor()).build().display())
-				.build());
+		if (step.getDocString() != null && !step.getDocString().isEmpty())
+			tableBuilder.addRow(Row.builder().add(DocStringDisplay.builder().step(step)
+					.textColor(reportConfig.getDetailedStepHookConfig().stepTextColor())
+					.backgroundColor(reportConfig.getDetailedStepHookConfig().stepBackgroundColor()).build().display())
+					.build());
+
+		if (step.getRows() != null && !step.getRows().isEmpty())
+			tableBuilder.addRow(
+					Row.builder().backgroundColor(reportConfig.getDetailedStepHookConfig().stepBackgroundColor())
+							.add(DataTableDisplay.builder().step(step)
+									.textColor(reportConfig.getDetailedStepHookConfig().stepTextColor())
+									.backgroundColor(reportConfig.getDetailedStepHookConfig().stepBackgroundColor())
+									.build().display())
+							.build());
 	}
 
 	@Override

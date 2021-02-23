@@ -56,7 +56,7 @@ public class DashboardDetailsDisplay extends Display {
 		final String now = LocalDateTime.now().format(DateTimeFormatter.ofLocalizedDateTime(FormatStyle.MEDIUM));
 
 		final TextLengthOptimizer optimizer = TextLengthOptimizer.builder().font(titleFont).fontsize(titleFontSize)
-				.spaceWidth(2 * (int) (Dashboard.DATA_COLUMN_WIDTH + Dashboard.SPACE_COLUMN_WIDTH - padding)).build();
+				.availableSpace(2 * (Dashboard.DATA_COLUMN_WIDTH + Dashboard.SPACE_COLUMN_WIDTH - padding)).build();
 
 		final String title = optimizer.optimizeText(summaryConfig.getTitle());
 

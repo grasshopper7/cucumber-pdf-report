@@ -94,7 +94,8 @@ public class DetailedFeatureDisplay extends Display implements DestinationAware 
 								.textColor(reportConfig.getDetailedFeatureConfig().durationColor()).build())
 						.build())
 
-				.addRow(Row.builder().fontSize(11).add(TextCell.builder().colSpan(2).text(tags).textColor(reportConfig.getDetailedFeatureConfig().tagColor()).build()).build());
+				.addRow(Row.builder().fontSize(11).add(TextCell.builder().colSpan(2).text(tags)
+						.textColor(reportConfig.getDetailedFeatureConfig().tagColor()).build()).build());
 
 		TableCreator tableCreator = TableCreator.builder().tableBuilder(tableBuilder).document(document)
 				.startX(CONTENT_START_X).startY(ylocation).repeatRows(4)
