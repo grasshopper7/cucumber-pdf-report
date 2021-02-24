@@ -17,6 +17,8 @@ import tech.grasshopper.pdf.structure.paginate.PaginationData;
 @EqualsAndHashCode(callSuper = false)
 public class FeatureSection extends PaginatedSection {
 
+	static final String SECTION_TITLE = "FEATURES SUMMARY";
+
 	private final int maxFeaturesPerPage = reportConfig.getFeatureConfig().getItemcount();
 
 	private FeatureData featureData;

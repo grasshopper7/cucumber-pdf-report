@@ -99,7 +99,9 @@ public class DetailedFeatureDisplay extends Display implements DestinationAware 
 
 		TableCreator tableCreator = TableCreator.builder().tableBuilder(tableBuilder).document(document)
 				.startX(CONTENT_START_X).startY(ylocation).repeatRows(4)
-				.pageSupplier(PageCreator.landscapePageWithHeaderAndNumberSupplier(document)).build();
+				.pageSupplier(PageCreator.builder().document(document).build()
+						.landscapePageWithHeaderAndNumberSupplier(DetailedSection.SECTION_TITLE))
+				.build();
 		tableCreator.displayTable();
 
 		finalY = tableCreator.getFinalY();

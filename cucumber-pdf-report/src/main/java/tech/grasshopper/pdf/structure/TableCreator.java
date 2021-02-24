@@ -41,8 +41,7 @@ public class TableCreator {
 	@Default
 	private float offsetNewPageY = Display.CONTENT_MARGIN_TOP_Y;
 
-	@Default
-	private Supplier<PDPage> pageSupplier = PageCreator.landscapePageSupplier();
+	private Supplier<PDPage> pageSupplier;
 
 	@SneakyThrows
 	public void displayTable() {

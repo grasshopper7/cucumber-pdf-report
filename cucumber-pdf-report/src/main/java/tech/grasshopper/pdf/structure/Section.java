@@ -24,25 +24,9 @@ public abstract class Section {
 
 	protected DestinationStore destinations;
 
-	// protected AnnotationStore annotations;
-
-	// protected ExtentPDFReporterConfig config;
-
-	// @NonNull
-	// protected Report report;
-
-	// protected PageHeader pageHeader;
-
 	public abstract void createSection();
 
 	protected PDPage createPage() {
-		return PageCreator.createLandscapePageAndAddToDocument(document);
+		return PageCreator.builder().document(document).build().createLandscapePageAndAddToDocument();
 	}
-
-	/*
-	 * public void pageHeaderDetails() {
-	 * pageHeader.addSectionPageData(getSectionTitle(),
-	 * document.getNumberOfPages()); }
-	 */
-
 }

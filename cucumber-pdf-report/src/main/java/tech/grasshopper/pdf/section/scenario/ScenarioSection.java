@@ -17,6 +17,8 @@ import tech.grasshopper.pdf.structure.paginate.ScenarioPaginator;
 @EqualsAndHashCode(callSuper = false)
 public class ScenarioSection extends PaginatedSection {
 
+	static final String SECTION_TITLE = "SCENARIOS SUMMARY";
+
 	private final int maxScenariosPerPage = reportConfig.getScenarioConfig().getItemcount();
 
 	private ScenarioData scenarioData;

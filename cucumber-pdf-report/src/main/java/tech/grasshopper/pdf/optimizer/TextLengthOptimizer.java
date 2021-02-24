@@ -8,18 +8,26 @@ import org.vandeseer.easytable.util.PdfUtil;
 
 import lombok.Builder;
 import lombok.Builder.Default;
-import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 
-@Data
 @Builder
 public class TextLengthOptimizer {
 
+	@Setter
 	private PDFont font;
+	@Setter
 	private int fontsize;
+	@Setter
 	private float availableSpace;
 
+	@Setter
 	@Default
 	private int maxLines = 1;
+
+	@Getter
+	@Default
+	private boolean textTrimmed = false;
 
 	public boolean doesTextFitInSpace(String text) {
 
@@ -29,10 +37,13 @@ public class TextLengthOptimizer {
 	}
 
 	public String optimizeText(String text) {
+
 		if (doesTextFitInSpace(text))
 			return text;
-		else
+		else {
+			textTrimmed = true;
 			text = text.substring(0, text.length() - 2);
+		}
 
 		while (!doesTextFitInSpace((new StringBuffer(text).append("*")).toString()))
 			text = text.substring(0, text.length() - 1);
@@ -45,6 +56,7 @@ public class TextLengthOptimizer {
 		List<String> lines = PdfUtil.getOptimalTextBreakLines(text, font, fontsize, availableSpace);
 
 		if (lines.size() > maxLines) {
+			textTrimmed = true;
 			if (PdfUtil.getOptimalTextBreakLines(lines.get(maxLines - 1) + " *", font, fontsize, availableSpace)
 					.size() > 1) {
 				int length = lines.get(maxLines - 1).length();

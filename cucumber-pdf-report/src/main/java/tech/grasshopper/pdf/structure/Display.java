@@ -31,6 +31,8 @@ public abstract class Display {
 	public static final float HEADER_SECTION_DETAILS_START_X = 50f;
 	public static final float HEADER_PAGE_NUMBER_START_X = 750f;
 
+	public static final float TRIMMED_MESSAGE_START_Y = 20f;
+
 	protected PDPageContentStream content;
 
 	protected ReportConfig reportConfig;
@@ -50,7 +52,7 @@ public abstract class Display {
 	public abstract void display();
 
 	@SneakyThrows
-	public static void displaySectionTitle(PDPageContentStream content, String text) {
+	public /* static */ void displaySectionTitle(/* PDPageContentStream content, */ String text) {
 
 		PositionedStyledText textDetails = PositionedStyledText.builder().x(HEADER_SECTION_DETAILS_START_X)
 				.y(HEADER_START_Y).text(text).font(ReportFont.ITALIC_FONT).fontSize(11).color(Color.LIGHT_GRAY).build();

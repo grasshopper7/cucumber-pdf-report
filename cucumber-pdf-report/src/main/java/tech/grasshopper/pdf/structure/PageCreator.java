@@ -9,59 +9,65 @@ import org.apache.pdfbox.pdmodel.PDPageContentStream.AppendMode;
 import org.apache.pdfbox.pdmodel.common.PDRectangle;
 
 import lombok.Builder;
-import lombok.Data;
+import lombok.Setter;
 import lombok.SneakyThrows;
+import tech.grasshopper.pdf.structure.header.PageNumber;
+import tech.grasshopper.pdf.structure.header.PageTitle;
 
-@Data
 @Builder
 public class PageCreator {
 
-	public static PDPage createPotraitPage() {
+	@Setter
+	private PDDocument document;
+
+	public PDPage createPotraitPage() {
 		return new PDPage(PDRectangle.A4);
 	}
 
-	public static PDPage createLandscapePage() {
+	public PDPage createLandscapePage() {
 		return new PDPage(new PDRectangle(PDRectangle.A4.getHeight(), PDRectangle.A4.getWidth()));
 	}
 
-	@SneakyThrows
-	public static PDPage createLandscapePageWithHeaderAndNumber(PDDocument document) {
-		PDPage page = new PDPage(new PDRectangle(PDRectangle.A4.getHeight(), PDRectangle.A4.getWidth()));
-		PDPageContentStream content = new PDPageContentStream(document, page, AppendMode.APPEND, true);
-
-		Display.displaySectionTitle(content, "DETAILED SECTION");
-		Display.displayPageNumber(content, "-- " + (document.getNumberOfPages() + 1) + " --");
-		content.close();
-		return page;
-	}
-
-	public static PDPage createPotraitPageAndAddToDocument(PDDocument document) {
+	public PDPage createPotraitPageAndAddToDocument() {
 		PDPage page = createPotraitPage();
 		document.addPage(page);
 		return page;
 	}
 
-	public static PDPage createLandscapePageAndAddToDocument(PDDocument document) {
+	public PDPage createLandscapePageAndAddToDocument() {
 		PDPage page = createLandscapePage();
 		document.addPage(page);
 		return page;
 	}
 
-	public static PDPage createLandscapePageWithHeaderAndNumberAndAddToDocument(PDDocument document) {
-		PDPage page = createLandscapePageWithHeaderAndNumber(document);
+	@SneakyThrows
+	public PDPage createLandscapePageWithHeaderAndNumber(String title) {
+
+		PDPage page = createLandscapePage();
+		PDPageContentStream content = new PDPageContentStream(document, page, AppendMode.APPEND, true);
+
+		PageTitle.builder().content(content).title(title).build().displayTitle();
+		PageNumber.builder().content(content).number(document.getNumberOfPages() + 1).build().displayNumber();
+
+		content.close();
+		return page;
+	}
+
+	public PDPage createLandscapePageWithHeaderAndNumberAndAddToDocument(String title) {
+		PDPage page = createLandscapePageWithHeaderAndNumber(title);
 		document.addPage(page);
 		return page;
 	}
 
-	public static Supplier<PDPage> potraitPageSupplier() {
+	public Supplier<PDPage> potraitPageSupplier() {
 		return () -> createPotraitPage();
 	}
 
-	public static Supplier<PDPage> landscapePageSupplier() {
+	public Supplier<PDPage> landscapePageSupplier() {
 		return () -> createLandscapePage();
 	}
 
-	public static Supplier<PDPage> landscapePageWithHeaderAndNumberSupplier(PDDocument document) {
-		return () -> createLandscapePageWithHeaderAndNumber(document);
+	public Supplier<PDPage> landscapePageWithHeaderAndNumberSupplier(String title) {
+		return () -> createLandscapePageWithHeaderAndNumber(title);
 	}
 }

@@ -32,12 +32,14 @@ public abstract class ExecutableDisplay extends Display {
 		tableBuilder.addRow(Row.builder().add(TextCell.builder().rowSpan(rowSpan).text(getSerialNumber()).build())
 				.add(TextCell.builder().text(executableName()).textColor(executableNameColor())
 						.backgroundColor(executableBackgroundColor()).build())
-				.add(TextCell.builder().rowSpan(rowSpan).text(executable.getStatus().toString())
-						.textColor(statusColor(executable.getStatus())).backgroundColor(executableBackgroundColor())
+				.add(TextCell
+						.builder().rowSpan(rowSpan).text(executable.getStatus().toString()).textColor(
+								statusColor(executable.getStatus()))/* .backgroundColor(executableBackgroundColor()) */
 						.build())
-				.add(TextCell.builder().rowSpan(rowSpan).text(getDuration())
-						.textColor(reportConfig.getDetailedStepHookConfig().durationColor())
-						.backgroundColor(executableBackgroundColor()).build())
+				.add(TextCell
+						.builder().rowSpan(rowSpan).text(getDuration()).textColor(
+								reportConfig.getDetailedStepHookConfig().durationColor())
+						/* .backgroundColor(executableBackgroundColor()) */.build())
 				.build());
 
 		displaySubTypeDetails();

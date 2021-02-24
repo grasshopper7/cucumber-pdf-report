@@ -1,11 +1,16 @@
 package tech.grasshopper.pdf.section.dashboard;
 
+import static tech.grasshopper.pdf.section.dashboard.Dashboard.DATA_COLUMN_WIDTH;
+import static tech.grasshopper.pdf.section.dashboard.Dashboard.SPACE_COLUMN_WIDTH;
+
 import java.awt.Color;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.FormatStyle;
 
 import org.apache.pdfbox.pdmodel.font.PDFont;
+import org.vandeseer.easytable.drawing.DrawingUtil;
+import org.vandeseer.easytable.drawing.PositionedStyledText;
 import org.vandeseer.easytable.settings.HorizontalAlignment;
 import org.vandeseer.easytable.settings.VerticalAlignment;
 import org.vandeseer.easytable.structure.Row;
@@ -13,9 +18,8 @@ import org.vandeseer.easytable.structure.Table.TableBuilder;
 import org.vandeseer.easytable.structure.cell.TextCell;
 
 import lombok.AccessLevel;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
 import lombok.Setter;
+import lombok.SneakyThrows;
 import lombok.experimental.SuperBuilder;
 import tech.grasshopper.pdf.config.SummaryConfig;
 import tech.grasshopper.pdf.data.SummaryData;
@@ -25,13 +29,19 @@ import tech.grasshopper.pdf.pojo.cucumber.Status;
 import tech.grasshopper.pdf.structure.Display;
 import tech.grasshopper.pdf.util.DateUtil;
 
-@Data
 @SuperBuilder
-@EqualsAndHashCode(callSuper = false)
 public class DashboardDetailsDisplay extends Display {
 
 	@Setter(value = AccessLevel.PACKAGE)
 	private TableBuilder tableBuilder;
+
+	private static final PDFont TITLE_FONT = ReportFont.BOLD_FONT;
+	private static final int TITLE_FONT_SIZE = 20;
+	private static final float TITLE_PADDING = 10f;
+
+	private final TextLengthOptimizer optimizer = TextLengthOptimizer.builder().font(TITLE_FONT)
+			.fontsize(TITLE_FONT_SIZE).availableSpace(2 * (DATA_COLUMN_WIDTH + SPACE_COLUMN_WIDTH - TITLE_PADDING))
+			.build();
 
 	private final SummaryConfig summaryConfig = reportConfig.getSummaryConfig();
 	private final SummaryData summaryData = (SummaryData) displayData;
@@ -50,19 +60,12 @@ public class DashboardDetailsDisplay extends Display {
 
 	private void headerRowDisplay() {
 
-		final int titleFontSize = 20;
-		final PDFont titleFont = ReportFont.BOLD_FONT;
-		final float padding = 10f;
 		final String now = LocalDateTime.now().format(DateTimeFormatter.ofLocalizedDateTime(FormatStyle.MEDIUM));
-
-		final TextLengthOptimizer optimizer = TextLengthOptimizer.builder().font(titleFont).fontsize(titleFontSize)
-				.availableSpace(2 * (Dashboard.DATA_COLUMN_WIDTH + Dashboard.SPACE_COLUMN_WIDTH - padding)).build();
-
 		final String title = optimizer.optimizeText(summaryConfig.getTitle());
 
-		tableBuilder.addRow(Row.builder().padding(10f).verticalAlignment(VerticalAlignment.BOTTOM)
+		tableBuilder.addRow(Row.builder().padding(TITLE_PADDING).verticalAlignment(VerticalAlignment.BOTTOM)
 
-				.add(TextCell.builder().font(titleFont).fontSize(titleFontSize).colSpan(4)
+				.add(TextCell.builder().font(TITLE_FONT).fontSize(TITLE_FONT_SIZE).colSpan(4)
 						.horizontalAlignment(HorizontalAlignment.LEFT).text(title).textColor(summaryConfig.titleColor())
 						.build())
 

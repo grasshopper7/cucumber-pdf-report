@@ -22,6 +22,7 @@ import tech.grasshopper.pdf.font.ReportFont;
 import tech.grasshopper.pdf.optimizer.TextLengthOptimizer;
 import tech.grasshopper.pdf.pojo.cucumber.Feature;
 import tech.grasshopper.pdf.structure.Display;
+import tech.grasshopper.pdf.structure.PageCreator;
 import tech.grasshopper.pdf.structure.TableCreator;
 import tech.grasshopper.pdf.structure.paginate.PaginationData;
 import tech.grasshopper.pdf.util.DateUtil;
@@ -134,7 +135,8 @@ public class FeatureScenarioDetails extends Display /* implements AnnotationAwar
 	private void drawTable() {
 
 		TableCreator tableDrawer = TableCreator.builder().tableBuilder(tableBuilder).document(document)
-				.startX(TABLE_X_AXIS_START).startY(TABLE_Y_AXIS_START).build();
+				.startX(TABLE_X_AXIS_START).startY(TABLE_Y_AXIS_START)
+				.pageSupplier(PageCreator.builder().document(document).build().landscapePageSupplier()).build();
 		tableDrawer.displayTable();
 	}
 

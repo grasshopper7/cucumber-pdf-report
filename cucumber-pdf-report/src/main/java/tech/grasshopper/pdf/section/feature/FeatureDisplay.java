@@ -22,28 +22,16 @@ public class FeatureDisplay extends PaginatedDisplay implements DestinationAware
 	@SneakyThrows
 	public void display() {
 
-		page = PageCreator.createLandscapePageAndAddToDocument(document);
+		page = PageCreator.builder().document(document).build()
+				.createLandscapePageWithHeaderAndNumberAndAddToDocument(FeatureSection.SECTION_TITLE);
 
 		content = new PDPageContentStream(document, page, AppendMode.APPEND, true);
 
-		createTitle();
-		createPageNumber();
 		createStackedBarChart();
 		createTable();
 		createDestination();
 
 		content.close();
-	}
-
-	private void createTitle() {
-
-		displaySectionTitle(content, "FEATURES SUMMARY " + (paginationData.getItemFromIndex() + 1) + " - "
-				+ paginationData.getItemToIndex());
-	}
-
-	private void createPageNumber() {
-
-		displayPageNumber(content, "-- " + document.getNumberOfPages() + " --");
 	}
 
 	private void createStackedBarChart() {

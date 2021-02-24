@@ -8,8 +8,6 @@ import org.vandeseer.easytable.settings.VerticalAlignment;
 import org.vandeseer.easytable.structure.Table;
 import org.vandeseer.easytable.structure.Table.TableBuilder;
 
-import lombok.Data;
-import lombok.EqualsAndHashCode;
 import lombok.SneakyThrows;
 import lombok.experimental.SuperBuilder;
 import tech.grasshopper.pdf.destination.Destination;
@@ -18,9 +16,7 @@ import tech.grasshopper.pdf.outline.Outline;
 import tech.grasshopper.pdf.structure.Display;
 import tech.grasshopper.pdf.structure.SinglePageSection;
 
-@Data
 @SuperBuilder
-@EqualsAndHashCode(callSuper = false)
 public class Dashboard extends SinglePageSection implements DestinationAware {
 
 	static final float DATA_COLUMN_WIDTH = 220;
@@ -41,7 +37,7 @@ public class Dashboard extends SinglePageSection implements DestinationAware {
 					.verticalAlignment(VerticalAlignment.MIDDLE).padding(5f);
 
 			DashboardDetailsDisplay.builder().tableBuilder(tableBuilder).reportConfig(reportConfig)
-					.displayData(displayData).build().display();
+					.displayData(displayData).content(content).build().display();
 
 			DashboardDonutDisplay.builder().tableBuilder(tableBuilder).reportConfig(reportConfig)
 					.displayData(displayData).document(document).build().display();

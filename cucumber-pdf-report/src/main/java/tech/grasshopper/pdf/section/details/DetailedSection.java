@@ -16,6 +16,8 @@ import tech.grasshopper.pdf.structure.Section;
 @EqualsAndHashCode(callSuper = false)
 public class DetailedSection extends Section {
 
+	static final String SECTION_TITLE = "DETAILED SECTION";
+
 	@Getter
 	private FeatureData detailedData;
 
@@ -26,7 +28,8 @@ public class DetailedSection extends Section {
 
 		detailedData = (FeatureData) displayData;
 
-		PageCreator.createLandscapePageWithHeaderAndNumberAndAddToDocument(document);
+		PageCreator.builder().document(document).build()
+				.createLandscapePageWithHeaderAndNumberAndAddToDocument(SECTION_TITLE);
 
 		float ylocation = Display.CONTENT_START_Y;
 
