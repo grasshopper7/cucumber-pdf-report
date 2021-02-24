@@ -11,25 +11,19 @@ import org.vandeseer.easytable.structure.Table.TableBuilder;
 import org.vandeseer.easytable.structure.cell.ImageCell;
 
 import lombok.AccessLevel;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
 import lombok.Setter;
 import lombok.experimental.SuperBuilder;
 import tech.grasshopper.pdf.chart.ReportDonutChart;
-import tech.grasshopper.pdf.config.SummaryConfig;
 import tech.grasshopper.pdf.data.SummaryData;
 import tech.grasshopper.pdf.image.ImageCreator;
 import tech.grasshopper.pdf.structure.Display;
 
-@Data
 @SuperBuilder
-@EqualsAndHashCode(callSuper = false)
 public class DashboardDonutDisplay extends Display {
 
 	@Setter(value = AccessLevel.PACKAGE)
 	private TableBuilder tableBuilder;
 
-	private final SummaryConfig summaryConfig = reportConfig.getSummaryConfig();
 	private final SummaryData summaryData = (SummaryData) displayData;
 
 	@Override

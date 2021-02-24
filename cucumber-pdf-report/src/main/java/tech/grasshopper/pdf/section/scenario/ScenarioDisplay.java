@@ -3,8 +3,6 @@ package tech.grasshopper.pdf.section.scenario;
 import org.apache.pdfbox.pdmodel.PDPageContentStream;
 import org.apache.pdfbox.pdmodel.PDPageContentStream.AppendMode;
 
-import lombok.Data;
-import lombok.EqualsAndHashCode;
 import lombok.SneakyThrows;
 import lombok.experimental.SuperBuilder;
 import tech.grasshopper.pdf.destination.Destination;
@@ -13,9 +11,7 @@ import tech.grasshopper.pdf.outline.Outline;
 import tech.grasshopper.pdf.structure.PageCreator;
 import tech.grasshopper.pdf.structure.paginate.PaginatedDisplay;
 
-@Data
 @SuperBuilder
-@EqualsAndHashCode(callSuper = false)
 public class ScenarioDisplay extends PaginatedDisplay implements DestinationAware {
 
 	@Override

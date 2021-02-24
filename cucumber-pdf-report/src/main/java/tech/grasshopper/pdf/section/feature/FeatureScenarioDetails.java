@@ -12,8 +12,12 @@ import org.vandeseer.easytable.structure.Table.TableBuilder;
 import org.vandeseer.easytable.structure.cell.AbstractCell;
 import org.vandeseer.easytable.structure.cell.TextCell;
 
+import lombok.AccessLevel;
+import lombok.Builder.Default;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.Setter;
 import lombok.experimental.SuperBuilder;
 import tech.grasshopper.pdf.annotation.Annotation;
 import tech.grasshopper.pdf.annotation.cell.TextLinkCell;
@@ -24,6 +28,7 @@ import tech.grasshopper.pdf.pojo.cucumber.Feature;
 import tech.grasshopper.pdf.structure.Display;
 import tech.grasshopper.pdf.structure.PageCreator;
 import tech.grasshopper.pdf.structure.TableCreator;
+import tech.grasshopper.pdf.structure.footer.CroppedMessage;
 import tech.grasshopper.pdf.structure.paginate.PaginationData;
 import tech.grasshopper.pdf.util.DateUtil;
 import tech.grasshopper.pdf.util.TextUtil;
@@ -31,7 +36,7 @@ import tech.grasshopper.pdf.util.TextUtil;
 @Data
 @SuperBuilder
 @EqualsAndHashCode(callSuper = false)
-public class FeatureScenarioDetails extends Display /* implements AnnotationAware */ {
+public class FeatureScenarioDetails extends Display {
 
 	private PaginationData paginationData;
 
@@ -55,6 +60,13 @@ public class FeatureScenarioDetails extends Display /* implements AnnotationAwar
 	public static final TextLengthOptimizer featureNameTextOptimizer = TextLengthOptimizer.builder().font(NAME_FONT)
 			.fontsize(NAME_FONT_SIZE).availableSpace(FEATURE_NAME_COLUMN_WIDTH - 2 * DATA_PADDING).maxLines(2).build();
 
+	private static final String CROPPED_MESSAGE = "* The feature name has been cropped to fit in the available space.";
+
+	@Default
+	@Getter(AccessLevel.NONE)
+	@Setter(AccessLevel.NONE)
+	private boolean nameCropped = false;
+
 	public static float headerRowHeight() {
 		return TextUtil.builder().font(HEADER_FONT).fontSize(HEADER_FONT_SIZE).text("Feature Name")
 				.width(FEATURE_NAME_COLUMN_WIDTH).padding(HEADER_PADDING).build().tableRowHeight();
@@ -72,6 +84,7 @@ public class FeatureScenarioDetails extends Display /* implements AnnotationAwar
 		createHeaderRow();
 		createDataRows();
 		drawTable();
+		croppedMessageDisplay();
 	}
 
 	private void createTableBuilder() {
@@ -105,6 +118,9 @@ public class FeatureScenarioDetails extends Display /* implements AnnotationAwar
 
 			String featureName = featureNameTextOptimizer.optimizeTextLines(feature.getName());
 			Annotation annotation = Annotation.builder().title(featureName).build();
+
+			if (featureNameTextOptimizer.isTextTrimmed())
+				nameCropped = true;
 
 			tableBuilder.addRow(Row.builder().padding(DATA_PADDING).font(NAME_FONT).fontSize(NAME_FONT_SIZE)
 					.horizontalAlignment(HorizontalAlignment.CENTER).verticalAlignment(VerticalAlignment.TOP)
@@ -147,5 +163,11 @@ public class FeatureScenarioDetails extends Display /* implements AnnotationAwar
 					.horizontalAlignment(HorizontalAlignment.LEFT).build();
 		}
 		return TextCell.builder().text(title).horizontalAlignment(HorizontalAlignment.LEFT).build();
+	}
+
+	private void croppedMessageDisplay() {
+
+		if (nameCropped)
+			CroppedMessage.builder().content(content).message(CROPPED_MESSAGE).build().displayMessage();
 	}
 }

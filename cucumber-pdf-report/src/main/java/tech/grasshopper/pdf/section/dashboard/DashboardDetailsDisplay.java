@@ -9,8 +9,6 @@ import java.time.format.DateTimeFormatter;
 import java.time.format.FormatStyle;
 
 import org.apache.pdfbox.pdmodel.font.PDFont;
-import org.vandeseer.easytable.drawing.DrawingUtil;
-import org.vandeseer.easytable.drawing.PositionedStyledText;
 import org.vandeseer.easytable.settings.HorizontalAlignment;
 import org.vandeseer.easytable.settings.VerticalAlignment;
 import org.vandeseer.easytable.structure.Row;
@@ -19,7 +17,6 @@ import org.vandeseer.easytable.structure.cell.TextCell;
 
 import lombok.AccessLevel;
 import lombok.Setter;
-import lombok.SneakyThrows;
 import lombok.experimental.SuperBuilder;
 import tech.grasshopper.pdf.config.SummaryConfig;
 import tech.grasshopper.pdf.data.SummaryData;
@@ -27,6 +24,7 @@ import tech.grasshopper.pdf.font.ReportFont;
 import tech.grasshopper.pdf.optimizer.TextLengthOptimizer;
 import tech.grasshopper.pdf.pojo.cucumber.Status;
 import tech.grasshopper.pdf.structure.Display;
+import tech.grasshopper.pdf.structure.footer.CroppedMessage;
 import tech.grasshopper.pdf.util.DateUtil;
 
 @SuperBuilder
@@ -46,16 +44,16 @@ public class DashboardDetailsDisplay extends Display {
 	private final SummaryConfig summaryConfig = reportConfig.getSummaryConfig();
 	private final SummaryData summaryData = (SummaryData) displayData;
 
+	private static final String CROPPED_MESSAGE = "* The report title has been cropped to fit in the available space.";
+
 	@Override
 	public void display() {
 
 		headerRowDisplay();
-
 		statisticsRowDisplay();
-
 		chartTitleRowDisplay();
-
 		chartDataRowDisplay();
+		croppedMessageDisplay();
 	}
 
 	private void headerRowDisplay() {
@@ -133,5 +131,11 @@ public class DashboardDetailsDisplay extends Display {
 				.add(DashboardDisplayUtil.spacerCell())
 
 				.add(TextCell.builder().text(status + " - " + stepCount).build()).build();
+	}
+
+	private void croppedMessageDisplay() {
+
+		if (optimizer.isTextTrimmed())
+			CroppedMessage.builder().content(content).message(CROPPED_MESSAGE).build().displayMessage();
 	}
 }
