@@ -66,7 +66,8 @@ public class DetailedStepHookDisplay extends Display {
 		}
 
 		TableCreator tableCreator = TableCreator.builder().tableBuilder(tableBuilder).document(document)
-				.startX(CONTENT_START_X).startY(ylocation).pageSupplier(PageCreator.builder().document(document).build()
+				.startX(CONTENT_START_X).startY(ylocation).endY(DETAILED_CONTENT_END_Y)
+				.pageSupplier(PageCreator.builder().document(document).build()
 						.landscapePageWithHeaderAndNumberSupplier(DetailedSection.SECTION_TITLE))
 				.build();
 		tableCreator.displayTable();

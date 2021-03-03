@@ -21,7 +21,7 @@ public class DetailedSection extends Section {
 	@Getter
 	private FeatureData detailedData;
 
-	private static final float GAP = 15f;
+	private static final float GAP = 10f;
 
 	@Override
 	public void createSection() {
