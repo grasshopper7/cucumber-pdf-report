@@ -13,7 +13,6 @@ import org.vandeseer.easytable.structure.cell.AbstractCell;
 import org.vandeseer.easytable.structure.cell.TextCell;
 
 import lombok.AccessLevel;
-import lombok.Builder.Default;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -66,10 +65,9 @@ public class ScenarioStepDetails extends Display {
 
 	private static final String CROPPED_MESSAGE = "* The feature name and/or scenario name has been cropped to fit in the available space.";
 
-	@Default
 	@Getter(AccessLevel.NONE)
 	@Setter(AccessLevel.NONE)
-	private boolean nameCropped = false;
+	private boolean nameCropped;
 
 	public static float headerRowHeight() {
 		return TextUtil.builder().font(HEADER_FONT).fontSize(HEADER_FONT_SIZE).text("Scenario Name")

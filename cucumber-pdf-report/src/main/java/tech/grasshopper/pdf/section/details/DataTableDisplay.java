@@ -18,65 +18,68 @@ import org.vandeseer.easytable.structure.cell.TextCell;
 import org.vandeseer.easytable.util.PdfUtil;
 
 import lombok.Builder;
-import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 import tech.grasshopper.pdf.font.ReportFont;
 import tech.grasshopper.pdf.optimizer.TextLengthOptimizer;
 import tech.grasshopper.pdf.optimizer.TextSanitizer;
 import tech.grasshopper.pdf.pojo.cucumber.Row;
 import tech.grasshopper.pdf.pojo.cucumber.Step;
 
-@Data
 @Builder
 public class DataTableDisplay {
 
+	@Setter
 	private Step step;
+
+	@Setter
 	private Color textColor;
+
+	@Setter
 	private Color backgroundColor;
+
 	private final int fontsize = 9;
+
+	@Getter
+	private boolean rowsCropped;
+
+	@Getter
+	private boolean columnsCropped;
+
+	@Getter
+	private boolean cellTextCropped;
 
 	private List<Float> maximumColumnTextWidths;
 
 	private static final int MAX_ROW_COUNT = 5;
 	private static final float MAX_COLUMN_WIDTH = 100f;
 	private static final float PADDING = 3f;
+	private static final float INDICATOR_COLUMN_WIDTH = 4f;
 	private static final float AVAILABLE_COLUMN_WIDTH = STEP_HOOK_TEXT_COLUMN_WIDTH - (2 * STEP_HOOK_TEXT_PADDING);
 
 	public AbstractCell display() {
 
-		List<Row> rows = displayRows();
+		List<Row> rows = calculateRowCount();
 		maximumColumnTextWidths = maximumColumnWidths(rows);
+
 		List<Float> resizedColumnTextWidth = new ArrayList<>(maximumColumnTextWidths);
-		resizeColumnWidth(resizedColumnTextWidth);
+		resizeColumnWidth(resizedColumnTextWidth, false);
+
 		List<Float> columnTextWidths = removeExtraColumns(resizedColumnTextWidth);
 
-		TableBuilder tableBuilder = Table.builder().backgroundColor(backgroundColor).font(ReportFont.REGULAR_FONT)
-				.fontSize(fontsize).borderColor(Color.GRAY).borderWidth(1f).padding(PADDING);
+		return createDataTable(rows, columnTextWidths);
 
-		final TextSanitizer sanitizer = TextSanitizer.builder().font(ReportFont.REGULAR_FONT).build();
-
-		final TextLengthOptimizer optimizer = TextLengthOptimizer.builder().font(ReportFont.REGULAR_FONT)
-				.fontsize(fontsize).build();
-
-		columnTextWidths.forEach(w -> tableBuilder.addColumnOfWidth(w + (2 * PADDING)));
-
-		for (Row row : rows) {
-
-			RowBuilder rowBuilder = org.vandeseer.easytable.structure.Row.builder();
-			for (int i = 0; i < columnTextWidths.size(); i++) {
-				optimizer.setAvailableSpace(columnTextWidths.get(i));
-				rowBuilder.add(TextCell.builder()
-						.text(sanitizer.sanitizeText(optimizer.optimizeText(row.getCells().get(i)))).build());
-			}
-			tableBuilder.addRow(rowBuilder.build());
-		}
-
-		return TableWithinTableCell.builder().table(tableBuilder.build()).build();
 	}
 
-	private List<Row> displayRows() {
+	private List<Row> calculateRowCount() {
 
 		List<Row> rows = step.getRows();
-		int displayRows = rows.size() > MAX_ROW_COUNT ? MAX_ROW_COUNT : rows.size();
+		int displayRows = rows.size();
+
+		if (rows.size() > MAX_ROW_COUNT) {
+			displayRows = MAX_ROW_COUNT;
+			rowsCropped = true;
+		}
 		return rows.subList(0, displayRows);
 	}
 
@@ -97,13 +100,17 @@ public class DataTableDisplay {
 		return maxColWidths;
 	}
 
-	private void resizeColumnWidth(List<Float> columnMaxWidths) {
+	private void resizeColumnWidth(List<Float> columnMaxWidths, boolean removedColumn) {
 
-		if (columnMaxWidths.stream().reduce(Float::sum)
-				.get() > (AVAILABLE_COLUMN_WIDTH - (columnMaxWidths.size() * (2 * PADDING)))
+		float availableWidth = AVAILABLE_COLUMN_WIDTH - (columnMaxWidths.size() * (2 * PADDING));
+
+		if (removedColumn)
+			availableWidth = availableWidth - (INDICATOR_COLUMN_WIDTH + ((2 * PADDING)));
+
+		if (columnMaxWidths.stream().reduce(Float::sum).get() > availableWidth
 				&& columnMaxWidths.stream().filter(w -> w > MAX_COLUMN_WIDTH).count() > 0) {
 
-			float widthToFitIn = AVAILABLE_COLUMN_WIDTH - (columnMaxWidths.size() * (2 * PADDING))
+			float widthToFitIn = availableWidth
 					- columnMaxWidths.stream().filter(w -> w <= MAX_COLUMN_WIDTH).reduce(Float::sum).orElse(0f);
 			float widthToAdjust = columnMaxWidths.stream().filter(w -> w > MAX_COLUMN_WIDTH).reduce(Float::sum).get();
 
@@ -119,30 +126,115 @@ public class DataTableDisplay {
 			}
 		}
 
-		if (columnMaxWidths.stream().reduce(Float::sum)
-				.get() > (AVAILABLE_COLUMN_WIDTH - (columnMaxWidths.size() * (2 * PADDING)))
+		if (columnMaxWidths.stream().reduce(Float::sum).get() > availableWidth
 				&& columnMaxWidths.stream().filter(w -> w > MAX_COLUMN_WIDTH).count() > 0)
-			resizeColumnWidth(columnMaxWidths);
+			resizeColumnWidth(columnMaxWidths, false);
 	}
 
 	private List<Float> removeExtraColumns(List<Float> resizedColumnWidths) {
 
 		float colSize = resizedColumnWidths.stream().reduce(Float::sum).get();
 		List<Float> columnWidths = new ArrayList<>(resizedColumnWidths);
-
 		float width = 0f;
+
 		if (colSize > (AVAILABLE_COLUMN_WIDTH - (resizedColumnWidths.size() * (2 * PADDING)))) {
 
 			for (int i = 0; i < resizedColumnWidths.size(); i++) {
 				width = width + resizedColumnWidths.get(i);
 
-				if (width > (AVAILABLE_COLUMN_WIDTH - ((i + 1) * PADDING))) {
+				if (width > (AVAILABLE_COLUMN_WIDTH - ((i + 1) * (2 * PADDING)))) {
 					columnWidths = new ArrayList<>(maximumColumnTextWidths.subList(0, i));
-					resizeColumnWidth(columnWidths);
+					resizeColumnWidth(columnWidths, true);
+					columnsCropped = true;
 					break;
 				}
 			}
 		}
 		return columnWidths;
+	}
+
+	private AbstractCell createDataTable(List<Row> rows, List<Float> columnTextWidths) {
+
+		TableBuilder tableBuilder = Table.builder().backgroundColor(backgroundColor).font(ReportFont.REGULAR_FONT)
+				.fontSize(fontsize).borderColor(Color.GRAY).borderWidth(1f).padding(PADDING);
+
+		final TextSanitizer sanitizer = TextSanitizer.builder().font(ReportFont.REGULAR_FONT).build();
+
+		final TextLengthOptimizer optimizer = TextLengthOptimizer.builder().font(ReportFont.REGULAR_FONT)
+				.fontsize(fontsize).build();
+
+		addColumnWidthsToTable(tableBuilder, columnTextWidths);
+		boolean firstRow = true;
+
+		for (Row row : rows) {
+
+			RowBuilder rowBuilder = org.vandeseer.easytable.structure.Row.builder();
+			for (int i = 0; i < columnTextWidths.size(); i++) {
+				optimizer.setAvailableSpace(columnTextWidths.get(i));
+				rowBuilder.add(TextCell.builder()
+						.text(sanitizer.sanitizeText(optimizer.optimizeText(row.getCells().get(i)))).build());
+
+				if (optimizer.isTextTrimmed())
+					cellTextCropped = optimizer.isTextTrimmed();
+			}
+
+			croppedColumnIndicatorCells(rowBuilder, firstRow);
+			if (firstRow)
+				firstRow = false;
+
+			tableBuilder.addRow(rowBuilder.build());
+		}
+
+		croppedMessage(tableBuilder, columnTextWidths);
+		return TableWithinTableCell.builder().table(tableBuilder.build()).build();
+	}
+
+	private void addColumnWidthsToTable(TableBuilder tableBuilder, List<Float> columnTextWidths) {
+
+		columnTextWidths.forEach(w -> tableBuilder.addColumnOfWidth(w + (2 * PADDING)));
+
+		if (columnsCropped)
+			tableBuilder.addColumnOfWidth(INDICATOR_COLUMN_WIDTH + (2 * PADDING));
+	}
+
+	private void croppedColumnIndicatorCells(RowBuilder rowBuilder, boolean firstRow) {
+
+		if (columnsCropped) {
+			if (firstRow)
+				rowBuilder.add(TextCell.builder().text("*").build());
+			else
+				rowBuilder.add(TextCell.builder().text("").build());
+		}
+	}
+
+	private void croppedMessage(TableBuilder tableBuilder, List<Float> columnTextWidths) {
+
+		if (!rowsCropped && !cellTextCropped && !columnsCropped)
+			return;
+
+		final String croppedMsgPrefix = "* The";
+		final String croppedMsgSuffix = "have been cropped to fit in the available space.";
+
+		String message = "";
+		int colSpan = columnTextWidths.size();
+
+		if (rowsCropped)
+			message = " data row(s), maximum " + MAX_ROW_COUNT + ", ";
+
+		if (cellTextCropped) {
+			if (rowsCropped)
+				message = message + "and";
+			message = message + " data cell text(s) ";
+		}
+
+		if (columnsCropped) {
+			if (rowsCropped || cellTextCropped)
+				message = message + "and";
+			message = message + " extra column(s) ";
+			colSpan++;
+		}
+		tableBuilder.addRow(org.vandeseer.easytable.structure.Row.builder()
+				.add(TextCell.builder().text(croppedMsgPrefix + message + croppedMsgSuffix).colSpan(colSpan).build())
+				.build());
 	}
 }
