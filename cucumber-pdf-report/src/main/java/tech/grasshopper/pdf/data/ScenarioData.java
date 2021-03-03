@@ -5,10 +5,10 @@ import java.util.List;
 
 import lombok.Builder;
 import lombok.Builder.Default;
-import lombok.Data;
+import lombok.Getter;
 import tech.grasshopper.pdf.pojo.cucumber.Scenario;
 
-@Data
+@Getter
 @Builder
 public class ScenarioData implements DisplayData {
 

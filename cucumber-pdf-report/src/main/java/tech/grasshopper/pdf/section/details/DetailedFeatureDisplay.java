@@ -28,6 +28,7 @@ import tech.grasshopper.pdf.destination.Destination;
 import tech.grasshopper.pdf.destination.DestinationAware;
 import tech.grasshopper.pdf.font.ReportFont;
 import tech.grasshopper.pdf.image.ImageCreator;
+import tech.grasshopper.pdf.optimizer.TextSanitizer;
 import tech.grasshopper.pdf.pojo.cucumber.Feature;
 import tech.grasshopper.pdf.structure.Display;
 import tech.grasshopper.pdf.structure.PageCreator;
@@ -49,6 +50,7 @@ public class DetailedFeatureDisplay extends Display implements DestinationAware 
 	@Override
 	public void display() {
 
+		TextSanitizer sanitizer = TextSanitizer.builder().build();
 		PDPage initialPage = document.getPage(document.getNumberOfPages() - 1);
 		destinationY = (int) ylocation;
 
@@ -59,7 +61,8 @@ public class DetailedFeatureDisplay extends Display implements DestinationAware 
 				.verticalAlignment(VerticalAlignment.TOP).font(ReportFont.REGULAR_FONT)
 
 				.addRow(Row.builder().font(ReportFont.BOLD_FONT).fontSize(14).borderWidth(0f).padding(7f)
-						.add(TextCell.builder().colSpan(6).wordBreak(true).text("(F)- " + feature.getName())
+						.add(TextCell.builder().colSpan(6).wordBreak(true)
+								.text("(F)- " + sanitizer.sanitizeText(feature.getName()))
 								.textColor(reportConfig.getDetailedFeatureConfig().featureNameColor()).build())
 						.build())
 
@@ -94,7 +97,7 @@ public class DetailedFeatureDisplay extends Display implements DestinationAware 
 								.textColor(reportConfig.getDetailedFeatureConfig().durationColor()).build())
 						.build())
 
-				.addRow(Row.builder().fontSize(11).add(TextCell.builder().colSpan(2).text(tags)
+				.addRow(Row.builder().fontSize(11).add(TextCell.builder().colSpan(2).text(sanitizer.sanitizeText(tags))
 						.textColor(reportConfig.getDetailedFeatureConfig().tagColor()).build()).build());
 
 		TableCreator tableCreator = TableCreator.builder().tableBuilder(tableBuilder).document(document)

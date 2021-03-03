@@ -5,14 +5,14 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import lombok.Builder;
-import lombok.Data;
+import lombok.Getter;
 import tech.grasshopper.pdf.pojo.cucumber.Executable;
 import tech.grasshopper.pdf.pojo.cucumber.Feature;
 import tech.grasshopper.pdf.pojo.cucumber.Scenario;
 import tech.grasshopper.pdf.pojo.cucumber.Status;
 import tech.grasshopper.pdf.pojo.cucumber.Step;
 
-@Data
+@Getter
 @Builder
 public class ReportData {
 

@@ -50,7 +50,7 @@ public class ReportConfig {
 		private String totalColor;
 		private String durationColor;
 
-		public int getItemcount() {
+		public int getItemCount() {
 			return 8;
 		}
 
@@ -69,7 +69,7 @@ public class ReportConfig {
 		private String totalColor;
 		private String durationColor;
 
-		public int getItemcount() {
+		public int getItemCount() {
 			return 10;
 		}
 

@@ -1,5 +1,8 @@
 package tech.grasshopper.pdf.section.details;
 
+import static tech.grasshopper.pdf.section.details.DetailedStepHookDisplay.STEP_HOOK_TEXT_COLUMN_WIDTH;
+import static tech.grasshopper.pdf.section.details.DetailedStepHookDisplay.STEP_HOOK_TEXT_PADDING;
+
 import java.awt.Color;
 import java.util.List;
 
@@ -28,13 +31,14 @@ public class MediaDisplay {
 
 	private PDDocument document;
 
-	private static final int MAX_MEDIA_COUNT = 6;
+	private static final int MAX_MEDIA_COUNT = 5;
+	private static final float AVAILABLE_COLUMN_WIDTH = STEP_HOOK_TEXT_COLUMN_WIDTH - (2 * STEP_HOOK_TEXT_PADDING);
 
 	@SneakyThrows
 	public AbstractCell display() {
 
 		List<String> medias = executable.getMedia();
-		float mediaWidth = 80f, mediaHeigth = 80f;
+		float mediaWidth = 100f, mediaHeigth = 100f;
 		float padding = 2f;
 
 		TableBuilder mediaTableBuilder = Table.builder();
@@ -49,9 +53,9 @@ public class MediaDisplay {
 		}
 
 		if (medias.size() > MAX_MEDIA_COUNT) {
-			mediaTableBuilder.addColumnOfWidth(100f);
-			rowBuilder.add(TextCell.builder().font(ReportFont.REGULAR_FONT).fontSize(10).textColor(Color.RED)
-					.text("Only first 6 medias are displayed.").build());
+			mediaTableBuilder.addColumnOfWidth(AVAILABLE_COLUMN_WIDTH - (MAX_MEDIA_COUNT * mediaWidth));
+			rowBuilder.add(TextCell.builder().font(ReportFont.REGULAR_FONT).fontSize(9).textColor(Color.RED)
+					.text("Only first " + MAX_MEDIA_COUNT + " medias are displayed.").build());
 		}
 
 		mediaTableBuilder.addRow(rowBuilder.build());

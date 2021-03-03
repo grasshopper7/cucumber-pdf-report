@@ -2,7 +2,6 @@ package tech.grasshopper.pdf.section.scenario;
 
 import java.util.List;
 
-import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.experimental.SuperBuilder;
 import tech.grasshopper.pdf.data.DisplayData;
@@ -12,14 +11,13 @@ import tech.grasshopper.pdf.structure.paginate.PaginatedSection;
 import tech.grasshopper.pdf.structure.paginate.PaginationData;
 import tech.grasshopper.pdf.structure.paginate.ScenarioPaginator;
 
-@Data
 @SuperBuilder
 @EqualsAndHashCode(callSuper = false)
 public class ScenarioSection extends PaginatedSection {
 
 	static final String SECTION_TITLE = "SCENARIOS SUMMARY";
 
-	private final int maxScenariosPerPage = reportConfig.getScenarioConfig().getItemcount();
+	private final int maxScenariosPerPage = reportConfig.getScenarioConfig().getItemCount();
 
 	private ScenarioData scenarioData;
 

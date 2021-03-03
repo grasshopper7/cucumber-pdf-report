@@ -5,7 +5,6 @@ import java.util.stream.IntStream;
 
 import org.knowm.xchart.style.CategoryStyler;
 
-import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.experimental.SuperBuilder;
 import tech.grasshopper.pdf.chart.ReportStackedBarChart;
@@ -14,7 +13,6 @@ import tech.grasshopper.pdf.image.ImageCreator;
 import tech.grasshopper.pdf.pojo.cucumber.Scenario;
 import tech.grasshopper.pdf.structure.Display;
 
-@Data
 @SuperBuilder
 @EqualsAndHashCode(callSuper = false)
 public class ScenarioStackedBarChart extends Display {

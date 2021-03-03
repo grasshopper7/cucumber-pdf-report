@@ -15,7 +15,6 @@ import org.vandeseer.easytable.structure.cell.paragraph.ParagraphCell.Paragraph.
 import org.vandeseer.easytable.structure.cell.paragraph.StyledText;
 
 import lombok.Builder;
-import lombok.Setter;
 import tech.grasshopper.pdf.font.ReportFont;
 import tech.grasshopper.pdf.optimizer.TextLengthOptimizer;
 import tech.grasshopper.pdf.optimizer.TextSanitizer;
@@ -24,10 +23,8 @@ import tech.grasshopper.pdf.pojo.cucumber.Executable;
 @Builder
 public class StackTraceDisplay {
 
-	@Setter
 	private Executable executable;
 
-	@Setter
 	private Color color;
 
 	private final float fontsize = 9f;
@@ -39,7 +36,7 @@ public class StackTraceDisplay {
 	public AbstractCell display() {
 
 		ParagraphBuilder paragraphBuilder = Paragraph.builder();
-		final TextSanitizer sanitizer = TextSanitizer.builder().font(ReportFont.REGULAR_FONT).build();
+		final TextSanitizer sanitizer = TextSanitizer.builder().build();
 		final TextLengthOptimizer textOptimizer = TextLengthOptimizer.builder().font(STEP_HOOK_TEXT_FONT)
 				.fontsize((int) fontsize).availableSpace((STEP_HOOK_TEXT_COLUMN_WIDTH) - 2 * STEP_HOOK_TEXT_PADDING)
 				.maxLines(MAX_LINES_PER_EXCEPTION).build();

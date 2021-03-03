@@ -35,6 +35,7 @@ import tech.grasshopper.pdf.destination.DestinationAware;
 import tech.grasshopper.pdf.font.ReportFont;
 import tech.grasshopper.pdf.image.ImageCreator;
 import tech.grasshopper.pdf.optimizer.TextLengthOptimizer;
+import tech.grasshopper.pdf.optimizer.TextSanitizer;
 import tech.grasshopper.pdf.pojo.cucumber.Feature;
 import tech.grasshopper.pdf.pojo.cucumber.Scenario;
 import tech.grasshopper.pdf.structure.Display;
@@ -72,6 +73,7 @@ public class DetailedScenarioDisplay extends Display implements DestinationAware
 	@Override
 	public void display() {
 
+		TextSanitizer sanitizer = TextSanitizer.builder().build();
 		PDPage initialPage = document.getPage(document.getNumberOfPages() - 1);
 		destinationY = (int) ylocation;
 
@@ -84,7 +86,8 @@ public class DetailedScenarioDisplay extends Display implements DestinationAware
 				.verticalAlignment(VerticalAlignment.TOP).font(ReportFont.REGULAR_FONT)
 
 				.addRow(Row.builder().font(ReportFont.BOLD_FONT).fontSize(14).borderWidth(0f).padding(7f)
-						.add(TextCell.builder().colSpan(5).wordBreak(true).text("(S)- " + scenario.getName())
+						.add(TextCell.builder().colSpan(5).wordBreak(true)
+								.text("(S)- " + sanitizer.sanitizeText(scenario.getName()))
 								.textColor(reportConfig.getDetailedScenarioConfig().scenarioNameColor()).build())
 						.build())
 
@@ -115,13 +118,12 @@ public class DetailedScenarioDisplay extends Display implements DestinationAware
 								.textColor(reportConfig.getDetailedScenarioConfig().durationColor()).build())
 						.build())
 
-				.addRow(Row.builder().fontSize(11)
-						.add(TextCell.builder().colSpan(2).padding(FEATURE_NAME_PADDING).wordBreak(true)
-								.text(featureNameTextOptimizer.optimizeTextLines(feature.getName()))
-								.textColor(reportConfig.getDetailedFeatureConfig().featureNameColor()).build())
-						.build())
+				.addRow(Row.builder().fontSize(11).add(TextCell.builder().colSpan(2).padding(FEATURE_NAME_PADDING)
+						.wordBreak(true)
+						.text(sanitizer.sanitizeText(featureNameTextOptimizer.optimizeTextLines(feature.getName())))
+						.textColor(reportConfig.getDetailedFeatureConfig().featureNameColor()).build()).build())
 
-				.addRow(Row.builder().fontSize(11).add(TextCell.builder().colSpan(2).text(tags)
+				.addRow(Row.builder().fontSize(11).add(TextCell.builder().colSpan(2).text(sanitizer.sanitizeText(tags))
 						.textColor(reportConfig.getDetailedScenarioConfig().tagColor()).build()).build());
 
 		TableCreator tableCreator = TableCreator.builder().tableBuilder(tableBuilder).document(document)
@@ -183,8 +185,8 @@ public class DetailedScenarioDisplay extends Display implements DestinationAware
 		List<Double> data = scenario.getSteps().stream().map(s -> DateUtil.duration(s.getStartTime(), s.getEndTime()))
 				.collect(Collectors.toList());
 
-		if (data.size() > reportConfig.getDetailedStepHookConfig().getItemcount())
-			data = data.subList(0, reportConfig.getDetailedStepHookConfig().getItemcount());
+		if (data.size() > reportConfig.getDetailedStepHookConfig().getItemCount())
+			data = data.subList(0, reportConfig.getDetailedStepHookConfig().getItemCount());
 
 		updateBarChartStyler(chart.getStyler(), data);
 		chart.updateData(data);

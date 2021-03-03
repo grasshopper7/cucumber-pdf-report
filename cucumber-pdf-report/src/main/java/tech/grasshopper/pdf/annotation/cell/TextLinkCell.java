@@ -14,13 +14,13 @@ public class TextLinkCell extends AbstractTextCell {
 
 	@NonNull
 	protected String text;
-	
-	//@NonNull
+
+	@NonNull
 	protected Annotation annotation;
 
 	@Override
 	protected Drawer createDefaultDrawer() {
-		return new TextLinkCellDrawer<TextLinkCell>(this, annotation);		
+		return new TextLinkCellDrawer<TextLinkCell>(this, annotation);
 	}
 
 }

@@ -3,7 +3,6 @@ package tech.grasshopper.pdf.section.feature;
 import org.apache.pdfbox.pdmodel.PDPageContentStream;
 import org.apache.pdfbox.pdmodel.PDPageContentStream.AppendMode;
 
-import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.SneakyThrows;
 import lombok.experimental.SuperBuilder;
@@ -13,7 +12,6 @@ import tech.grasshopper.pdf.outline.Outline;
 import tech.grasshopper.pdf.structure.PageCreator;
 import tech.grasshopper.pdf.structure.paginate.PaginatedDisplay;
 
-@Data
 @SuperBuilder
 @EqualsAndHashCode(callSuper = false)
 public class FeatureDisplay extends PaginatedDisplay implements DestinationAware {
@@ -37,7 +35,7 @@ public class FeatureDisplay extends PaginatedDisplay implements DestinationAware
 	private void createStackedBarChart() {
 
 		FeatureStackedBarChart.builder().document(document).content(content).displayData(displayData)
-				.reportConfig(reportConfig).maxFeatures(reportConfig.getFeatureConfig().getItemcount())
+				.reportConfig(reportConfig).maxFeatures(reportConfig.getFeatureConfig().getItemCount())
 				.fromXData(paginationData.getItemFromIndex()).toXData(paginationData.getItemToIndex()).build()
 				.display();
 	}

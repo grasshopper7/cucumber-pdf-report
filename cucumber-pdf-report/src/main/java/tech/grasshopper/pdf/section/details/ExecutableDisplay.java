@@ -10,6 +10,7 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.SneakyThrows;
 import lombok.experimental.SuperBuilder;
+import tech.grasshopper.pdf.optimizer.TextSanitizer;
 import tech.grasshopper.pdf.pojo.cucumber.Executable;
 import tech.grasshopper.pdf.structure.Display;
 
@@ -27,10 +28,11 @@ public abstract class ExecutableDisplay extends Display {
 	@Override
 	public void display() {
 
+		TextSanitizer sanitizer = TextSanitizer.builder().build();
 		int rowSpan = getRowSpan();
 
 		tableBuilder.addRow(Row.builder().add(TextCell.builder().rowSpan(rowSpan).text(getSerialNumber()).build())
-				.add(TextCell.builder().text(executableName()).textColor(executableNameColor())
+				.add(TextCell.builder().text(sanitizer.sanitizeText(executableName())).textColor(executableNameColor())
 						.backgroundColor(executableBackgroundColor()).build())
 				.add(TextCell.builder().rowSpan(rowSpan).text(executable.getStatus().toString())
 						.textColor(statusColor(executable.getStatus())).build())

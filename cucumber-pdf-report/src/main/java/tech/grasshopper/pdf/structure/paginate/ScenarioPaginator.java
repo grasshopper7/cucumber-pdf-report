@@ -7,12 +7,10 @@ import static tech.grasshopper.pdf.section.scenario.ScenarioStepDetails.headerRo
 import static tech.grasshopper.pdf.section.scenario.ScenarioStepDetails.scenarioNameTextOptimizer;
 
 import lombok.Builder;
-import lombok.Data;
 import tech.grasshopper.pdf.data.ScenarioData;
 import tech.grasshopper.pdf.pojo.cucumber.Scenario;
 import tech.grasshopper.pdf.util.TextUtil;
 
-@Data
 @Builder
 public class ScenarioPaginator {
 

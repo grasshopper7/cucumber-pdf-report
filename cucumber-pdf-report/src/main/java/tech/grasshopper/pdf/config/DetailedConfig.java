@@ -87,7 +87,7 @@ public abstract class DetailedConfig {
 		private String errorMsgColor;
 		private String logMsgColor;
 
-		public int getItemcount() {
+		public int getItemCount() {
 			return 15;
 		}
 

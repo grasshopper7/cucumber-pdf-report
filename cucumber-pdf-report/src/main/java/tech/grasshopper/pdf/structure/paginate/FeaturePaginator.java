@@ -6,11 +6,9 @@ import static tech.grasshopper.pdf.section.feature.FeatureScenarioDetails.featur
 import static tech.grasshopper.pdf.section.feature.FeatureScenarioDetails.headerRowHeight;
 
 import lombok.Builder;
-import lombok.Data;
 import tech.grasshopper.pdf.data.FeatureData;
 import tech.grasshopper.pdf.util.TextUtil;
 
-@Data
 @Builder
 public class FeaturePaginator {
 

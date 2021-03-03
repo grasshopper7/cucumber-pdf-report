@@ -14,7 +14,6 @@ import org.vandeseer.easytable.structure.cell.paragraph.StyledText;
 
 import lombok.Builder;
 import lombok.Setter;
-import tech.grasshopper.pdf.font.ReportFont;
 import tech.grasshopper.pdf.optimizer.TextLengthOptimizer;
 import tech.grasshopper.pdf.optimizer.TextSanitizer;
 import tech.grasshopper.pdf.pojo.cucumber.Step;
@@ -38,7 +37,7 @@ public class DocStringDisplay {
 	public AbstractCell display() {
 
 		ParagraphBuilder paragraphBuilder = Paragraph.builder();
-		final TextSanitizer sanitizer = TextSanitizer.builder().font(ReportFont.REGULAR_FONT).build();
+		final TextSanitizer sanitizer = TextSanitizer.builder().build();
 
 		final String sanitizedText = sanitizer.sanitizeText(step.getDocString());
 		final String stripNewLineTab = sanitizedText.replaceAll("[\\t\\n\\r ]+", " ").trim();

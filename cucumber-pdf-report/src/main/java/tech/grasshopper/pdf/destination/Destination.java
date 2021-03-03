@@ -9,8 +9,9 @@ import org.apache.pdfbox.pdmodel.interactive.documentnavigation.destination.PDPa
 import lombok.Builder;
 import lombok.Builder.Default;
 import lombok.Data;
+import lombok.Getter;
 
-@Data
+@Getter
 @Builder
 public class Destination {
 

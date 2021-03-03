@@ -8,10 +8,8 @@ import org.knowm.xchart.BitmapEncoder.BitmapFormat;
 import org.knowm.xchart.internal.chartpart.Chart;
 
 import lombok.Builder;
-import lombok.Data;
 import lombok.SneakyThrows;
 
-@Data
 @Builder
 public class ImageCreator {
 

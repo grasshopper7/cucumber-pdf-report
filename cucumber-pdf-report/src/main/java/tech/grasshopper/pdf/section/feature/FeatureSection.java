@@ -2,7 +2,6 @@ package tech.grasshopper.pdf.section.feature;
 
 import java.util.List;
 
-import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.experimental.SuperBuilder;
 import tech.grasshopper.pdf.data.DisplayData;
@@ -12,14 +11,13 @@ import tech.grasshopper.pdf.structure.paginate.FeaturePaginator;
 import tech.grasshopper.pdf.structure.paginate.PaginatedSection;
 import tech.grasshopper.pdf.structure.paginate.PaginationData;
 
-@Data
 @SuperBuilder
 @EqualsAndHashCode(callSuper = false)
 public class FeatureSection extends PaginatedSection {
 
 	static final String SECTION_TITLE = "FEATURES SUMMARY";
 
-	private final int maxFeaturesPerPage = reportConfig.getFeatureConfig().getItemcount();
+	private final int maxFeaturesPerPage = reportConfig.getFeatureConfig().getItemCount();
 
 	private FeatureData featureData;
 

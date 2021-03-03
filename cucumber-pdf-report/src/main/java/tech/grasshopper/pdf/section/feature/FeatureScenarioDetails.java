@@ -13,7 +13,6 @@ import org.vandeseer.easytable.structure.cell.AbstractCell;
 import org.vandeseer.easytable.structure.cell.TextCell;
 
 import lombok.AccessLevel;
-import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
@@ -23,6 +22,7 @@ import tech.grasshopper.pdf.annotation.cell.TextLinkCell;
 import tech.grasshopper.pdf.data.FeatureData;
 import tech.grasshopper.pdf.font.ReportFont;
 import tech.grasshopper.pdf.optimizer.TextLengthOptimizer;
+import tech.grasshopper.pdf.optimizer.TextSanitizer;
 import tech.grasshopper.pdf.pojo.cucumber.Feature;
 import tech.grasshopper.pdf.structure.Display;
 import tech.grasshopper.pdf.structure.PageCreator;
@@ -32,7 +32,6 @@ import tech.grasshopper.pdf.structure.paginate.PaginationData;
 import tech.grasshopper.pdf.util.DateUtil;
 import tech.grasshopper.pdf.util.TextUtil;
 
-@Data
 @SuperBuilder
 @EqualsAndHashCode(callSuper = false)
 public class FeatureScenarioDetails extends Display {
@@ -108,14 +107,17 @@ public class FeatureScenarioDetails extends Display {
 
 	private void createDataRows() {
 
+		final TextSanitizer sanitizer = TextSanitizer.builder().build();
 		int sNo = paginationData.getItemFromIndex() + 1;
-		FeatureData featureData = (FeatureData) displayData;
-		List<Feature> features = featureData.getFeatures();
+		final FeatureData featureData = (FeatureData) displayData;
+		final List<Feature> features = featureData.getFeatures();
+
 		for (int i = 0; i < features.size(); i++) {
 			Feature feature = features.get(i);
 
-			String featureName = featureNameTextOptimizer.optimizeTextLines(feature.getName());
-			Annotation annotation = Annotation.builder().title(featureName).build();
+			final String featureName = sanitizer
+					.sanitizeText(featureNameTextOptimizer.optimizeTextLines(feature.getName()));
+			final Annotation annotation = Annotation.builder().title(featureName).build();
 
 			if (featureNameTextOptimizer.isTextTrimmed())
 				nameCropped = true;

@@ -13,7 +13,6 @@ import org.vandeseer.easytable.structure.cell.AbstractCell;
 import org.vandeseer.easytable.structure.cell.TextCell;
 
 import lombok.AccessLevel;
-import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
@@ -23,6 +22,7 @@ import tech.grasshopper.pdf.annotation.cell.TextLinkCell;
 import tech.grasshopper.pdf.data.ScenarioData;
 import tech.grasshopper.pdf.font.ReportFont;
 import tech.grasshopper.pdf.optimizer.TextLengthOptimizer;
+import tech.grasshopper.pdf.optimizer.TextSanitizer;
 import tech.grasshopper.pdf.pojo.cucumber.Scenario;
 import tech.grasshopper.pdf.structure.Display;
 import tech.grasshopper.pdf.structure.PageCreator;
@@ -32,7 +32,6 @@ import tech.grasshopper.pdf.structure.paginate.PaginationData;
 import tech.grasshopper.pdf.util.DateUtil;
 import tech.grasshopper.pdf.util.TextUtil;
 
-@Data
 @SuperBuilder
 @EqualsAndHashCode(callSuper = false)
 public class ScenarioStepDetails extends Display {
@@ -119,15 +118,18 @@ public class ScenarioStepDetails extends Display {
 
 	private void createDataRows() {
 
+		final TextSanitizer sanitizer = TextSanitizer.builder().build();
 		int sNo = paginationData.getItemFromIndex() + 1;
-		ScenarioData scenarioData = (ScenarioData) displayData;
-		List<Scenario> scenarios = scenarioData.getScenarios();
+		final ScenarioData scenarioData = (ScenarioData) displayData;
+		final List<Scenario> scenarios = scenarioData.getScenarios();
 
 		for (int i = 0; i < scenarios.size(); i++) {
-			Scenario scenario = scenarios.get(i);
+			final Scenario scenario = scenarios.get(i);
 
-			String featureName = featureNameTextOptimizer.optimizeTextLines(scenario.getFeature().getName());
-			String scenarioName = scenarioNameTextOptimizer.optimizeTextLines(scenario.getName());
+			final String featureName = sanitizer
+					.sanitizeText(featureNameTextOptimizer.optimizeTextLines(scenario.getFeature().getName()));
+			final String scenarioName = sanitizer
+					.sanitizeText(scenarioNameTextOptimizer.optimizeTextLines(scenario.getName()));
 
 			if (featureNameTextOptimizer.isTextTrimmed() || scenarioNameTextOptimizer.isTextTrimmed())
 				nameCropped = true;

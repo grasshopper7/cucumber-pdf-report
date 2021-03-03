@@ -22,6 +22,7 @@ import tech.grasshopper.pdf.config.SummaryConfig;
 import tech.grasshopper.pdf.data.SummaryData;
 import tech.grasshopper.pdf.font.ReportFont;
 import tech.grasshopper.pdf.optimizer.TextLengthOptimizer;
+import tech.grasshopper.pdf.optimizer.TextSanitizer;
 import tech.grasshopper.pdf.pojo.cucumber.Status;
 import tech.grasshopper.pdf.structure.Display;
 import tech.grasshopper.pdf.structure.footer.CroppedMessage;
@@ -59,7 +60,9 @@ public class DashboardDetailsDisplay extends Display {
 	private void headerRowDisplay() {
 
 		final String now = LocalDateTime.now().format(DateTimeFormatter.ofLocalizedDateTime(FormatStyle.MEDIUM));
-		final String title = optimizer.optimizeText(summaryConfig.getTitle());
+
+		final TextSanitizer sanitizer = TextSanitizer.builder().build();
+		final String title = sanitizer.sanitizeText(optimizer.optimizeTextLines(summaryConfig.getTitle()));
 
 		tableBuilder.addRow(Row.builder().padding(TITLE_PADDING).verticalAlignment(VerticalAlignment.BOTTOM)
 

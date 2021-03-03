@@ -18,8 +18,6 @@ import org.vandeseer.easytable.structure.cell.TextCell;
 import org.vandeseer.easytable.util.PdfUtil;
 
 import lombok.Builder;
-import lombok.Getter;
-import lombok.Setter;
 import tech.grasshopper.pdf.font.ReportFont;
 import tech.grasshopper.pdf.optimizer.TextLengthOptimizer;
 import tech.grasshopper.pdf.optimizer.TextSanitizer;
@@ -29,24 +27,18 @@ import tech.grasshopper.pdf.pojo.cucumber.Step;
 @Builder
 public class DataTableDisplay {
 
-	@Setter
 	private Step step;
 
-	@Setter
 	private Color textColor;
 
-	@Setter
 	private Color backgroundColor;
 
 	private final int fontsize = 9;
 
-	@Getter
 	private boolean rowsCropped;
 
-	@Getter
 	private boolean columnsCropped;
 
-	@Getter
 	private boolean cellTextCropped;
 
 	private List<Float> maximumColumnTextWidths;
@@ -158,7 +150,7 @@ public class DataTableDisplay {
 		TableBuilder tableBuilder = Table.builder().backgroundColor(backgroundColor).font(ReportFont.REGULAR_FONT)
 				.fontSize(fontsize).borderColor(Color.GRAY).borderWidth(1f).padding(PADDING);
 
-		final TextSanitizer sanitizer = TextSanitizer.builder().font(ReportFont.REGULAR_FONT).build();
+		final TextSanitizer sanitizer = TextSanitizer.builder().build();
 
 		final TextLengthOptimizer optimizer = TextLengthOptimizer.builder().font(ReportFont.REGULAR_FONT)
 				.fontsize(fontsize).build();
@@ -171,7 +163,7 @@ public class DataTableDisplay {
 			RowBuilder rowBuilder = org.vandeseer.easytable.structure.Row.builder();
 			for (int i = 0; i < columnTextWidths.size(); i++) {
 				optimizer.setAvailableSpace(columnTextWidths.get(i));
-				rowBuilder.add(TextCell.builder()
+				rowBuilder.add(TextCell.builder().textColor(textColor)
 						.text(sanitizer.sanitizeText(optimizer.optimizeText(row.getCells().get(i)))).build());
 
 				if (optimizer.isTextTrimmed())
@@ -233,8 +225,8 @@ public class DataTableDisplay {
 			message = message + " extra column(s) ";
 			colSpan++;
 		}
-		tableBuilder.addRow(org.vandeseer.easytable.structure.Row.builder()
-				.add(TextCell.builder().text(croppedMsgPrefix + message + croppedMsgSuffix).colSpan(colSpan).build())
+		tableBuilder.addRow(org.vandeseer.easytable.structure.Row.builder().add(TextCell.builder()
+				.text(croppedMsgPrefix + message + croppedMsgSuffix).colSpan(colSpan).textColor(textColor).build())
 				.build());
 	}
 }
