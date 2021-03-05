@@ -17,7 +17,6 @@ import tech.grasshopper.pdf.structure.Display;
 @EqualsAndHashCode(callSuper = false)
 public class ScenarioStackedBarChart extends Display {
 
-	private int maxScenarios;
 	private int fromXData;
 	private int toXData;
 

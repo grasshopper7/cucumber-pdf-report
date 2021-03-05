@@ -17,7 +17,7 @@ public class FeatureSection extends PaginatedSection {
 
 	static final String SECTION_TITLE = "FEATURES SUMMARY";
 
-	private final int maxFeaturesPerPage = reportConfig.getFeatureConfig().getItemCount();
+	private final int maxFeaturesPerPage = reportConfig.getFeatureConfig().featureCount();
 
 	private FeatureData featureData;
 

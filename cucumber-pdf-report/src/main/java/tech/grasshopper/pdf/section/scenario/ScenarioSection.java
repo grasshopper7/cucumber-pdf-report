@@ -17,7 +17,7 @@ public class ScenarioSection extends PaginatedSection {
 
 	static final String SECTION_TITLE = "SCENARIOS SUMMARY";
 
-	private final int maxScenariosPerPage = reportConfig.getScenarioConfig().getItemCount();
+	private final int maxScenariosPerPage = reportConfig.getScenarioConfig().scenarioCount();
 
 	private ScenarioData scenarioData;
 

@@ -17,7 +17,6 @@ import tech.grasshopper.pdf.structure.Display;
 @EqualsAndHashCode(callSuper = false)
 public class FeatureStackedBarChart extends Display {
 
-	private int maxFeatures;
 	private int fromXData;
 	private int toXData;
 
