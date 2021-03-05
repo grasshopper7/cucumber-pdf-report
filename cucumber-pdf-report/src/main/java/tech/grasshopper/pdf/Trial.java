@@ -21,6 +21,11 @@ public class Trial {
 		List<String> logs = new ArrayList<>();
 		logs.add("MOUNISH");
 		logs.add("SAHA");
+		logs.add(
+				"ROX MY WORLD ROX MY WORLD ROX MY WORLDROX MY WORLD ROX MY WORLD ROX MY WORLD ROX MY WORLD ROX MY WORLD ROX MY WORLD ROX MY WORLD ROX MY WORLD ROX MY WORLD ROX MY WORLD ROX MY WORLD ROX MY WORLD ROX MY WORLD ROX MY WORLD ROX MY WORLD ROX MY WORLD ROX MY WORLD ROX MY WORLD");
+		logs.add("MOUNISH");
+		logs.add("SAHA");
+		logs.add("ROX MY WORLD");
 
 		String error = "java.lang.AssertionError: expected:\u003cfalse\u003e but was:\u003ctrue\u003e\r\n\tat org.junit.Assert.fail(Assert.java:88)\r\n\tat org.junit.Assert.failNotEquals(Assert.java:834)\r\n\tat org.junit.Assert.assertEquals(Assert.java:118)\r\n\tat org.junit.Assert.assertEquals(Assert.java:144)\r\n\tat stepdefs.Stepdefs.raiseExcep(Stepdefs.java:110)\r\n\tat âœ½.Raise exception(classpath:stepdefs/exceptions.feature:12)\r\n";
 
@@ -81,9 +86,10 @@ public class Trial {
 		 * featTags.add("FeatureTag24"); featTags.add("FeatureTag25");
 		 */
 
-		Feature feature = Feature.builder().name("Feature One Feature One").scenarios(scenarios)
-				.startTime(LocalDateTime.now()).endTime(LocalDateTime.now().plusSeconds(75)).status(Status.PASSED)
-				.tags(featTags).build();
+		Feature feature = Feature.builder().name(
+				"Feature One Feature One Feature One Feature One Feature One Feature One Feature One Feature One Feature One Feature One")
+				.scenarios(scenarios).startTime(LocalDateTime.now()).endTime(LocalDateTime.now().plusSeconds(75))
+				.status(Status.PASSED).tags(featTags).build();
 		List<Feature> features = new ArrayList<>();
 		features.add(feature);
 
@@ -91,12 +97,5 @@ public class Trial {
 
 		PDFCucumberReport report = new PDFCucumberReport(data, "target");
 		report.createReport();
-
-		System.out.println(TextUtil.builder().font(ReportFont.ITALIC_FONT).fontSize(10).text("Feature One Feature One")
-				.width(220f).padding(5f).build().tableRowHeight());
-
-		System.out.println(TextUtil.builder().font(ReportFont.ITALIC_FONT).fontSize(10).text(
-				"Scenario One Scenario One Scenario One Scenario One Scenario One Scenario One Scenario One Scenario One Scenario One Scenario One Scenario One Scenario One Scenario One Scenario One Scenario One Scenario One")
-				.width(310f).padding(5f).build().tableRowHeight());
 	}
 }

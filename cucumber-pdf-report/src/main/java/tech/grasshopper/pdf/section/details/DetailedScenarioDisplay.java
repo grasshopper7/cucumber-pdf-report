@@ -208,6 +208,8 @@ public class DetailedScenarioDisplay extends Display implements DestinationAware
 			styler.setYAxisMax(Math.floor(maxVal) + 1);
 
 		styler.setSeriesColors(new Color[] { reportConfig.getDetailedScenarioConfig().stepChartBarColor() });
+		
+		styler.setAvailableSpaceFill(0.4 * data.size() / 10);
 
 		Font axisFont = new Font(Font.DIALOG, Font.PLAIN, 8);
 		styler.setAxisTickLabelsFont(axisFont);

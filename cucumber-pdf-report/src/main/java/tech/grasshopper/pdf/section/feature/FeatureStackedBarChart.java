@@ -46,7 +46,7 @@ public class FeatureStackedBarChart extends Display {
 		styler.setSeriesColors(
 				new Color[] { reportConfig.passedColor(), reportConfig.failedColor(), reportConfig.skippedColor() });
 
-		styler.setAvailableSpaceFill(0.4 * (toXData - fromXData) / 8);
+		styler.setAvailableSpaceFill(0.4 * (toXData - fromXData) / 10);
 	}
 
 	private void createStackedBarChartData(int[] passed, int[] failed, int[] skipped) {
