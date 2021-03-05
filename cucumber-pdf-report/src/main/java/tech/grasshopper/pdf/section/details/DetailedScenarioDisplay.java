@@ -67,7 +67,7 @@ public class DetailedScenarioDisplay extends Display implements DestinationAware
 
 	private static final TextLengthOptimizer featureNameTextOptimizer = TextLengthOptimizer.builder().font(NAME_FONT)
 			.fontsize(NAME_FONT_SIZE)
-			.availableSpace((STATUS_COLUMN_WIDTH + DURATION_COLUMN_WIDTH) - 2 * FEATURE_NAME_PADDING).maxLines(4)
+			.availableSpace((STATUS_COLUMN_WIDTH + DURATION_COLUMN_WIDTH) - 2 * FEATURE_NAME_PADDING).maxLines(2)
 			.build();
 
 	@Override
@@ -115,13 +115,13 @@ public class DetailedScenarioDisplay extends Display implements DestinationAware
 						.add(TextCell.builder().colSpan(2)
 								.text("/ " + DateUtil.formatTimeWithMillis(scenario.getStartTime()) + " // "
 										+ DateUtil.formatTimeWithMillis(scenario.getEndTime()) + " /")
-								.textColor(reportConfig.getDetailedScenarioConfig().durationColor()).build())
+								.textColor(reportConfig.getDetailedScenarioConfig().startEndTimeColor()).build())
 						.build())
 
 				.addRow(Row.builder().fontSize(11).add(TextCell.builder().colSpan(2).padding(FEATURE_NAME_PADDING)
 						.wordBreak(true)
 						.text(sanitizer.sanitizeText(featureNameTextOptimizer.optimizeTextLines(feature.getName())))
-						.textColor(reportConfig.getDetailedFeatureConfig().featureNameColor()).build()).build())
+						.textColor(reportConfig.getDetailedScenarioConfig().featureNameColor()).build()).build())
 
 				.addRow(Row.builder().fontSize(11).add(TextCell.builder().colSpan(2).text(sanitizer.sanitizeText(tags))
 						.textColor(reportConfig.getDetailedScenarioConfig().tagColor()).build()).build());
@@ -185,8 +185,8 @@ public class DetailedScenarioDisplay extends Display implements DestinationAware
 		List<Double> data = scenario.getSteps().stream().map(s -> DateUtil.duration(s.getStartTime(), s.getEndTime()))
 				.collect(Collectors.toList());
 
-		if (data.size() > reportConfig.getDetailedStepHookConfig().getItemCount())
-			data = data.subList(0, reportConfig.getDetailedStepHookConfig().getItemCount());
+		if (data.size() > reportConfig.getDetailedStepHookConfig().stepCount())
+			data = data.subList(0, reportConfig.getDetailedStepHookConfig().stepCount());
 
 		updateBarChartStyler(chart.getStyler(), data);
 		chart.updateData(data);

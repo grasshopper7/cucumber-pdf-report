@@ -94,7 +94,7 @@ public class DetailedFeatureDisplay extends Display implements DestinationAware 
 						.add(TextCell.builder().colSpan(2)
 								.text("/ " + DateUtil.formatTimeWithMillis(feature.getStartTime()) + " // "
 										+ DateUtil.formatTimeWithMillis(feature.getEndTime()) + " /")
-								.textColor(reportConfig.getDetailedFeatureConfig().durationColor()).build())
+								.textColor(reportConfig.getDetailedFeatureConfig().startEndTimeColor()).build())
 						.build())
 
 				.addRow(Row.builder().fontSize(11).add(TextCell.builder().colSpan(2).text(sanitizer.sanitizeText(tags))
