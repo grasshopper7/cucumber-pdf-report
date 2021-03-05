@@ -44,14 +44,28 @@ public class ReportConfig {
 		}
 	}
 
+	static int createCount(String itemCount, int defaultCount) {
+		int count = 0;
+		try {
+			count = Integer.parseInt(itemCount);
+			if (count > defaultCount)
+				return defaultCount;
+		} catch (NumberFormatException e) {
+			return defaultCount;
+		}
+		return count;
+	}
+
 	@Data
 	public static class FeatureConfig {
 
+		private String featureCount;
 		private String totalColor;
 		private String durationColor;
+		private final int defaultCount = 10;
 
-		public int getItemCount() {
-			return 8;
+		public int featureCount() {
+			return createCount(featureCount, defaultCount);
 		}
 
 		public Color totalColor() {
@@ -66,11 +80,13 @@ public class ReportConfig {
 	@Data
 	public static class ScenarioConfig {
 
+		private String scenarioCount;
 		private String totalColor;
 		private String durationColor;
+		private final int defaultCount = 10;
 
-		public int getItemCount() {
-			return 10;
+		public int scenarioCount() {
+			return createCount(scenarioCount, defaultCount);
 		}
 
 		public Color totalColor() {

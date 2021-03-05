@@ -79,6 +79,7 @@ public abstract class DetailedConfig {
 	@Data
 	public static class DetailedStepHookConfig {
 
+		private String stepCount;
 		private String stepTextColor;
 		private String stepBackgroundColor;
 		private String hookTextColor;
@@ -86,9 +87,18 @@ public abstract class DetailedConfig {
 		private String durationColor;
 		private String errorMsgColor;
 		private String logMsgColor;
+		private final int defaultCount = 15;
 
-		public int getItemCount() {
-			return 15;
+		public int stepCount() {
+			int count = 0;
+			try {
+				count = Integer.parseInt(stepCount);
+				if (count > defaultCount)
+					return defaultCount;
+			} catch (NumberFormatException e) {
+				return defaultCount;
+			}
+			return count;
 		}
 
 		public Color stepTextColor() {
