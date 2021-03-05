@@ -30,12 +30,12 @@
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<project.build.resourceEncoding>UTF-8</project.build.resourceEncoding>
 
-		<lombok.version>1.18.16</lombok.version>
-		<pdfbox.version>2.0.21</pdfbox.version>
-		<xchart.version>3.6.5</xchart.version>
-		<easytable.version>0.8.2-SNAPSHOT</easytable.version>
+		<lombok.version>1.18.18</lombok.version>
+		<pdfbox.version>2.0.22</pdfbox.version>
+		<xchart.version>3.8.0</xchart.version>
+		<easytable.version>0.8.2</easytable.version>
 		<pdfbox2-layout.version>1.0.0</pdfbox2-layout.version>
-		<snakeyaml.version>1.27</snakeyaml.version>
+		<snakeyaml.version>1.28</snakeyaml.version>
 	</properties>
 
 	<scm>
