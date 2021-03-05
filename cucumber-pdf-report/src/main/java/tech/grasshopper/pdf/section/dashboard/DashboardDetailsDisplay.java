@@ -83,20 +83,17 @@ public class DashboardDetailsDisplay extends Display {
 		final String testRunEnd = "End : " + DateUtil.formatDateTimeWithMillis(summaryData.getTestRunEndTime());
 		final String testRunDuration = "Duration : " + DateUtil.durationValue(summaryData.getTestRunDuration());
 
-		tableBuilder
-				.addRow(Row.builder().font(ReportFont.BOLD_ITALIC_FONT).fontSize(13).backgroundColor(Color.LIGHT_GRAY)
-						.borderWidth(1f).borderColor(Color.BLACK).padding(8f)
+		tableBuilder.addRow(Row.builder().font(ReportFont.BOLD_ITALIC_FONT).fontSize(13)
+				.backgroundColor(Color.LIGHT_GRAY).borderWidth(1f).borderColor(Color.BLACK).padding(8f)
 
-						.add(TextCell.builder().text(testRunStart).textColor(summaryConfig.startTimeColor()).build())
-						.add(DashboardDisplayUtil.spacerCell())
+				.add(TextCell.builder().text(testRunStart).textColor(summaryConfig.timeColor()).build())
+				.add(DashboardDisplayUtil.spacerCell())
 
-						.add(TextCell.builder().text(testRunEnd).textColor(summaryConfig.endTimeColor()).build())
-						.add(DashboardDisplayUtil.spacerCell())
+				.add(TextCell.builder().text(testRunEnd).textColor(summaryConfig.timeColor()).build())
+				.add(DashboardDisplayUtil.spacerCell())
 
-						.add(TextCell.builder().text(testRunDuration).fontSize(15)
-								.textColor(summaryConfig.durationColor()).build())
-						.build())
-				.addRow(DashboardDisplayUtil.spacerRow());
+				.add(TextCell.builder().text(testRunDuration).fontSize(15).textColor(summaryConfig.timeColor()).build())
+				.build()).addRow(DashboardDisplayUtil.spacerRow());
 	}
 
 	private void chartTitleRowDisplay() {
