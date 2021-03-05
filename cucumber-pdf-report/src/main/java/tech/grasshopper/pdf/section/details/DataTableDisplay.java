@@ -13,7 +13,6 @@ import org.vandeseer.easytable.structure.Row.RowBuilder;
 import org.vandeseer.easytable.structure.Table;
 import org.vandeseer.easytable.structure.Table.TableBuilder;
 import org.vandeseer.easytable.structure.cell.AbstractCell;
-import org.vandeseer.easytable.structure.cell.TableWithinTableCell;
 import org.vandeseer.easytable.structure.cell.TextCell;
 import org.vandeseer.easytable.util.PdfUtil;
 
@@ -23,6 +22,7 @@ import tech.grasshopper.pdf.optimizer.TextLengthOptimizer;
 import tech.grasshopper.pdf.optimizer.TextSanitizer;
 import tech.grasshopper.pdf.pojo.cucumber.Row;
 import tech.grasshopper.pdf.pojo.cucumber.Step;
+import tech.grasshopper.pdf.tablecell.TableWithinTableCell;
 
 @Builder
 public class DataTableDisplay {

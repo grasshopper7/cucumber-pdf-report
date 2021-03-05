@@ -14,7 +14,6 @@ import org.vandeseer.easytable.structure.Table;
 import org.vandeseer.easytable.structure.Table.TableBuilder;
 import org.vandeseer.easytable.structure.cell.AbstractCell;
 import org.vandeseer.easytable.structure.cell.ImageCell;
-import org.vandeseer.easytable.structure.cell.TableWithinTableCell;
 import org.vandeseer.easytable.structure.cell.TextCell;
 
 import lombok.Builder;
@@ -22,6 +21,7 @@ import lombok.Data;
 import lombok.SneakyThrows;
 import tech.grasshopper.pdf.font.ReportFont;
 import tech.grasshopper.pdf.pojo.cucumber.Executable;
+import tech.grasshopper.pdf.tablecell.TableWithinTableCell;
 
 @Data
 @Builder
