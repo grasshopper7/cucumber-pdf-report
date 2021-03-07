@@ -1,6 +1,18 @@
 # Changelog
 All notable changes to this project will be documented in this file.
 
+## 2.0.0 (2021-3-7)
+* Switch to landscape page for report [Issue 19](https://github.com/grasshopper7/cucumber-pdf-report/issues/19)
+* Refactor dashboard page [Issue 14](https://github.com/grasshopper7/cucumber-pdf-report/issues/14)
+* Refactor Feature & Scenario pages [Issue 15](https://github.com/grasshopper7/cucumber-pdf-report/issues/15)
+* Refactor detailed feature and scenario section [Issue 16](https://github.com/grasshopper7/cucumber-pdf-report/issues/16)
+* Refactor stacktrace and logs display [Issue 17](https://github.com/grasshopper7/cucumber-pdf-report/issues/17)
+* Add docstring and datatable support [Issue 2](https://github.com/grasshopper7/cucumber-pdf-report/issues/2)
+* Add support for media [Issue 7](https://github.com/grasshopper7/cucumber-pdf-report/issues/7)
+* Refactor report configurations [Issue 20](https://github.com/grasshopper7/cucumber-pdf-report/issues/20)
+* Keywords missing in PDF [Issue 11](https://github.com/grasshopper7/cucumber-pdf-report/issues/11)
+* Lines do not wrap in PDF [Issue 12](https://github.com/grasshopper7/cucumber-pdf-report/issues/12)
+
 ## 1.7.0 (2020-12-13)
 
 * Handled special characters by using Liberation font [Issue 9](https://github.com/grasshopper7/cucumber-pdf-report/issues/9)
