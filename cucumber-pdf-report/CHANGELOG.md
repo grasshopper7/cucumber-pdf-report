@@ -1,6 +1,10 @@
 # Changelog
 All notable changes to this project will be documented in this file.
 
+## 2.0.1 (2021-3-9)
+* Stop report creation if no features executed [Issue 21](https://github.com/grasshopper7/cucumber-pdf-report/issues/21)
+
+
 ## 2.0.0 (2021-3-7)
 * Switch to landscape page for report [Issue 19](https://github.com/grasshopper7/cucumber-pdf-report/issues/19)
 * Refactor dashboard page [Issue 14](https://github.com/grasshopper7/cucumber-pdf-report/issues/14)
