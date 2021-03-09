@@ -6,7 +6,6 @@ import java.util.stream.Collectors;
 
 import lombok.Builder;
 import lombok.Getter;
-import tech.grasshopper.pdf.exception.PdfReportException;
 import tech.grasshopper.pdf.pojo.cucumber.Executable;
 import tech.grasshopper.pdf.pojo.cucumber.Feature;
 import tech.grasshopper.pdf.pojo.cucumber.Scenario;
@@ -27,9 +26,6 @@ public class ReportData {
 
 	public void checkData() {
 
-		if (features == null || features.size() == 0)
-			throw new PdfReportException("No features present in test execution.");
-
 		for (Feature feature : features) {
 			feature.checkData();
 
@@ -45,7 +41,6 @@ public class ReportData {
 
 	public void populateSectionData() {
 
-		checkData();
 		populateCounts();
 		populateDashboardData();
 		populateFeaturesData();
