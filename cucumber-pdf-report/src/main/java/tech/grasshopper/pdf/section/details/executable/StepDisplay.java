@@ -1,4 +1,4 @@
-package tech.grasshopper.pdf.section.details;
+package tech.grasshopper.pdf.section.details.executable;
 
 import java.awt.Color;
 
@@ -18,7 +18,7 @@ public class StepDisplay extends ExecutableDisplay {
 	private final Step step = (Step) executable;
 
 	@Override
-	protected int processSNo(int serialNum) {
+	public int processSNo(int serialNum) {
 		return serialNum + 1;
 	}
 

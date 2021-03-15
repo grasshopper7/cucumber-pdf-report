@@ -1,4 +1,4 @@
-package tech.grasshopper.pdf.section.details;
+package tech.grasshopper.pdf.section.details.executable;
 
 import java.awt.Color;
 
@@ -16,7 +16,7 @@ public class HookDisplay extends ExecutableDisplay {
 	private final Hook hook = (Hook) executable;
 
 	@Override
-	protected int processSNo(int serialNum) {
+	public int processSNo(int serialNum) {
 		return serialNum;
 	}
 

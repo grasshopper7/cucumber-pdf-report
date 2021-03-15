@@ -8,8 +8,8 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.experimental.SuperBuilder;
 import tech.grasshopper.pdf.exception.PdfReportException;
-import tech.grasshopper.pdf.section.details.ExecutableDisplay;
-import tech.grasshopper.pdf.section.details.StepDisplay;
+import tech.grasshopper.pdf.section.details.executable.ExecutableDisplay;
+import tech.grasshopper.pdf.section.details.executable.StepDisplay;
 
 @Data
 @SuperBuilder

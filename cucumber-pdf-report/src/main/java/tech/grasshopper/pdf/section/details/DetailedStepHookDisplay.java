@@ -17,6 +17,7 @@ import lombok.Getter;
 import lombok.experimental.SuperBuilder;
 import tech.grasshopper.pdf.font.ReportFont;
 import tech.grasshopper.pdf.pojo.cucumber.Executable;
+import tech.grasshopper.pdf.section.details.executable.ExecutableDisplay;
 import tech.grasshopper.pdf.structure.Display;
 import tech.grasshopper.pdf.structure.PageCreator;
 import tech.grasshopper.pdf.structure.TableCreator;
@@ -28,10 +29,10 @@ public class DetailedStepHookDisplay extends Display {
 
 	private List<Executable> executables;
 
-	static final float STEP_HOOK_TEXT_COLUMN_WIDTH = 580f;
-	static final PDFont STEP_HOOK_TEXT_FONT = ReportFont.REGULAR_FONT;
-	static final int STEP_HOOK_TEXT_FONT_SIZE = 10;
-	static final float STEP_HOOK_TEXT_PADDING = 4f;
+	public static final float STEP_HOOK_TEXT_COLUMN_WIDTH = 580f;
+	public static final PDFont STEP_HOOK_TEXT_FONT = ReportFont.REGULAR_FONT;
+	public static final int STEP_HOOK_TEXT_FONT_SIZE = 10;
+	public static final float STEP_HOOK_TEXT_PADDING = 4f;
 
 	@Getter
 	private float finalY;

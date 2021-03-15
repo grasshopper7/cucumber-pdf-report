@@ -2,7 +2,7 @@ package tech.grasshopper.pdf.pojo.cucumber;
 
 import java.util.List;
 
-import tech.grasshopper.pdf.section.details.ExecutableDisplay;
+import tech.grasshopper.pdf.section.details.executable.ExecutableDisplay;
 
 public interface Executable {
 

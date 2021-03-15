@@ -1,4 +1,4 @@
-package tech.grasshopper.pdf.section.details;
+package tech.grasshopper.pdf.section.details.executable;
 
 import java.awt.Color;
 
@@ -49,7 +49,7 @@ public abstract class ExecutableDisplay extends Display {
 		displayMedia();
 	}
 
-	protected abstract int processSNo(int serialNum);
+	public abstract int processSNo(int serialNum);
 
 	protected abstract String getSerialNumber();
 

@@ -1,4 +1,4 @@
-package tech.grasshopper.pdf.section.details;
+package tech.grasshopper.pdf.section.details.executable;
 
 import static tech.grasshopper.pdf.section.details.DetailedStepHookDisplay.STEP_HOOK_TEXT_COLUMN_WIDTH;
 import static tech.grasshopper.pdf.section.details.DetailedStepHookDisplay.STEP_HOOK_TEXT_FONT;
