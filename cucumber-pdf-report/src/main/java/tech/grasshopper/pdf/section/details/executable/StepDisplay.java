@@ -50,20 +50,25 @@ public class StepDisplay extends ExecutableDisplay {
 	@Override
 	protected void displaySubTypeDetails() {
 
-		if (step.getDocString() != null && !step.getDocString().isEmpty())
-			tableBuilder.addRow(Row.builder().add(DocStringDisplay.builder().step(step)
-					.textColor(reportConfig.getDetailedStepHookConfig().stepTextColor())
-					.backgroundColor(reportConfig.getDetailedStepHookConfig().stepBackgroundColor()).build().display())
-					.build());
+		if (step.getDocString() != null && !step.getDocString().isEmpty()) {
 
-		if (step.getRows() != null && !step.getRows().isEmpty())
-			tableBuilder.addRow(
-					Row.builder().backgroundColor(reportConfig.getDetailedStepHookConfig().stepBackgroundColor())
-							.add(DataTableDisplay.builder().step(step)
-									.textColor(reportConfig.getDetailedStepHookConfig().stepTextColor())
-									.backgroundColor(reportConfig.getDetailedStepHookConfig().stepBackgroundColor())
-									.build().display())
-							.build());
+			tableBuilder.addRow(Row.builder().add(dummyCellLeftBorder())
+					.add(DocStringDisplay.builder().step(step)
+							.textColor(reportConfig.getDetailedStepHookConfig().stepTextColor())
+							.backgroundColor(reportConfig.getDetailedStepHookConfig().stepBackgroundColor()).build()
+							.display())
+					.add(dummyCellRightBorder()).add(dummyCellRightBorder()).build());
+		}
+
+		if (step.getRows() != null && !step.getRows().isEmpty()) {
+
+			tableBuilder.addRow(Row.builder().add(dummyCellLeftBorder())
+					.add(DataTableDisplay.builder().step(step)
+							.textColor(reportConfig.getDetailedStepHookConfig().stepTextColor())
+							.backgroundColor(reportConfig.getDetailedStepHookConfig().stepBackgroundColor()).build()
+							.display())
+					.add(dummyCellRightBorder()).add(dummyCellRightBorder()).build());
+		}
 	}
 
 	@Override

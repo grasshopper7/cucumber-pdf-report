@@ -102,6 +102,7 @@ public class StackTraceDisplay {
 			paragraphBuilder.append(StyledText.builder().font(ReportFont.REGULAR_FONT).fontSize(fontsize)
 					.text(message + croppedMsgSuffix).color(color).build());
 
-		return ParagraphCell.builder().paragraph(paragraphBuilder.build()).lineSpacing(1.1f).build();
+		return ParagraphCell.builder().paragraph(paragraphBuilder.build()).lineSpacing(1.1f).borderColor(Color.GRAY)
+				.borderWidth(1).build();
 	}
 }

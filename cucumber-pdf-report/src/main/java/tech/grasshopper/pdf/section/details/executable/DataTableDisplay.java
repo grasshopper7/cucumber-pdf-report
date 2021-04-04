@@ -178,7 +178,8 @@ public class DataTableDisplay {
 		}
 
 		croppedMessage(tableBuilder, columnTextWidths);
-		return TableWithinTableCell.builder().table(tableBuilder.build()).build();
+		return TableWithinTableCell.builder().table(tableBuilder.build()).borderColor(Color.GRAY).borderWidth(1)
+				.build();
 	}
 
 	private void addColumnWidthsToTable(TableBuilder tableBuilder, List<Float> columnTextWidths) {

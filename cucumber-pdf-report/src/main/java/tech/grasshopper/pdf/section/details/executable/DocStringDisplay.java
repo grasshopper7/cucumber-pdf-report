@@ -63,7 +63,7 @@ public class DocStringDisplay {
 		paragraphBuilder.appendNewLine().append(StyledText.builder().text(croppedMsg).font(STEP_HOOK_TEXT_FONT)
 				.fontSize((float) fontsize).color(textColor).build());
 
-		return ParagraphCell.builder().paragraph(paragraphBuilder.build()).lineSpacing(1.1f)
-				.backgroundColor(backgroundColor).build();
+		return ParagraphCell.builder().paragraph(paragraphBuilder.build()).lineSpacing(1.1f).borderColor(Color.GRAY)
+				.borderWidth(1).backgroundColor(backgroundColor).build();
 	}
 }

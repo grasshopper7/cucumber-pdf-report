@@ -60,6 +60,7 @@ public class MediaDisplay {
 
 		mediaTableBuilder.addRow(rowBuilder.build());
 
-		return TableWithinTableCell.builder().table(mediaTableBuilder.build()).build();
+		return TableWithinTableCell.builder().table(mediaTableBuilder.build()).borderColor(Color.GRAY).borderWidth(1)
+				.build();
 	}
 }

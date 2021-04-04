@@ -4,6 +4,7 @@ import java.awt.Color;
 
 import org.vandeseer.easytable.structure.Row;
 import org.vandeseer.easytable.structure.Table.TableBuilder;
+import org.vandeseer.easytable.structure.cell.AbstractCell;
 import org.vandeseer.easytable.structure.cell.TextCell;
 
 import lombok.Data;
@@ -31,13 +32,17 @@ public abstract class ExecutableDisplay extends Display {
 		TextSanitizer sanitizer = TextSanitizer.builder().build();
 		int rowSpan = getRowSpan();
 
-		tableBuilder.addRow(Row.builder().add(TextCell.builder().rowSpan(rowSpan).text(getSerialNumber()).build())
+		tableBuilder.addRow(Row.builder()
+				.add(TextCell.builder()/* .rowSpan(rowSpan) */.text(getSerialNumber()).borderColor(Color.GRAY)
+						.borderWidthLeft(1f).borderWidthTop(1f).build())
 				.add(TextCell.builder().text(sanitizer.sanitizeText(executableName())).textColor(executableNameColor())
-						.backgroundColor(executableBackgroundColor()).build())
-				.add(TextCell.builder().rowSpan(rowSpan).text(executable.getStatus().toString())
-						.textColor(statusColor(executable.getStatus())).build())
-				.add(TextCell.builder().rowSpan(rowSpan).text(getDuration())
-						.textColor(reportConfig.getDetailedStepHookConfig().durationColor()).build())
+						.backgroundColor(executableBackgroundColor()).borderColor(Color.GRAY).borderWidth(1).build())
+				.add(TextCell.builder()/* .rowSpan(rowSpan) */.text(executable.getStatus().toString())
+						.textColor(statusColor(executable.getStatus())).borderColor(Color.GRAY).borderWidthRight(1f)
+						.borderWidthTop(1f).build())
+				.add(TextCell.builder()/* .rowSpan(rowSpan) */.text(getDuration())
+						.textColor(reportConfig.getDetailedStepHookConfig().durationColor()).borderColor(Color.GRAY)
+						.borderWidthRight(1f).borderWidthTop(1f).build())
 				.build());
 
 		displaySubTypeDetails();
@@ -90,11 +95,10 @@ public abstract class ExecutableDisplay extends Display {
 		if (executable.getOutput().isEmpty())
 			return;
 
-		tableBuilder
-				.addRow(Row.builder()
-						.add(LogMessageDisplay.builder().executable(executable)
-								.color(reportConfig.getDetailedStepHookConfig().logMsgColor()).build().display())
-						.build());
+		tableBuilder.addRow(Row.builder().add(dummyCellLeftBorder())
+				.add(LogMessageDisplay.builder().executable(executable)
+						.color(reportConfig.getDetailedStepHookConfig().logMsgColor()).build().display())
+				.add(dummyCellRightBorder()).add(dummyCellRightBorder()).build());
 	}
 
 	protected void displayStackTrace() {
@@ -102,11 +106,10 @@ public abstract class ExecutableDisplay extends Display {
 		if (executable.getErrorMessage() == null || executable.getErrorMessage().isEmpty())
 			return;
 
-		tableBuilder
-				.addRow(Row.builder()
-						.add(StackTraceDisplay.builder().executable(executable)
-								.color(reportConfig.getDetailedStepHookConfig().errorMsgColor()).build().display())
-						.build());
+		tableBuilder.addRow(Row.builder().add(dummyCellLeftBorder())
+				.add(StackTraceDisplay.builder().executable(executable)
+						.color(reportConfig.getDetailedStepHookConfig().errorMsgColor()).build().display())
+				.add(dummyCellRightBorder()).add(dummyCellRightBorder()).build());
 	}
 
 	@SneakyThrows
@@ -115,7 +118,16 @@ public abstract class ExecutableDisplay extends Display {
 		if (executable.getMedia().isEmpty())
 			return;
 
-		tableBuilder.addRow(Row.builder()
-				.add(MediaDisplay.builder().executable(executable).document(document).build().display()).build());
+		tableBuilder.addRow(Row.builder().add(dummyCellLeftBorder())
+				.add(MediaDisplay.builder().executable(executable).document(document).build().display())
+				.add(dummyCellRightBorder()).add(dummyCellRightBorder()).build());
+	}
+
+	protected AbstractCell dummyCellLeftBorder() {
+		return TextCell.builder().text("").fontSize(0).borderColor(Color.GRAY).borderWidthLeft(1f).build();
+	}
+
+	protected AbstractCell dummyCellRightBorder() {
+		return TextCell.builder().text("").fontSize(0).borderColor(Color.GRAY).borderWidthRight(1f).build();
 	}
 }

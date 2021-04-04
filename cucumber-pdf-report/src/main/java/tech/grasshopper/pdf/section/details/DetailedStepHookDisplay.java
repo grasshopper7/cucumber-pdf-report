@@ -19,6 +19,7 @@ import tech.grasshopper.pdf.font.ReportFont;
 import tech.grasshopper.pdf.pojo.cucumber.Executable;
 import tech.grasshopper.pdf.section.details.executable.ExecutableDisplay;
 import tech.grasshopper.pdf.structure.Display;
+import tech.grasshopper.pdf.structure.ExecutableTableCreator;
 import tech.grasshopper.pdf.structure.PageCreator;
 import tech.grasshopper.pdf.structure.TableCreator;
 
@@ -41,13 +42,13 @@ public class DetailedStepHookDisplay extends Display {
 	public void display() {
 
 		TableBuilder tableBuilder = Table.builder().addColumnsOfWidth(25f, STEP_HOOK_TEXT_COLUMN_WIDTH, 70f, 85f)
-				.borderColor(Color.GRAY).borderWidth(1).font(STEP_HOOK_TEXT_FONT).fontSize(STEP_HOOK_TEXT_FONT_SIZE)
+				.font(STEP_HOOK_TEXT_FONT).fontSize(STEP_HOOK_TEXT_FONT_SIZE)
 				.horizontalAlignment(HorizontalAlignment.LEFT).verticalAlignment(VerticalAlignment.TOP)
 				.padding(STEP_HOOK_TEXT_PADDING)
 
 				.addRow(Row.builder().horizontalAlignment(HorizontalAlignment.CENTER)
 						.verticalAlignment(VerticalAlignment.MIDDLE).font(ReportFont.BOLD_FONT).fontSize(11)
-						.add(TextCell.builder().text("#").build())
+						.borderColor(Color.GRAY).borderWidth(1).add(TextCell.builder().text("#").build())
 						.add(TextCell.builder().text("Step / Hook Details").build())
 						.add(TextCell.builder().text("Status").build()).add(TextCell.builder().text("Duration").build())
 						.build());
@@ -66,8 +67,8 @@ public class DetailedStepHookDisplay extends Display {
 			executableDisplay.display();
 		}
 
-		TableCreator tableCreator = TableCreator.builder().tableBuilder(tableBuilder).document(document)
-				.startX(CONTENT_START_X).startY(ylocation).endY(DETAILED_CONTENT_END_Y)
+		TableCreator tableCreator = ExecutableTableCreator.builder().tableBuilder(tableBuilder).document(document)
+				.splitRow(true).startX(CONTENT_START_X).startY(ylocation).endY(DETAILED_CONTENT_END_Y)
 				.pageSupplier(PageCreator.builder().document(document).build()
 						.landscapePageWithHeaderAndNumberSupplier(DetailedSection.SECTION_TITLE))
 				.build();

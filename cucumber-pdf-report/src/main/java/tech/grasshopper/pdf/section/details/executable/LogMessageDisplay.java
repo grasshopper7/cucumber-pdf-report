@@ -77,6 +77,7 @@ public class LogMessageDisplay {
 			paragraphBuilder.appendNewLine().append(StyledText.builder().font(ReportFont.REGULAR_FONT)
 					.fontSize(fontsize).text(message + croppedMsgSuffix).color(color).build());
 
-		return ParagraphCell.builder().paragraph(paragraphBuilder.build()).lineSpacing(1.1f).build();
+		return ParagraphCell.builder().paragraph(paragraphBuilder.build()).borderColor(Color.GRAY).borderWidth(1)
+				.lineSpacing(1.1f).build();
 	}
 }

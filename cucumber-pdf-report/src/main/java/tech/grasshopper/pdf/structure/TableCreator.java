@@ -8,46 +8,58 @@ import org.vandeseer.easytable.RepeatedHeaderTableDrawer;
 import org.vandeseer.easytable.TableDrawer;
 import org.vandeseer.easytable.structure.Table.TableBuilder;
 
-import lombok.Builder;
+import lombok.AccessLevel;
 import lombok.Builder.Default;
 import lombok.Data;
 import lombok.Getter;
+import lombok.Setter;
 import lombok.SneakyThrows;
+import lombok.experimental.SuperBuilder;
 
 @Data
-@Builder
+@SuperBuilder
 public class TableCreator {
 
-	private TableBuilder tableBuilder;
+	protected TableBuilder tableBuilder;
 
-	private PDDocument document;
+	protected PDDocument document;
 
-	@Getter
-	private PDPage tableStartPage;
-
-	@Default
-	private int repeatRows = 1;
-
-	private float startX;
-
-	private float startY;
-
-	@Getter
-	private float finalY;
+	protected PDPage tableStartPage;
 
 	@Default
-	private float endY = Display.CONTENT_END_Y;
+	protected int repeatRows = 1;
 
 	@Default
-	private float offsetNewPageY = Display.CONTENT_MARGIN_TOP_Y;
+	protected boolean splitRow = false;
 
-	private Supplier<PDPage> pageSupplier;
+	protected float startX;
+
+	protected float startY;
+
+	protected float finalY;
+
+	@Default
+	protected float endY = Display.CONTENT_END_Y;
+
+	@Default
+	protected float offsetNewPageY = Display.CONTENT_MARGIN_TOP_Y;
+
+	protected Supplier<PDPage> pageSupplier;
+
+	@Setter(AccessLevel.NONE)
+	@Getter(AccessLevel.NONE)
+	protected TableDrawer tableDrawer;
 
 	@SneakyThrows
 	public void displayTable() {
 
-		TableDrawer tableDrawer = RepeatedHeaderTableDrawer.builder().table(tableBuilder.build()).startX(startX)
-				.startY(startY).endY(endY).numberOfRowsToRepeat(repeatRows).build();
+		tableDrawer = RepeatedHeaderTableDrawer.builder().table(tableBuilder.build()).startX(startX).startY(startY)
+				.splitRow(splitRow).endY(endY).numberOfRowsToRepeat(repeatRows).build();
+		drawTable();
+	}
+
+	@SneakyThrows
+	protected void drawTable() {
 
 		tableDrawer.draw(() -> document, pageSupplier, offsetNewPageY);
 		finalY = tableDrawer.getFinalY();
