@@ -1,9 +1,9 @@
 package tech.grasshopper.pdf.tablecell;
 
-import org.vandeseer.easytable.MinimumHeightSplitCellException;
-import org.vandeseer.easytable.SplitCellData;
-import org.vandeseer.easytable.TableContainRowSpanCellsException;
 import org.vandeseer.easytable.drawing.Drawer;
+import org.vandeseer.easytable.split.MinimumHeightSplitCellException;
+import org.vandeseer.easytable.split.SplitCellData;
+import org.vandeseer.easytable.split.TableContainRowSpanCellsException;
 import org.vandeseer.easytable.structure.Row;
 import org.vandeseer.easytable.structure.Table;
 import org.vandeseer.easytable.structure.Table.TableBuilder;

@@ -1,8 +1,6 @@
 package tech.grasshopper.pdf.section.details.executable;
 
-import static tech.grasshopper.pdf.section.details.DetailedStepHookDisplay.STEP_HOOK_TEXT_COLUMN_WIDTH;
 import static tech.grasshopper.pdf.section.details.DetailedStepHookDisplay.STEP_HOOK_TEXT_FONT;
-import static tech.grasshopper.pdf.section.details.DetailedStepHookDisplay.STEP_HOOK_TEXT_PADDING;
 
 import java.awt.Color;
 
@@ -14,7 +12,6 @@ import org.vandeseer.easytable.structure.cell.paragraph.StyledText;
 
 import lombok.Builder;
 import lombok.Setter;
-import tech.grasshopper.pdf.optimizer.TextLengthOptimizer;
 import tech.grasshopper.pdf.optimizer.TextSanitizer;
 import tech.grasshopper.pdf.pojo.cucumber.Step;
 
@@ -32,38 +29,22 @@ public class DocStringDisplay {
 
 	private final int fontsize = 9;
 
-	private static final int MAX_LINES = 4;
-
 	public AbstractCell display() {
 
 		ParagraphBuilder paragraphBuilder = Paragraph.builder();
-		final TextSanitizer sanitizer = TextSanitizer.builder().build();
+		TextSanitizer sanitizer = TextSanitizer.builder().build();
 
-		final String sanitizedText = sanitizer.sanitizeText(step.getDocString());
-		final String stripNewLineTab = sanitizedText.replaceAll("[\\t\\n\\r ]+", " ").trim();
+		String sanitizedText = sanitizer.sanitizeText(step.getDocString());
+		String message = sanitizer.getStripMessage();
 
-		final TextLengthOptimizer textOptimizer = TextLengthOptimizer.builder().font(STEP_HOOK_TEXT_FONT)
-				.fontsize(fontsize).availableSpace((STEP_HOOK_TEXT_COLUMN_WIDTH) - 2 * STEP_HOOK_TEXT_PADDING)
-				.maxLines(MAX_LINES).build();
-
-		final String maxLinesMsg = "* Maximum of " + MAX_LINES + " lines are displayed.";
-		String croppedMsg = "^ Tabs, spaces, new line has been trimmed to fit in the available space.";
-
-		String text = textOptimizer.optimizeTextLines(stripNewLineTab);
-		if (!textOptimizer.isTextTrimmed())
-			text = text + " ^";
-		else {
-			text = text + "^";
-			croppedMsg = maxLinesMsg + " " + croppedMsg;
-		}
-
-		paragraphBuilder.append(StyledText.builder().text(text).font(STEP_HOOK_TEXT_FONT).fontSize((float) fontsize)
-				.color(textColor).build());
-
-		paragraphBuilder.appendNewLine().append(StyledText.builder().text(croppedMsg).font(STEP_HOOK_TEXT_FONT)
+		paragraphBuilder.append(StyledText.builder().text(sanitizedText).font(STEP_HOOK_TEXT_FONT)
 				.fontSize((float) fontsize).color(textColor).build());
 
-		return ParagraphCell.builder().paragraph(paragraphBuilder.build()).lineSpacing(1.1f).borderColor(Color.GRAY)
+		if (!message.isEmpty())
+			paragraphBuilder.appendNewLine().append(StyledText.builder().text(message).font(STEP_HOOK_TEXT_FONT)
+					.fontSize((float) fontsize).color(textColor).build());
+
+		return ParagraphCell.builder().paragraph(paragraphBuilder.build()).lineSpacing(1.2f).borderColor(Color.GRAY)
 				.borderWidth(1).backgroundColor(backgroundColor).build();
 	}
 }

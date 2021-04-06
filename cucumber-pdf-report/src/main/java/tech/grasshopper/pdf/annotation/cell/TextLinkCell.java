@@ -12,10 +12,6 @@ import tech.grasshopper.pdf.annotation.Annotation;
 @SuperBuilder(toBuilder = true)
 public class TextLinkCell extends TextCell {
 
-	/*
-	 * @NonNull protected String text;
-	 */
-
 	@NonNull
 	protected Annotation annotation;
 

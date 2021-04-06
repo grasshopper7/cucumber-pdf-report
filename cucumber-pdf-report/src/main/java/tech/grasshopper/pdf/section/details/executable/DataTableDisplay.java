@@ -16,7 +16,10 @@ import org.vandeseer.easytable.structure.cell.AbstractCell;
 import org.vandeseer.easytable.structure.cell.TextCell;
 import org.vandeseer.easytable.util.PdfUtil;
 
+import lombok.AccessLevel;
 import lombok.Builder;
+import lombok.Getter;
+import lombok.Setter;
 import tech.grasshopper.pdf.font.ReportFont;
 import tech.grasshopper.pdf.optimizer.TextLengthOptimizer;
 import tech.grasshopper.pdf.optimizer.TextSanitizer;
@@ -27,23 +30,29 @@ import tech.grasshopper.pdf.tablecell.TableWithinTableCell;
 @Builder
 public class DataTableDisplay {
 
+	@Setter
 	private Step step;
 
+	@Setter
 	private Color textColor;
 
+	@Setter
 	private Color backgroundColor;
 
 	private final int fontsize = 9;
 
-	private boolean rowsCropped;
-
+	@Getter(value = AccessLevel.NONE)
+	@Setter(value = AccessLevel.NONE)
 	private boolean columnsCropped;
 
+	@Getter(value = AccessLevel.NONE)
+	@Setter(value = AccessLevel.NONE)
 	private boolean cellTextCropped;
 
+	@Getter(value = AccessLevel.NONE)
+	@Setter(value = AccessLevel.NONE)
 	private List<Float> maximumColumnTextWidths;
 
-	private static final int MAX_ROW_COUNT = 5;
 	private static final float MAX_COLUMN_WIDTH = 100f;
 	private static final float PADDING = 3f;
 	private static final float INDICATOR_COLUMN_WIDTH = 4f;
@@ -51,28 +60,14 @@ public class DataTableDisplay {
 
 	public AbstractCell display() {
 
-		List<Row> rows = calculateRowCount();
-		maximumColumnTextWidths = maximumColumnWidths(rows);
+		maximumColumnTextWidths = maximumColumnWidths(step.getRows());
 
 		List<Float> resizedColumnTextWidth = new ArrayList<>(maximumColumnTextWidths);
 		resizeColumnWidth(resizedColumnTextWidth, false);
 
 		List<Float> columnTextWidths = removeExtraColumns(resizedColumnTextWidth);
 
-		return createDataTable(rows, columnTextWidths);
-
-	}
-
-	private List<Row> calculateRowCount() {
-
-		List<Row> rows = step.getRows();
-		int displayRows = rows.size();
-
-		if (rows.size() > MAX_ROW_COUNT) {
-			displayRows = MAX_ROW_COUNT;
-			rowsCropped = true;
-		}
-		return rows.subList(0, displayRows);
+		return createDataTable(step.getRows(), columnTextWidths);
 	}
 
 	private List<Float> maximumColumnWidths(List<Row> rows) {
@@ -150,10 +145,10 @@ public class DataTableDisplay {
 		TableBuilder tableBuilder = Table.builder().backgroundColor(backgroundColor).font(ReportFont.REGULAR_FONT)
 				.fontSize(fontsize).borderColor(Color.GRAY).borderWidth(1f).padding(PADDING);
 
-		final TextSanitizer sanitizer = TextSanitizer.builder().build();
+		TextSanitizer sanitizer = TextSanitizer.builder().build();
 
-		final TextLengthOptimizer optimizer = TextLengthOptimizer.builder().font(ReportFont.REGULAR_FONT)
-				.fontsize(fontsize).build();
+		TextLengthOptimizer optimizer = TextLengthOptimizer.builder().font(ReportFont.REGULAR_FONT).fontsize(fontsize)
+				.build();
 
 		addColumnWidthsToTable(tableBuilder, columnTextWidths);
 		boolean firstRow = true;
@@ -177,7 +172,7 @@ public class DataTableDisplay {
 			tableBuilder.addRow(rowBuilder.build());
 		}
 
-		croppedMessage(tableBuilder, columnTextWidths);
+		croppedMessage(tableBuilder, columnTextWidths, sanitizer.getStripMessage());
 		return TableWithinTableCell.builder().table(tableBuilder.build()).borderColor(Color.GRAY).borderWidth(1)
 				.build();
 	}
@@ -200,34 +195,30 @@ public class DataTableDisplay {
 		}
 	}
 
-	private void croppedMessage(TableBuilder tableBuilder, List<Float> columnTextWidths) {
+	private void croppedMessage(TableBuilder tableBuilder, List<Float> columnTextWidths, String sanitizerMessage) {
 
-		if (!rowsCropped && !cellTextCropped && !columnsCropped)
+		if (sanitizerMessage.isEmpty() && !cellTextCropped && !columnsCropped)
 			return;
 
-		final String croppedMsgPrefix = "* The";
-		final String croppedMsgSuffix = "have been cropped to fit in the available space.";
+		String croppedMsgPrefix = sanitizerMessage.isEmpty() ? "* The" : " The";
+		String croppedMsgSuffix = "have been cropped to fit in the available space.";
 
 		String message = "";
 		int colSpan = columnTextWidths.size();
 
-		if (rowsCropped)
-			message = " data row(s), maximum " + MAX_ROW_COUNT + ", ";
-
 		if (cellTextCropped) {
-			if (rowsCropped)
-				message = message + "and";
-			message = message + " data cell text(s) ";
+			message = " data cell text(s) ";
 		}
 
 		if (columnsCropped) {
-			if (rowsCropped || cellTextCropped)
+			if (cellTextCropped)
 				message = message + "and";
 			message = message + " extra column(s) ";
 			colSpan++;
 		}
-		tableBuilder.addRow(org.vandeseer.easytable.structure.Row.builder().add(TextCell.builder()
-				.text(croppedMsgPrefix + message + croppedMsgSuffix).colSpan(colSpan).textColor(textColor).build())
+		tableBuilder.addRow(org.vandeseer.easytable.structure.Row.builder()
+				.add(TextCell.builder().text(sanitizerMessage + croppedMsgPrefix + message + croppedMsgSuffix)
+						.colSpan(colSpan).textColor(textColor).build())
 				.build());
 	}
 }

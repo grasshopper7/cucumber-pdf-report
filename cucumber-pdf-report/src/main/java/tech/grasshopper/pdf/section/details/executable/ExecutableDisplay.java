@@ -30,17 +30,16 @@ public abstract class ExecutableDisplay extends Display {
 	public void display() {
 
 		TextSanitizer sanitizer = TextSanitizer.builder().build();
-		int rowSpan = getRowSpan();
 
 		tableBuilder.addRow(Row.builder()
-				.add(TextCell.builder()/* .rowSpan(rowSpan) */.text(getSerialNumber()).borderColor(Color.GRAY)
-						.borderWidthLeft(1f).borderWidthTop(1f).build())
+				.add(TextCell.builder().text(getSerialNumber()).borderColor(Color.GRAY).borderWidthLeft(1f)
+						.borderWidthTop(1f).build())
 				.add(TextCell.builder().text(sanitizer.sanitizeText(executableName())).textColor(executableNameColor())
 						.backgroundColor(executableBackgroundColor()).borderColor(Color.GRAY).borderWidth(1).build())
-				.add(TextCell.builder()/* .rowSpan(rowSpan) */.text(executable.getStatus().toString())
+				.add(TextCell.builder().text(executable.getStatus().toString())
 						.textColor(statusColor(executable.getStatus())).borderColor(Color.GRAY).borderWidthRight(1f)
 						.borderWidthTop(1f).build())
-				.add(TextCell.builder()/* .rowSpan(rowSpan) */.text(getDuration())
+				.add(TextCell.builder().text(getDuration())
 						.textColor(reportConfig.getDetailedStepHookConfig().durationColor()).borderColor(Color.GRAY)
 						.borderWidthRight(1f).borderWidthTop(1f).build())
 				.build());
@@ -72,22 +71,6 @@ public abstract class ExecutableDisplay extends Display {
 
 	protected void displaySubTypeDetails() {
 
-	}
-
-	protected int getRowSpan() {
-
-		int rowSpan = 1 + getSubTypeRowSpanCount();
-
-		if (!executable.getOutput().isEmpty())
-			rowSpan++;
-
-		if (executable.getErrorMessage() != null && !executable.getErrorMessage().isEmpty())
-			rowSpan++;
-
-		if (!executable.getMedia().isEmpty())
-			rowSpan++;
-
-		return rowSpan;
 	}
 
 	protected void displayLogMessage() {
