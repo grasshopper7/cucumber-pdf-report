@@ -1,9 +1,5 @@
 package tech.grasshopper.pdf.pojo.cucumber;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import lombok.Builder.Default;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.experimental.SuperBuilder;
@@ -14,21 +10,7 @@ import tech.grasshopper.pdf.section.details.executable.HookDisplay;
 @Data
 @SuperBuilder
 @EqualsAndHashCode(callSuper = true)
-public class Hook extends TimeDetails implements Executable {
-
-	private Feature feature;
-	private Scenario scenario;
-
-	@Default
-	private List<String> output = new ArrayList<>();
-	@Default
-	private List<String> media = new ArrayList<>();
-
-	private Status status;
-	@Default
-	private String errorMessage = "";
-	@Default
-	private String location = "";
+public class Hook extends ExecutableEntity {
 
 	private HookType hookType;
 
@@ -42,7 +24,7 @@ public class Hook extends TimeDetails implements Executable {
 	}
 
 	@Override
-	String getName() {
+	public String getName() {
 		return location;
 	}
 
@@ -54,6 +36,6 @@ public class Hook extends TimeDetails implements Executable {
 		if (status == null)
 			throw new PdfReportException("No status present for hook - " + getName());
 
-		checkTimeData();
+		super.checkData();
 	}
 }

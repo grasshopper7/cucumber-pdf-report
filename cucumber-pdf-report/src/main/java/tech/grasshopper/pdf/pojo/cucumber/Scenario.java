@@ -7,17 +7,13 @@ import lombok.Builder.Default;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.experimental.SuperBuilder;
-import tech.grasshopper.pdf.annotation.Annotation;
-import tech.grasshopper.pdf.destination.Destination;
 import tech.grasshopper.pdf.exception.PdfReportException;
 
 @Data
 @SuperBuilder
 @EqualsAndHashCode(callSuper = true)
-public class Scenario extends TimeDetails {
+public class Scenario extends NonExecutableEntity {
 
-	private String name;
-	
 	private Feature feature;
 
 	@Default
@@ -30,10 +26,6 @@ public class Scenario extends TimeDetails {
 	private List<String> tags = new ArrayList<>();
 
 	@Default
-	private List<Annotation> annotations = new ArrayList<>();
-	private Destination destination;
-
-	@Default
 	private int passedSteps = 0;
 	@Default
 	private int failedSteps = 0;
@@ -42,8 +34,6 @@ public class Scenario extends TimeDetails {
 	@Default
 	private int totalSteps = 0;
 
-	private Status status;
-
 	public List<Hook> getBeforeAfterHooks() {
 		List<Hook> hooks = new ArrayList<>();
 		hooks.addAll(before);
@@ -51,8 +41,8 @@ public class Scenario extends TimeDetails {
 		return hooks;
 	}
 
-	public List<Executable> getStepsAndHooks() {
-		List<Executable> executables = new ArrayList<>();
+	public List<ExecutableEntity> getStepsAndHooks() {
+		List<ExecutableEntity> executables = new ArrayList<>();
 
 		before.forEach(h -> executables.add(h));
 		steps.forEach(s -> {
@@ -65,10 +55,7 @@ public class Scenario extends TimeDetails {
 		return executables;
 	}
 
-	public void addAnnotation(Annotation annotation) {
-		annotations.add(annotation);
-	}
-
+	@Override
 	public void checkData() {
 
 		if (name == null || name.isEmpty())
@@ -83,6 +70,6 @@ public class Scenario extends TimeDetails {
 		if (status == null)
 			throw new PdfReportException("No status present for scenario - " + getName());
 
-		checkTimeData();
+		super.checkData();
 	}
 }

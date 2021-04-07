@@ -12,7 +12,7 @@ import lombok.EqualsAndHashCode;
 import lombok.SneakyThrows;
 import lombok.experimental.SuperBuilder;
 import tech.grasshopper.pdf.optimizer.TextSanitizer;
-import tech.grasshopper.pdf.pojo.cucumber.Executable;
+import tech.grasshopper.pdf.pojo.cucumber.ExecutableEntity;
 import tech.grasshopper.pdf.structure.Display;
 
 @Data
@@ -20,7 +20,7 @@ import tech.grasshopper.pdf.structure.Display;
 @EqualsAndHashCode(callSuper = false)
 public abstract class ExecutableDisplay extends Display {
 
-	protected Executable executable;
+	protected ExecutableEntity executable;
 
 	protected TableBuilder tableBuilder;
 

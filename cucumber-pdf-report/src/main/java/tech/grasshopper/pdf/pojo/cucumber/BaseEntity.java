@@ -9,7 +9,11 @@ import tech.grasshopper.pdf.exception.PdfReportException;
 
 @Data
 @SuperBuilder
-public abstract class TimeDetails {
+public abstract class BaseEntity {
+
+	protected String name;
+
+	protected Status status;
 
 	protected LocalDateTime startTime;
 	protected LocalDateTime endTime;
@@ -19,7 +23,7 @@ public abstract class TimeDetails {
 		return Duration.between(startTime, endTime);
 	}
 
-	public void checkTimeData() {
+	protected void checkTimeData() {
 
 		if (startTime == null)
 			throw new PdfReportException("Start Time not present for " + this.getClass().getName() + " - " + getName());
@@ -32,5 +36,7 @@ public abstract class TimeDetails {
 					"Start Time is later than End time for " + this.getClass().getName() + " - " + getName());
 	}
 
-	abstract String getName();
+	public void checkData() {
+		checkTimeData();
+	}
 }

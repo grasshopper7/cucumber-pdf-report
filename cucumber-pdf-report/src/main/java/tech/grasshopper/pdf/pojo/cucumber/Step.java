@@ -14,13 +14,9 @@ import tech.grasshopper.pdf.section.details.executable.StepDisplay;
 @Data
 @SuperBuilder
 @EqualsAndHashCode(callSuper = true)
-public class Step extends TimeDetails implements Executable {
+public class Step extends ExecutableEntity {
 
-	private String name;
 	private String keyword;
-
-	private Feature feature;
-	private Scenario scenario;
 
 	@Default
 	private List<Row> rows = new ArrayList<>();
@@ -31,17 +27,6 @@ public class Step extends TimeDetails implements Executable {
 	private List<Hook> before = new ArrayList<>();
 	@Default
 	private List<Hook> after = new ArrayList<>();
-
-	@Default
-	private List<String> output = new ArrayList<>();
-	@Default
-	private List<String> media = new ArrayList<>();
-
-	private Status status;
-	@Default
-	private String errorMessage = "";
-	@Default
-	private String location = "";
 
 	public List<Hook> getBeforeAfterHooks() {
 		List<Hook> hooks = new ArrayList<>();
@@ -77,6 +62,6 @@ public class Step extends TimeDetails implements Executable {
 		if (status == null)
 			throw new PdfReportException("No status present for step - " + getName());
 
-		checkTimeData();
+		super.checkData();
 	}
 }

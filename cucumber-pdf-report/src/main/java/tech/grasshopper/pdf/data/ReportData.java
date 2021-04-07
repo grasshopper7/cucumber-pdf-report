@@ -7,7 +7,7 @@ import java.util.stream.Collectors;
 import lombok.Builder;
 import lombok.Getter;
 import tech.grasshopper.pdf.exception.PdfReportException;
-import tech.grasshopper.pdf.pojo.cucumber.Executable;
+import tech.grasshopper.pdf.pojo.cucumber.ExecutableEntity;
 import tech.grasshopper.pdf.pojo.cucumber.Feature;
 import tech.grasshopper.pdf.pojo.cucumber.Scenario;
 import tech.grasshopper.pdf.pojo.cucumber.Status;
@@ -38,7 +38,7 @@ public class ReportData {
 			for (Scenario scenario : feature.getScenarios()) {
 				scenario.checkData();
 
-				for (Executable executable : scenario.getStepsAndHooks()) {
+				for (ExecutableEntity executable : scenario.getStepsAndHooks()) {
 					executable.checkData();
 				}
 			}
@@ -132,7 +132,7 @@ public class ReportData {
 				scenario.setFeature(feature);
 				scenarioData.getScenarios().add(scenario);
 
-				for (Executable executable : scenario.getStepsAndHooks()) {
+				for (ExecutableEntity executable : scenario.getStepsAndHooks()) {
 					executable.setScenario(scenario);
 					executable.setFeature(feature);
 					executableData.getExecutables().add(executable);

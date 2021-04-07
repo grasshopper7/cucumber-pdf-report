@@ -5,11 +5,7 @@ import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.experimental.SuperBuilder;
 import tech.grasshopper.pdf.data.ExecutableData;
-import tech.grasshopper.pdf.pojo.cucumber.Executable;
-import tech.grasshopper.pdf.pojo.cucumber.Scenario;
-import tech.grasshopper.pdf.section.details.DetailedFeatureDisplay;
-import tech.grasshopper.pdf.section.details.DetailedScenarioDisplay;
-import tech.grasshopper.pdf.section.details.DetailedStepHookDisplay;
+import tech.grasshopper.pdf.pojo.cucumber.ExecutableEntity;
 import tech.grasshopper.pdf.structure.Display;
 import tech.grasshopper.pdf.structure.PageCreator;
 import tech.grasshopper.pdf.structure.Section;
@@ -36,7 +32,7 @@ public class ExpandedSection extends Section {
 
 		float ylocation = Display.CONTENT_START_Y;
 
-		for (Executable executable : detailedData.getExecutables()) {
+		for (ExecutableEntity executable : detailedData.getExecutables()) {
 
 			if (!executable.getMedia().isEmpty()) {
 

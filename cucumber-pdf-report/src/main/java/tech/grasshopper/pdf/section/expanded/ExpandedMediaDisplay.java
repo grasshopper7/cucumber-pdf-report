@@ -1,13 +1,9 @@
 package tech.grasshopper.pdf.section.expanded;
 
 import java.awt.Color;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.stream.Collectors;
 
 import org.apache.pdfbox.pdmodel.PDPage;
 import org.apache.pdfbox.pdmodel.graphics.image.PDImageXObject;
-import org.knowm.xchart.style.PieStyler;
 import org.vandeseer.easytable.settings.HorizontalAlignment;
 import org.vandeseer.easytable.settings.VerticalAlignment;
 import org.vandeseer.easytable.structure.Row;
@@ -15,34 +11,25 @@ import org.vandeseer.easytable.structure.Table;
 import org.vandeseer.easytable.structure.Table.TableBuilder;
 import org.vandeseer.easytable.structure.cell.ImageCell;
 import org.vandeseer.easytable.structure.cell.TextCell;
-import org.vandeseer.easytable.structure.cell.paragraph.ParagraphCell;
-import org.vandeseer.easytable.structure.cell.paragraph.ParagraphCell.Paragraph;
-import org.vandeseer.easytable.structure.cell.paragraph.StyledText;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.SneakyThrows;
 import lombok.experimental.SuperBuilder;
-import tech.grasshopper.pdf.chart.ReportDonutChart;
-import tech.grasshopper.pdf.destination.Destination;
-import tech.grasshopper.pdf.destination.DestinationAware;
 import tech.grasshopper.pdf.font.ReportFont;
-import tech.grasshopper.pdf.image.ImageCreator;
 import tech.grasshopper.pdf.optimizer.TextSanitizer;
-import tech.grasshopper.pdf.pojo.cucumber.Executable;
-import tech.grasshopper.pdf.section.details.DetailedSection;
+import tech.grasshopper.pdf.pojo.cucumber.ExecutableEntity;
 import tech.grasshopper.pdf.structure.Display;
 import tech.grasshopper.pdf.structure.PageCreator;
 import tech.grasshopper.pdf.structure.TableCreator;
-import tech.grasshopper.pdf.util.DateUtil;
 
 @Data
 @SuperBuilder
 @EqualsAndHashCode(callSuper = false)
 public class ExpandedMediaDisplay extends Display /* implements DestinationAware */ {
 
-	private Executable executable;
+	private ExecutableEntity executable;
 
 	@Getter
 	private float finalY;

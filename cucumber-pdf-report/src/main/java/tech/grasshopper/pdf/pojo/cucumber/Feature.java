@@ -7,24 +7,15 @@ import lombok.Builder.Default;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.experimental.SuperBuilder;
-import tech.grasshopper.pdf.annotation.Annotation;
-import tech.grasshopper.pdf.destination.Destination;
 import tech.grasshopper.pdf.exception.PdfReportException;
 
 @Data
 @SuperBuilder
 @EqualsAndHashCode(callSuper = true)
-public class Feature extends TimeDetails {
+public class Feature extends NonExecutableEntity {
 
 	@Default
 	private List<Scenario> scenarios = new ArrayList<>();
-	private String name;
-	@Default
-	private List<String> tags = new ArrayList<>();
-
-	@Default
-	private List<Annotation> annotations = new ArrayList<>();
-	private Destination destination;
 
 	@Default
 	private int passedScenarios = 0;
@@ -44,12 +35,7 @@ public class Feature extends TimeDetails {
 	@Default
 	private int totalSteps = 0;
 
-	private Status status;
-
-	public void addAnnotation(Annotation annotation) {
-		annotations.add(annotation);
-	}
-
+	@Override
 	public void checkData() {
 
 		if (name == null || name.isEmpty())
@@ -61,6 +47,6 @@ public class Feature extends TimeDetails {
 		if (status == null)
 			throw new PdfReportException("No status present for feature - " + getName());
 
-		checkTimeData();
+		super.checkData();
 	}
 }
