@@ -17,6 +17,7 @@ import tech.grasshopper.pdf.exception.PdfReportException;
 public class Scenario extends TimeDetails {
 
 	private String name;
+	
 	private Feature feature;
 
 	@Default

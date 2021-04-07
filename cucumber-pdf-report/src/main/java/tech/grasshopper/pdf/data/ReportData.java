@@ -25,8 +25,10 @@ public class ReportData {
 
 	private ScenarioData scenarioData;
 
+	private ExecutableData executableData;
+
 	public void checkData() {
-		
+
 		if (features == null || features.size() == 0)
 			throw new PdfReportException("No features present in test execution.");
 
@@ -47,8 +49,7 @@ public class ReportData {
 
 		populateCounts();
 		populateDashboardData();
-		populateFeaturesData();
-		populateScenariosData();
+		populateFeaturesScenariosStepsData();
 	}
 
 	private void populateCounts() {
@@ -117,17 +118,25 @@ public class ReportData {
 		}
 	}
 
-	private void populateFeaturesData() {
-		featureData = FeatureData.builder().features(features).build();
-	}
+	private void populateFeaturesScenariosStepsData() {
 
-	private void populateScenariosData() {
+		featureData = FeatureData.builder().features(features).build();
 
 		scenarioData = ScenarioData.builder().build();
+
+		executableData = ExecutableData.builder().build();
+
 		for (Feature feature : features) {
+
 			for (Scenario scenario : feature.getScenarios()) {
 				scenario.setFeature(feature);
 				scenarioData.getScenarios().add(scenario);
+
+				for (Executable executable : scenario.getStepsAndHooks()) {
+					executable.setScenario(scenario);
+					executable.setFeature(feature);
+					executableData.getExecutables().add(executable);
+				}
 			}
 		}
 	}

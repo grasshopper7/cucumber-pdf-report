@@ -19,6 +19,9 @@ public class Step extends TimeDetails implements Executable {
 	private String name;
 	private String keyword;
 
+	private Feature feature;
+	private Scenario scenario;
+
 	@Default
 	private List<Row> rows = new ArrayList<>();
 	@Default

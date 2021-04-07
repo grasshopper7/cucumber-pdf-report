@@ -59,7 +59,7 @@ public abstract class ExecutableDisplay extends Display {
 
 	protected abstract String getDuration();
 
-	protected abstract String executableName();
+	public abstract String executableName();
 
 	protected abstract Color executableNameColor();
 
@@ -102,7 +102,8 @@ public abstract class ExecutableDisplay extends Display {
 			return;
 
 		tableBuilder.addRow(Row.builder().add(dummyCellLeftBorder())
-				.add(MediaDisplay.builder().executable(executable).document(document).build().display())
+				.add(MediaDisplay.builder().executable(executable).document(document)
+						.expandView(reportConfig.isDisplayExpanded()).build().display())
 				.add(dummyCellRightBorder()).add(dummyCellRightBorder()).build());
 	}
 

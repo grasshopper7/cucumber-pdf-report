@@ -16,6 +16,7 @@ public class ReportConfig {
 	private boolean displayFeature = true;
 	private boolean displayScenario = true;
 	private boolean displayDetailed = true;
+	private boolean displayExpanded = true;
 
 	private SummaryConfig summaryConfig = new SummaryConfig();
 	private FeatureConfig featureConfig = new FeatureConfig();

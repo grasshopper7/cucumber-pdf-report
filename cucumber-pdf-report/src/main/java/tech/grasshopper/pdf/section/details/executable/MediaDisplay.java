@@ -17,6 +17,8 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.Setter;
 import lombok.SneakyThrows;
+import tech.grasshopper.pdf.annotation.Annotation;
+import tech.grasshopper.pdf.annotation.cell.TextLinkCell;
 import tech.grasshopper.pdf.font.ReportFont;
 import tech.grasshopper.pdf.pojo.cucumber.Executable;
 import tech.grasshopper.pdf.tablecell.TableWithinTableCell;
@@ -30,6 +32,9 @@ public class MediaDisplay {
 
 	@Setter
 	private PDDocument document;
+
+	@Setter
+	private boolean expandView;
 
 	private static final int MAX_MEDIA_COUNT_PER_ROW = 4;
 
@@ -60,8 +65,13 @@ public class MediaDisplay {
 			rowBuilder.add(
 					ImageCell.builder().image(image).width(mediaWidth).padding(padding).maxHeight(mediaHeigth).build());
 
-			rowBuilder.add(TextCell.builder().text("+").font(ReportFont.REGULAR_FONT).fontSize(15).textColor(Color.RED)
-					.padding(0f).build());
+			if (expandView) {
+				Annotation annotation = Annotation.builder().title(String.valueOf(i)).build();
+				rowBuilder.add(TextLinkCell.builder().text("+").annotation(annotation).font(ReportFont.REGULAR_FONT)
+						.fontSize(15).textColor(Color.RED).padding(0f).build());
+			} else {
+				rowBuilder.add(TextCell.builder().text("").fontSize(0).padding(0f).build());
+			}
 		}
 
 		// Adding blank cells for partial filled rows

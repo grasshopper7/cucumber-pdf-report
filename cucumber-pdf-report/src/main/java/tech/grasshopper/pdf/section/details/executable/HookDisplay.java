@@ -26,7 +26,7 @@ public class HookDisplay extends ExecutableDisplay {
 	}
 
 	@Override
-	protected String executableName() {
+	public String executableName() {
 
 		return hook.getHookType().toString() + " - " + hook.getLocation();
 	}

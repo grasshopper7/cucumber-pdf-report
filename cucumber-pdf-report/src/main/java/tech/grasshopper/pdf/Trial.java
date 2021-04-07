@@ -4,15 +4,13 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.vandeseer.easytable.util.PdfUtil;
-
 import tech.grasshopper.pdf.data.ReportData;
-import tech.grasshopper.pdf.font.ReportFont;
 import tech.grasshopper.pdf.pojo.cucumber.Feature;
+import tech.grasshopper.pdf.pojo.cucumber.Hook;
+import tech.grasshopper.pdf.pojo.cucumber.Hook.HookType;
 import tech.grasshopper.pdf.pojo.cucumber.Scenario;
 import tech.grasshopper.pdf.pojo.cucumber.Status;
 import tech.grasshopper.pdf.pojo.cucumber.Step;
-import tech.grasshopper.pdf.util.TextUtil;
 
 public class Trial {
 
@@ -23,6 +21,9 @@ public class Trial {
 		logs.add("SAHA");
 		logs.add(
 				"ROX MY WORLD ROX MY WORLD ROX MY WORLDROX MY WORLD ROX MY WORLD ROX MY WORLD ROX MY WORLD ROX MY WORLD ROX MY WORLD ROX MY WORLD ROX MY WORLD ROX MY WORLD ROX MY WORLD ROX MY WORLD ROX MY WORLD ROX MY WORLD ROX MY WORLD ROX MY WORLD ROX MY WORLD ROX MY WORLD ROX MY WORLD");
+		logs.add(
+				"ROX MY WORLD ROX MY WORLD ROX MY WORLDROX MY WORLD ROX MY WORLD ROX MY WORLD ROX MY WORLD ROX MY WORLD ROX MY WORLD ROX MY WORLD ROX MY WORLD ROX MY WORLD ROX MY WORLD ROX MY WORLD ROX MY WORLD ROX MY WORLD ROX MY WORLD ROX MY WORLD ROX MY WORLD ROX MY WORLD ROX MY WORLD");
+
 		logs.add("MOUNISH");
 		logs.add("SAHA");
 		logs.add("ROX MY WORLD");
@@ -30,7 +31,7 @@ public class Trial {
 		String error = "java.lang.AssertionError: expected:\u003cfalse\u003e but was:\u003ctrue\u003e\r\n\tat org.junit.Assert.fail(Assert.java:88)\r\n\tat org.junit.Assert.failNotEquals(Assert.java:834)\r\n\tat org.junit.Assert.assertEquals(Assert.java:118)\r\n\tat org.junit.Assert.assertEquals(Assert.java:144)\r\n\tat stepdefs.Stepdefs.raiseExcep(Stepdefs.java:110)\r\n\tat âœ½.Raise exception(classpath:stepdefs/exceptions.feature:12)\r\n";
 
 		String docString = "   Hello there how r u?\r\n" + "\r\n" + "   Doing great.\r\n" + "Whats new?\r\n" + "\r\n"
-				+ "Nothing much.";
+				+ "\tNothing much.";
 
 		List<String> medias = new ArrayList<>();
 		medias.add("src/main/resources/embedded1.png");
@@ -39,12 +40,37 @@ public class Trial {
 		medias.add("src/main/resources/embedded2.png");
 		medias.add("src/main/resources/embedded1.png");
 		medias.add("src/main/resources/embedded2.png");
-		medias.add("src/main/resources/embedded1.png");
-		medias.add("src/main/resources/embedded2.png");
+		// medias.add("src/main/resources/embedded1.png");
+		// medias.add("src/main/resources/embedded2.png");
+
+		List<Hook> befores = new ArrayList<>();
+		List<Hook> afters = new ArrayList<>();
+
+		Hook beforeHook = Hook.builder().hookType(HookType.BEFORE).location("before hook()").status(Status.PASSED)
+				.startTime(LocalDateTime.now()).endTime(LocalDateTime.now().plusSeconds(5)).output(logs)
+				.errorMessage(error).build();
+
+		Hook beforeStepHook = Hook.builder().hookType(HookType.BEFORE_STEP).location("before step hook()")
+				.status(Status.PASSED).startTime(LocalDateTime.now()).endTime(LocalDateTime.now().plusSeconds(5))
+				.output(logs).errorMessage(error).build();
+
+		Hook afterHook = Hook.builder().hookType(HookType.AFTER).location("after hook()").status(Status.PASSED)
+				.startTime(LocalDateTime.now()).endTime(LocalDateTime.now().plusSeconds(5)).output(logs)
+				.errorMessage(error).build();
+
+		Hook afterStepHook = Hook.builder().hookType(HookType.AFTER_STEP).location("after step hook()")
+				.status(Status.PASSED).startTime(LocalDateTime.now()).endTime(LocalDateTime.now().plusSeconds(5))
+				.output(logs).errorMessage(error).build();
+
+		befores.add(beforeHook);
+		befores.add(beforeStepHook);
+
+		afters.add(afterHook);
+		afters.add(afterStepHook);
 
 		Step step1 = Step.builder().keyword("Given").name("Step One").startTime(LocalDateTime.now())
 				.endTime(LocalDateTime.now().plusSeconds(25)).status(Status.PASSED).docString(docString).output(logs)
-				.errorMessage(error).media(medias).build();
+				.errorMessage(error).media(medias).before(befores).after(afters).build();
 		Step step2 = Step.builder().keyword("When").name("Step Two").startTime(LocalDateTime.now())
 				.endTime(LocalDateTime.now().plusSeconds(25)).status(Status.FAILED).build();
 		Step step3 = Step.builder().keyword("Then").name("Step Three").startTime(LocalDateTime.now())

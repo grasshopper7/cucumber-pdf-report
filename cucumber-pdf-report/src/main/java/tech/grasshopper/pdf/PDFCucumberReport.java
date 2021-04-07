@@ -21,6 +21,7 @@ import tech.grasshopper.pdf.font.ReportFont;
 import tech.grasshopper.pdf.outline.Outline;
 import tech.grasshopper.pdf.section.dashboard.Dashboard;
 import tech.grasshopper.pdf.section.details.DetailedSection;
+import tech.grasshopper.pdf.section.expanded.ExpandedSection;
 import tech.grasshopper.pdf.section.feature.FeatureSection;
 import tech.grasshopper.pdf.section.scenario.ScenarioSection;
 
@@ -84,6 +85,10 @@ public class PDFCucumberReport {
 
 		if (reportConfig.isDisplayDetailed())
 			DetailedSection.builder().displayData(reportData.getFeatureData()).reportConfig(reportConfig)
+					.document(document).build().createSection();
+
+		if (reportConfig.isDisplayDetailed())
+			ExpandedSection.builder().displayData(reportData.getExecutableData()).reportConfig(reportConfig)
 					.document(document).build().createSection();
 
 		Annotation.updateDestination(reportData);

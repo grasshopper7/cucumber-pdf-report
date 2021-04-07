@@ -16,6 +16,9 @@ import tech.grasshopper.pdf.section.details.executable.HookDisplay;
 @EqualsAndHashCode(callSuper = true)
 public class Hook extends TimeDetails implements Executable {
 
+	private Feature feature;
+	private Scenario scenario;
+
 	@Default
 	private List<String> output = new ArrayList<>();
 	@Default

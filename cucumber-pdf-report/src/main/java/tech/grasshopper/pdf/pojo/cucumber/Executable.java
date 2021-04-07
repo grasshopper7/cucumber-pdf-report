@@ -17,4 +17,12 @@ public interface Executable {
 	List<String> getMedia();
 
 	void checkData();
+
+	Feature getFeature();
+
+	void setFeature(Feature feature);
+
+	Scenario getScenario();
+
+	void setScenario(Scenario scenario);
 }
