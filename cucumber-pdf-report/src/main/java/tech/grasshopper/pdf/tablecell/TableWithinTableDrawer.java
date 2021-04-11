@@ -16,6 +16,7 @@ public class TableWithinTableDrawer extends AbstractCellDrawer<TableWithinTableC
 	@Override
 	public void drawContent(DrawingContext drawingContext) {
 		TableDrawer.builder().startX(drawingContext.getStartingPoint().x + this.cell.getPaddingLeft())
+				.page(drawingContext.getPage())
 				.startY(drawingContext.getStartingPoint().y + cell.getHeight() - this.cell.getPaddingTop())
 				.table(this.cell.getTable()).contentStream(drawingContext.getContentStream()).build().draw();
 	}
