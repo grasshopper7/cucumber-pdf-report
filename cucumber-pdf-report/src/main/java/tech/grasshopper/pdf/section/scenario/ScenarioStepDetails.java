@@ -118,17 +118,17 @@ public class ScenarioStepDetails extends Display {
 
 	private void createDataRows() {
 
-		final TextSanitizer sanitizer = TextSanitizer.builder().build();
+		TextSanitizer sanitizer = TextSanitizer.builder().build();
 		int sNo = paginationData.getItemFromIndex() + 1;
-		final ScenarioData scenarioData = (ScenarioData) displayData;
-		final List<Scenario> scenarios = scenarioData.getScenarios();
+		ScenarioData scenarioData = (ScenarioData) displayData;
+		List<Scenario> scenarios = scenarioData.getScenarios();
 
 		for (int i = 0; i < scenarios.size(); i++) {
-			final Scenario scenario = scenarios.get(i);
+			Scenario scenario = scenarios.get(i);
 
-			final String featureName = sanitizer
+			String featureName = sanitizer
 					.sanitizeText(featureNameTextOptimizer.optimizeTextLines(scenario.getFeature().getName()));
-			final String scenarioName = sanitizer
+			String scenarioName = sanitizer
 					.sanitizeText(scenarioNameTextOptimizer.optimizeTextLines(scenario.getName()));
 
 			if (featureNameTextOptimizer.isTextTrimmed() || scenarioNameTextOptimizer.isTextTrimmed())

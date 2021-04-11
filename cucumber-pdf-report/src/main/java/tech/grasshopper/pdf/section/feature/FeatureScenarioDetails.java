@@ -107,17 +107,16 @@ public class FeatureScenarioDetails extends Display {
 
 	private void createDataRows() {
 
-		final TextSanitizer sanitizer = TextSanitizer.builder().build();
+		TextSanitizer sanitizer = TextSanitizer.builder().build();
 		int sNo = paginationData.getItemFromIndex() + 1;
-		final FeatureData featureData = (FeatureData) displayData;
-		final List<Feature> features = featureData.getFeatures();
+		FeatureData featureData = (FeatureData) displayData;
+		List<Feature> features = featureData.getFeatures();
 
 		for (int i = 0; i < features.size(); i++) {
 			Feature feature = features.get(i);
 
-			final String featureName = sanitizer
-					.sanitizeText(featureNameTextOptimizer.optimizeTextLines(feature.getName()));
-			final Annotation annotation = Annotation.builder().title(featureName).build();
+			String featureName = sanitizer.sanitizeText(featureNameTextOptimizer.optimizeTextLines(feature.getName()));
+			Annotation annotation = Annotation.builder().title(featureName).build();
 
 			if (featureNameTextOptimizer.isTextTrimmed())
 				nameCropped = true;
