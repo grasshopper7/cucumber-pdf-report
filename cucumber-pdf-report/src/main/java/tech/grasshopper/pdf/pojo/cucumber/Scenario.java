@@ -12,7 +12,7 @@ import tech.grasshopper.pdf.exception.PdfReportException;
 @Data
 @SuperBuilder
 @EqualsAndHashCode(callSuper = true)
-public class Scenario extends NonExecutableEntity {
+public class Scenario extends NonExecutable {
 
 	private Feature feature;
 
@@ -41,8 +41,8 @@ public class Scenario extends NonExecutableEntity {
 		return hooks;
 	}
 
-	public List<ExecutableEntity> getStepsAndHooks() {
-		List<ExecutableEntity> executables = new ArrayList<>();
+	public List<Executable> getStepsAndHooks() {
+		List<Executable> executables = new ArrayList<>();
 
 		before.forEach(h -> executables.add(h));
 		steps.forEach(s -> {

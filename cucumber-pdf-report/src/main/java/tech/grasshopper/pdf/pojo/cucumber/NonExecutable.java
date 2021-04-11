@@ -13,7 +13,7 @@ import tech.grasshopper.pdf.destination.Destination;
 @Data
 @SuperBuilder
 @EqualsAndHashCode(callSuper = true)
-public abstract class NonExecutableEntity extends BaseEntity {
+public abstract class NonExecutable extends BaseEntity {
 
 	@Default
 	protected List<String> tags = new ArrayList<>();

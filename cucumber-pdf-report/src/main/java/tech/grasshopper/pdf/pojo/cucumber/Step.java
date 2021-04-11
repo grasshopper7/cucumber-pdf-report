@@ -14,7 +14,7 @@ import tech.grasshopper.pdf.section.details.executable.StepDisplay;
 @Data
 @SuperBuilder
 @EqualsAndHashCode(callSuper = true)
-public class Step extends ExecutableEntity {
+public class Step extends Executable {
 
 	private String keyword;
 

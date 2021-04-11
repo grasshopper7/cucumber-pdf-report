@@ -12,13 +12,13 @@ import lombok.Builder;
 import lombok.Setter;
 import tech.grasshopper.pdf.font.ReportFont;
 import tech.grasshopper.pdf.optimizer.TextSanitizer;
-import tech.grasshopper.pdf.pojo.cucumber.ExecutableEntity;
+import tech.grasshopper.pdf.pojo.cucumber.Executable;
 
 @Builder
 public class LogMessageDisplay {
 
 	@Setter
-	private ExecutableEntity executable;
+	private Executable executable;
 
 	@Setter
 	private Color color;

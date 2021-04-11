@@ -20,7 +20,7 @@ import lombok.SneakyThrows;
 import tech.grasshopper.pdf.annotation.Annotation;
 import tech.grasshopper.pdf.annotation.cell.TextLinkCell;
 import tech.grasshopper.pdf.font.ReportFont;
-import tech.grasshopper.pdf.pojo.cucumber.ExecutableEntity;
+import tech.grasshopper.pdf.pojo.cucumber.Executable;
 import tech.grasshopper.pdf.tablecell.TableWithinTableCell;
 
 @Data
@@ -28,7 +28,7 @@ import tech.grasshopper.pdf.tablecell.TableWithinTableCell;
 public class MediaDisplay {
 
 	@Setter
-	private ExecutableEntity executable;
+	private Executable executable;
 
 	@Setter
 	private PDDocument document;
@@ -68,7 +68,8 @@ public class MediaDisplay {
 			if (expandView) {
 				Annotation annotation = Annotation.builder().title(String.valueOf(i)).build();
 				rowBuilder.add(TextLinkCell.builder().text("+").annotation(annotation).font(ReportFont.REGULAR_FONT)
-						.fontSize(15).textColor(Color.RED).padding(0f).build());
+						.fontSize(15).textColor(Color.RED).showLine(false).padding(0f).build());
+				executable.addMediaAnnotation(annotation);
 			} else {
 				rowBuilder.add(TextCell.builder().text("").fontSize(0).padding(0f).build());
 			}

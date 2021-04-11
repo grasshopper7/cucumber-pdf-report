@@ -10,7 +10,7 @@ import tech.grasshopper.pdf.section.details.executable.HookDisplay;
 @Data
 @SuperBuilder
 @EqualsAndHashCode(callSuper = true)
-public class Hook extends ExecutableEntity {
+public class Hook extends Executable {
 
 	private HookType hookType;
 

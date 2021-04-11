@@ -12,7 +12,7 @@ import tech.grasshopper.pdf.exception.PdfReportException;
 @Data
 @SuperBuilder
 @EqualsAndHashCode(callSuper = true)
-public class Feature extends NonExecutableEntity {
+public class Feature extends NonExecutable {
 
 	@Default
 	private List<Scenario> scenarios = new ArrayList<>();
