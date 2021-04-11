@@ -5,7 +5,7 @@ import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.experimental.SuperBuilder;
 import tech.grasshopper.pdf.data.ExecutableData;
-import tech.grasshopper.pdf.pojo.cucumber.ExecutableEntity;
+import tech.grasshopper.pdf.pojo.cucumber.Executable;
 import tech.grasshopper.pdf.structure.Display;
 import tech.grasshopper.pdf.structure.PageCreator;
 import tech.grasshopper.pdf.structure.Section;
@@ -20,8 +20,6 @@ public class ExpandedSection extends Section {
 	@Getter
 	private ExecutableData detailedData;
 
-	private static final float GAP = 10f;
-
 	@Override
 	public void createSection() {
 
@@ -32,7 +30,7 @@ public class ExpandedSection extends Section {
 
 		float ylocation = Display.CONTENT_START_Y;
 
-		for (ExecutableEntity executable : detailedData.getExecutables()) {
+		for (Executable executable : detailedData.getExecutables()) {
 
 			if (!executable.getMedia().isEmpty()) {
 
@@ -40,7 +38,7 @@ public class ExpandedSection extends Section {
 						.ylocation(ylocation).document(document).reportConfig(reportConfig).build();
 				expandedMediaDisplay.display();
 
-				ylocation = expandedMediaDisplay.getFinalY() - GAP;
+				ylocation = expandedMediaDisplay.getFinalY();
 			}
 		}
 	}

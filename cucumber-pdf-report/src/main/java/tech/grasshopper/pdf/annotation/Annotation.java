@@ -12,6 +12,7 @@ import lombok.Setter;
 import lombok.SneakyThrows;
 import tech.grasshopper.pdf.data.ReportData;
 import tech.grasshopper.pdf.destination.Destination;
+import tech.grasshopper.pdf.pojo.cucumber.Executable;
 import tech.grasshopper.pdf.pojo.cucumber.Feature;
 import tech.grasshopper.pdf.pojo.cucumber.Scenario;
 
@@ -52,6 +53,13 @@ public class Annotation {
 				scenario.getAnnotations().forEach(a -> {
 					updateDestination(a, scenario.getDestination());
 				});
+
+				for (Executable executable : scenario.getStepsAndHooks()) {
+					for (int i = 0; i < executable.getMediaAnnotations().size(); i++) {
+						updateDestination(executable.getMediaAnnotations().get(i),
+								executable.getMediaDestinations().get(i));
+					}
+				}
 			}
 		}
 	}
