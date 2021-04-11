@@ -26,9 +26,12 @@ public class TextLinkCellDrawer<T extends TextLinkCell> extends TextCellDrawer<T
 
 	private Annotation annotation;
 
-	public TextLinkCellDrawer(T cell, Annotation annotation) {
+	private boolean showLine;
+
+	public TextLinkCellDrawer(T cell, Annotation annotation, boolean showLine) {
 		this.cell = cell;
 		this.annotation = annotation;
+		this.showLine = showLine;
 	}
 
 	@Override
@@ -66,12 +69,14 @@ public class TextLinkCellDrawer<T extends TextLinkCell> extends TextCellDrawer<T
 			drawText(drawingContext, PositionedStyledText.builder().x(xOffset).y(yOffset).text(line).font(currentFont)
 					.fontSize(currentFontSize).color(currentTextColor).build());
 
-			// Hack no logic with the denominator factor
-			float lineOffset = currentFontSize * currentFont.getFontDescriptor().getAscent() / 3000;
+			if (showLine) {
+				// Hack no logic with the denominator factor
+				float lineOffset = currentFontSize * currentFont.getFontDescriptor().getAscent() / 3000;
 
-			drawLine(drawingContext, PositionedLine.builder().startX(xOffset).endX(xOffset + textWidth)
-					.width(0.01f + currentFontSize * 0.05f).startY(yOffset - lineOffset).endY(yOffset - lineOffset)
-					.color(Color.BLACK).resetColor(currentTextColor).borderStyle(BorderStyle.SOLID).build());
+				drawLine(drawingContext, PositionedLine.builder().startX(xOffset).endX(xOffset + textWidth)
+						.width(0.01f + currentFontSize * 0.05f).startY(yOffset - lineOffset).endY(yOffset - lineOffset)
+						.color(Color.BLACK).resetColor(currentTextColor).borderStyle(BorderStyle.SOLID).build());
+			}
 		}
 
 		updateAnnotation(drawingContext);
@@ -87,7 +92,6 @@ public class TextLinkCellDrawer<T extends TextLinkCell> extends TextCellDrawer<T
 	}
 
 	private void updateAnnotation(DrawingContext drawingContext) {
-
 		annotation.setXBottom(drawingContext.getStartingPoint().x);
 		annotation.setYBottom(drawingContext.getStartingPoint().y);
 		annotation.setWidth(cell.getWidth());
