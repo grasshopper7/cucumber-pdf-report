@@ -71,9 +71,10 @@ public class ExpandedMediaDisplay extends Display implements DestinationAware {
 	public void display() {
 
 		PDPage initialPage = document.getPage(document.getNumberOfPages() - 1);
-		destinationY = (int) ylocation;
 
 		for (int i = 0; i < executable.getMedia().size(); i++) {
+
+			destinationY = (int) ylocation;
 
 			String media = executable.getMedia().get(i);
 			PDImageXObject image = PDImageXObject.createFromFile(media, document);
@@ -103,8 +104,7 @@ public class ExpandedMediaDisplay extends Display implements DestinationAware {
 			if (!initialPage.equals(page)) {
 				destinationY = (int) Display.CONTENT_START_Y;
 				initialPage = page;
-			} else
-				destinationY = (int) ylocation;
+			}
 
 			createDestination();
 		}
@@ -149,7 +149,6 @@ public class ExpandedMediaDisplay extends Display implements DestinationAware {
 
 	@Override
 	public void createDestination() {
-
 		Destination destination = Destination.builder().yCoord(destinationY).page(page).build();
 		executable.getMediaDestinations().add(destination);
 	}
