@@ -13,6 +13,7 @@ import lombok.SneakyThrows;
 import lombok.experimental.SuperBuilder;
 import tech.grasshopper.pdf.optimizer.TextSanitizer;
 import tech.grasshopper.pdf.pojo.cucumber.Executable;
+import tech.grasshopper.pdf.pojo.cucumber.Status;
 import tech.grasshopper.pdf.structure.Display;
 
 @Data
@@ -87,6 +88,10 @@ public abstract class ExecutableDisplay extends Display {
 	protected void displayStackTrace() {
 
 		if (executable.getErrorMessage() == null || executable.getErrorMessage().isEmpty())
+			return;
+
+		// Removing standard message from adapters. LAME HACK!!
+		if (executable.getStatus() == Status.SKIPPED && executable.getErrorMessage().equalsIgnoreCase("Step Skipped"))
 			return;
 
 		tableBuilder.addRow(Row.builder().add(dummyCellLeftBorder())

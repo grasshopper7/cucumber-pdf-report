@@ -54,6 +54,9 @@ public class StackTraceDisplay {
 						nonTraceLine = nonTraceLine + " " + line;
 				}
 			}
+
+			if (displayLines.isEmpty())
+				displayLines.add(executable.getErrorMessage());
 		}
 
 		if (!displayLines.isEmpty()) {
