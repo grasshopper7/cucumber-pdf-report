@@ -25,14 +25,18 @@ public class ExpandedSection extends Section {
 
 		detailedData = (ExecutableData) displayData;
 
-		PageCreator.builder().document(document).build()
-				.createLandscapePageWithHeaderAndNumberAndAddToDocument(SECTION_TITLE);
-
+		boolean initialPageAdded = false;
 		float ylocation = Display.CONTENT_START_Y;
 
 		for (Executable executable : detailedData.getExecutables()) {
 
 			if (!executable.getMedia().isEmpty()) {
+
+				if (!initialPageAdded) {
+					PageCreator.builder().document(document).build()
+							.createLandscapePageWithHeaderAndNumberAndAddToDocument(SECTION_TITLE);
+					initialPageAdded = true;
+				}
 
 				ExpandedMediaDisplay expandedMediaDisplay = ExpandedMediaDisplay.builder().executable(executable)
 						.ylocation(ylocation).document(document).reportConfig(reportConfig).build();
