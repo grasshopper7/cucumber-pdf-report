@@ -1,6 +1,11 @@
 # Changelog
 All notable changes to this project will be documented in this file.
 
+## 2.2.0 (2021-4-16)
+* Split details like stacks and logs and docstrings over multiple pages to save space [Issue 23](https://github.com/grasshopper7/cucumber-pdf-report/issues/23)
+* Display large sized images in separate section [Issue 24](https://github.com/grasshopper7/cucumber-pdf-report/issues/24)
+* Skip status message display [Issue 22](https://github.com/grasshopper7/cucumber-pdf-report/issues/22)
+
 ## 2.1.0 (2021-3-9)
 * Stop report creation if no features executed [Issue 21](https://github.com/grasshopper7/cucumber-pdf-report/issues/21)
 
