@@ -1,6 +1,10 @@
 # Changelog
 All notable changes to this project will be documented in this file.
 
+## 2.2.1 (2021-4-19)
+* Fix expanded section display logic [Issue 26](https://github.com/grasshopper7/cucumber-pdf-report/issues/26)
+* Reversed keyword display issue [Issue 11](https://github.com/grasshopper7/cucumber-pdf-report/issues/11)
+
 ## 2.2.0 (2021-4-16)
 * Split details like stacks and logs and docstrings over multiple pages to save space [Issue 23](https://github.com/grasshopper7/cucumber-pdf-report/issues/23)
 * Display large sized images in separate section [Issue 24](https://github.com/grasshopper7/cucumber-pdf-report/issues/24)
@@ -8,7 +12,6 @@ All notable changes to this project will be documented in this file.
 
 ## 2.1.0 (2021-3-9)
 * Stop report creation if no features executed [Issue 21](https://github.com/grasshopper7/cucumber-pdf-report/issues/21)
-
 
 ## 2.0.0 (2021-3-7)
 * Switch to landscape page for report [Issue 19](https://github.com/grasshopper7/cucumber-pdf-report/issues/19)
