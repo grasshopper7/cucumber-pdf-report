@@ -29,7 +29,7 @@ public class StepDisplay extends ExecutableDisplay {
 
 	@Override
 	public String executableName() {
-		return step.getKeyword() + " - " + step.getName();
+		return step.getName();
 	}
 
 	@Override

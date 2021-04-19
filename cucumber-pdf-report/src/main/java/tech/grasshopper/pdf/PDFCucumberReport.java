@@ -87,7 +87,7 @@ public class PDFCucumberReport {
 			DetailedSection.builder().displayData(reportData.getFeatureData()).reportConfig(reportConfig)
 					.document(document).build().createSection();
 
-		if (reportConfig.isDisplayDetailed())
+		if (reportConfig.isDisplayExpanded())
 			ExpandedSection.builder().displayData(reportData.getExecutableData()).reportConfig(reportConfig)
 					.document(document).build().createSection();
 
