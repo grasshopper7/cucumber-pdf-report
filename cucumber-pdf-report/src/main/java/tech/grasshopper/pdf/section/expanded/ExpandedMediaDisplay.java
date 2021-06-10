@@ -10,7 +10,9 @@ import org.vandeseer.easytable.settings.VerticalAlignment;
 import org.vandeseer.easytable.structure.Row;
 import org.vandeseer.easytable.structure.Table;
 import org.vandeseer.easytable.structure.Table.TableBuilder;
+import org.vandeseer.easytable.structure.cell.AbstractCell;
 import org.vandeseer.easytable.structure.cell.ImageCell;
+import org.vandeseer.easytable.structure.cell.TextCell;
 import org.vandeseer.easytable.structure.cell.paragraph.ParagraphCell;
 import org.vandeseer.easytable.structure.cell.paragraph.ParagraphCell.Paragraph;
 import org.vandeseer.easytable.structure.cell.paragraph.ParagraphCell.Paragraph.ParagraphBuilder;
@@ -127,24 +129,42 @@ public class ExpandedMediaDisplay extends Display implements DestinationAware {
 		return ParagraphCell.builder().paragraph(detailsBuilder.build()).lineSpacing(1.3f).build();
 	}
 
-	private TextLinkCell scenarioDetails(Executable executable) {
-		Annotation scenarioAnnotation = Annotation.builder().title(executable.getScenario().getName()).build();
-		executable.getScenario().addAnnotation(scenarioAnnotation);
+	private AbstractCell featureDetails(Executable executable) {
 
-		return TextLinkCell.builder()
-				.text(optimizer.optimizeTextLines("(S) " + sanitizer.sanitizeText(executable.getScenario().getName())))
-				.textColor(reportConfig.getDetailedScenarioConfig().scenarioNameColor()).annotation(scenarioAnnotation)
-				.build();
+		if (reportConfig.isDisplayDetailed() && reportConfig.isDisplayExpanded()) {
+			Annotation featureAnnotation = Annotation.builder()
+					.title(sanitizer.sanitizeText(executable.getFeature().getName())).build();
+			executable.getFeature().addAnnotation(featureAnnotation);
+
+			return TextLinkCell.builder()
+					.text(optimizer
+							.optimizeTextLines("(F) " + sanitizer.sanitizeText(executable.getFeature().getName())))
+					.textColor(reportConfig.getDetailedFeatureConfig().featureNameColor()).annotation(featureAnnotation)
+					.build();
+		}
+
+		return TextCell.builder()
+				.text(optimizer.optimizeTextLines("(F) " + sanitizer.sanitizeText(executable.getFeature().getName())))
+				.textColor(reportConfig.getDetailedFeatureConfig().featureNameColor()).build();
 	}
 
-	private TextLinkCell featureDetails(Executable executable) {
-		Annotation featureAnnotation = Annotation.builder().title(executable.getFeature().getName()).build();
-		executable.getFeature().addAnnotation(featureAnnotation);
+	private AbstractCell scenarioDetails(Executable executable) {
 
-		return TextLinkCell.builder()
-				.text(optimizer.optimizeTextLines("(F) " + sanitizer.sanitizeText(executable.getFeature().getName())))
-				.textColor(reportConfig.getDetailedFeatureConfig().featureNameColor()).annotation(featureAnnotation)
-				.build();
+		if (reportConfig.isDisplayDetailed() && reportConfig.isDisplayExpanded()) {
+			Annotation scenarioAnnotation = Annotation.builder()
+					.title(sanitizer.sanitizeText(executable.getScenario().getName())).build();
+			executable.getScenario().addAnnotation(scenarioAnnotation);
+
+			return TextLinkCell.builder()
+					.text(optimizer
+							.optimizeTextLines("(S) " + sanitizer.sanitizeText(executable.getScenario().getName())))
+					.textColor(reportConfig.getDetailedScenarioConfig().scenarioNameColor())
+					.annotation(scenarioAnnotation).build();
+		}
+
+		return TextCell.builder()
+				.text(optimizer.optimizeTextLines("(S) " + sanitizer.sanitizeText(executable.getScenario().getName())))
+				.textColor(reportConfig.getDetailedScenarioConfig().scenarioNameColor()).build();
 	}
 
 	@Override

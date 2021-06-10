@@ -67,13 +67,26 @@ public class Outline {
 			boolean anyExecutableHasMedia = false;
 
 			for (Feature feature : reportData.getFeatures()) {
-				PDOutlineItem featureOutline = createOutlineItem(feature.getDestination(),
-						TextLengthOptimizer.optimizeOutlineText(feature.getName()));
+
+				PDOutlineItem featureOutline = new PDOutlineItem();
+				if (reportConfig.isDisplayDetailed() && feature.getDestination() != null) {
+					featureOutline = createOutlineItem(feature.getDestination(),
+							TextLengthOptimizer.optimizeOutlineText(feature.getName()));
+				} else {
+					featureOutline.setTitle(TextLengthOptimizer.optimizeOutlineText(feature.getName()));
+				}
+
 				boolean executableHasMedia = false;
 
 				for (Scenario scenario : feature.getScenarios()) {
-					PDOutlineItem scenarioOutline = createOutlineItem(scenario.getDestination(),
-							TextLengthOptimizer.optimizeOutlineText(scenario.getName()));
+
+					PDOutlineItem scenarioOutline = new PDOutlineItem();
+					if (reportConfig.isDisplayDetailed() && scenario.getDestination() != null) {
+						scenarioOutline = createOutlineItem(scenario.getDestination(),
+								TextLengthOptimizer.optimizeOutlineText(scenario.getName()));
+					} else {
+						scenarioOutline.setTitle(TextLengthOptimizer.optimizeOutlineText(scenario.getName()));
+					}
 					featureOutline.addLast(scenarioOutline);
 
 					for (Executable executable : scenario.getStepsAndHooks()) {

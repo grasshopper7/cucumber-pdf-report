@@ -38,9 +38,10 @@ public class TextLengthOptimizer {
 
 	public String optimizeText(String text) {
 
-		if (doesTextFitInSpace(text))
+		if (doesTextFitInSpace(text)) {
+			textTrimmed = false;
 			return text;
-		else {
+		} else {
 			textTrimmed = true;
 			text = text.substring(0, text.length() - 2);
 		}
@@ -64,8 +65,10 @@ public class TextLengthOptimizer {
 			} else {
 				lines.set(maxLines - 1, lines.get(maxLines - 1) + " *");
 			}
-		} else
+		} else {
+			textTrimmed = false;
 			return text;
+		}
 
 		return lines.subList(0, maxLines).stream().collect(Collectors.joining(" "));
 	}

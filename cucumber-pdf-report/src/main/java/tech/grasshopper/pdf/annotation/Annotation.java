@@ -67,6 +67,9 @@ public class Annotation {
 	@SneakyThrows
 	private static void updateDestination(Annotation annotation, Destination destination) {
 
+		if (annotation == null || destination == null)
+			return;
+
 		PDActionGoTo action = new PDActionGoTo();
 		action.setDestination(destination.createPDPageDestination());
 		PDAnnotationLink link = annotation.createPDAnnotationLink();

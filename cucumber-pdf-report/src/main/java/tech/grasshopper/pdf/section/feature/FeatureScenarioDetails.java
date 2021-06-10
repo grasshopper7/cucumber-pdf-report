@@ -107,7 +107,6 @@ public class FeatureScenarioDetails extends Display {
 
 	private void createDataRows() {
 
-		TextSanitizer sanitizer = TextSanitizer.builder().build();
 		int sNo = paginationData.getItemFromIndex() + 1;
 		FeatureData featureData = (FeatureData) displayData;
 		List<Feature> features = featureData.getFeatures();
@@ -115,18 +114,12 @@ public class FeatureScenarioDetails extends Display {
 		for (int i = 0; i < features.size(); i++) {
 			Feature feature = features.get(i);
 
-			String featureName = sanitizer.sanitizeText(featureNameTextOptimizer.optimizeTextLines(feature.getName()));
-			Annotation annotation = Annotation.builder().title(featureName).build();
-
-			if (featureNameTextOptimizer.isTextTrimmed())
-				nameCropped = true;
-
 			tableBuilder.addRow(Row.builder().padding(DATA_PADDING).font(NAME_FONT).fontSize(NAME_FONT_SIZE)
 					.horizontalAlignment(HorizontalAlignment.CENTER).verticalAlignment(VerticalAlignment.TOP)
 
 					.add(TextCell.builder().text(String.valueOf(sNo)).fontSize(8).build())
 
-					.add(createFeatureNameCell(featureName, annotation))
+					.add(createFeatureNameCell(feature))
 
 					.add(TextCell.builder().text(String.valueOf(feature.getTotalScenarios()))
 							.textColor(reportConfig.getFeatureConfig().totalColor()).build())
@@ -141,8 +134,6 @@ public class FeatureScenarioDetails extends Display {
 							.textColor(reportConfig.getFeatureConfig().durationColor())
 							.horizontalAlignment(HorizontalAlignment.LEFT).build())
 					.build());
-
-			feature.addAnnotation(annotation);
 			sNo++;
 		}
 	}
@@ -155,13 +146,22 @@ public class FeatureScenarioDetails extends Display {
 		tableDrawer.displayTable();
 	}
 
-	private AbstractCell createFeatureNameCell(String title, Annotation annotation) {
+	private AbstractCell createFeatureNameCell(Feature feature) {
+
+		TextSanitizer sanitizer = TextSanitizer.builder().build();
+		String featureName = sanitizer.sanitizeText(featureNameTextOptimizer.optimizeTextLines(feature.getName()));
+
+		if (featureNameTextOptimizer.isTextTrimmed())
+			nameCropped = true;
 
 		if (reportConfig.isDisplayFeature() && reportConfig.isDisplayDetailed()) {
-			return TextLinkCell.builder().annotation(annotation).text(title)
+			Annotation annotation = Annotation.builder().title(sanitizer.sanitizeText(feature.getName())).build();
+			feature.addAnnotation(annotation);
+
+			return TextLinkCell.builder().annotation(annotation).text(featureName)
 					.horizontalAlignment(HorizontalAlignment.LEFT).build();
 		}
-		return TextCell.builder().text(title).horizontalAlignment(HorizontalAlignment.LEFT).build();
+		return TextCell.builder().text(featureName).horizontalAlignment(HorizontalAlignment.LEFT).build();
 	}
 
 	private void croppedMessageDisplay() {

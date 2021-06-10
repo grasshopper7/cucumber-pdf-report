@@ -23,6 +23,7 @@ import tech.grasshopper.pdf.data.ScenarioData;
 import tech.grasshopper.pdf.font.ReportFont;
 import tech.grasshopper.pdf.optimizer.TextLengthOptimizer;
 import tech.grasshopper.pdf.optimizer.TextSanitizer;
+import tech.grasshopper.pdf.pojo.cucumber.Feature;
 import tech.grasshopper.pdf.pojo.cucumber.Scenario;
 import tech.grasshopper.pdf.structure.Display;
 import tech.grasshopper.pdf.structure.PageCreator;
@@ -118,7 +119,6 @@ public class ScenarioStepDetails extends Display {
 
 	private void createDataRows() {
 
-		TextSanitizer sanitizer = TextSanitizer.builder().build();
 		int sNo = paginationData.getItemFromIndex() + 1;
 		ScenarioData scenarioData = (ScenarioData) displayData;
 		List<Scenario> scenarios = scenarioData.getScenarios();
@@ -126,24 +126,15 @@ public class ScenarioStepDetails extends Display {
 		for (int i = 0; i < scenarios.size(); i++) {
 			Scenario scenario = scenarios.get(i);
 
-			String featureName = sanitizer
-					.sanitizeText(featureNameTextOptimizer.optimizeTextLines(scenario.getFeature().getName()));
-			String scenarioName = sanitizer
-					.sanitizeText(scenarioNameTextOptimizer.optimizeTextLines(scenario.getName()));
-
 			if (featureNameTextOptimizer.isTextTrimmed() || scenarioNameTextOptimizer.isTextTrimmed())
 				nameCropped = true;
-
-			Annotation featureAnnotation = Annotation.builder().title(featureName).build();
-			Annotation scenarioAnnotation = Annotation.builder().title(scenarioName).build();
 
 			tableBuilder.addRow(Row.builder().padding(DATA_PADDING).font(NAME_FONT).fontSize(NAME_FONT_SIZE)
 					.horizontalAlignment(HorizontalAlignment.CENTER).verticalAlignment(VerticalAlignment.TOP)
 
 					.add(TextCell.builder().text(String.valueOf(sNo)).fontSize(8).build())
 
-					.add(createNameCell(featureName, featureAnnotation))
-					.add(createNameCell(scenarioName, scenarioAnnotation))
+					.add(createFeatureNameCell(scenario.getFeature())).add(createScenarioNameCell(scenario))
 
 					.add(TextCell.builder().text(String.valueOf(scenario.getTotalSteps()))
 							.textColor(reportConfig.getFeatureConfig().totalColor()).build())
@@ -158,10 +149,6 @@ public class ScenarioStepDetails extends Display {
 							.textColor(reportConfig.getFeatureConfig().durationColor())
 							.horizontalAlignment(HorizontalAlignment.LEFT).build())
 					.build());
-
-			scenario.getFeature().addAnnotation(featureAnnotation);
-			scenario.addAnnotation(scenarioAnnotation);
-
 			sNo++;
 		}
 	}
@@ -174,13 +161,40 @@ public class ScenarioStepDetails extends Display {
 		tableDrawer.displayTable();
 	}
 
-	private AbstractCell createNameCell(String title, Annotation annotation) {
+	private AbstractCell createFeatureNameCell(Feature feature) {
+
+		TextSanitizer sanitizer = TextSanitizer.builder().build();
+		String featureName = sanitizer.sanitizeText(featureNameTextOptimizer.optimizeTextLines(feature.getName()));
+
+		if (featureNameTextOptimizer.isTextTrimmed())
+			nameCropped = true;
 
 		if (reportConfig.isDisplayScenario() && reportConfig.isDisplayDetailed()) {
-			return TextLinkCell.builder().annotation(annotation).text(title)
+			Annotation annotation = Annotation.builder().title(sanitizer.sanitizeText(feature.getName())).build();
+			feature.addAnnotation(annotation);
+
+			return TextLinkCell.builder().annotation(annotation).text(featureName)
 					.horizontalAlignment(HorizontalAlignment.LEFT).build();
 		}
-		return TextCell.builder().text(title).horizontalAlignment(HorizontalAlignment.LEFT).build();
+		return TextCell.builder().text(featureName).horizontalAlignment(HorizontalAlignment.LEFT).build();
+	}
+
+	private AbstractCell createScenarioNameCell(Scenario scenario) {
+
+		TextSanitizer sanitizer = TextSanitizer.builder().build();
+		String scenarioName = sanitizer.sanitizeText(scenarioNameTextOptimizer.optimizeTextLines(scenario.getName()));
+
+		if (scenarioNameTextOptimizer.isTextTrimmed())
+			nameCropped = true;
+
+		if (reportConfig.isDisplayScenario() && reportConfig.isDisplayDetailed()) {
+			Annotation annotation = Annotation.builder().title(sanitizer.sanitizeText(scenario.getName())).build();
+			scenario.addAnnotation(annotation);
+
+			return TextLinkCell.builder().annotation(annotation).text(scenarioName)
+					.horizontalAlignment(HorizontalAlignment.LEFT).build();
+		}
+		return TextCell.builder().text(scenarioName).horizontalAlignment(HorizontalAlignment.LEFT).build();
 	}
 
 	private void croppedMessageDisplay() {
