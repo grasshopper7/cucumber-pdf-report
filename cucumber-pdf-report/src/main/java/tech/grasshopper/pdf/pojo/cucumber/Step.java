@@ -56,9 +56,6 @@ public class Step extends Executable {
 		if (keyword == null || keyword.isEmpty())
 			throw new PdfReportException("Keyword is null or empty for step - " + getName());
 
-		if (location == null || location.isEmpty())
-			throw new PdfReportException("Location is null or empty for step - " + getName());
-
 		if (status == null)
 			throw new PdfReportException("No status present for step - " + getName());
 

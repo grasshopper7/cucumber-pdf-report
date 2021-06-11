@@ -49,6 +49,7 @@ public class PDFCucumberReport {
 		createReportDirectory(this.reportFile.getParent());
 		collectReportConfiguration();
 		reportData.populateSectionData();
+		reportData.checkData();
 	}
 
 	private void createReportDirectory(String reportDirectory) {
