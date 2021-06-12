@@ -54,6 +54,9 @@ public class ReportData {
 
 	private void populateCounts() {
 
+		if (features == null || features.size() == 0)
+			throw new PdfReportException("No features present in test execution.");
+
 		for (Feature feature : features) {
 
 			for (Scenario scenario : feature.getScenarios()) {

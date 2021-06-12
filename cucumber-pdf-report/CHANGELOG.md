@@ -1,6 +1,9 @@
 # Changelog
 All notable changes to this project will be documented in this file.
 
+## 2.2.3 (2021-6-12)
+* Additional check in case of no feature executed [Issue 29](https://github.com/grasshopper7/cucumber-pdf-report/issues/29)
+
 ## 2.2.2 (2021-6-11)
 * Fix errors when detailedsection is set to false [Issue 28](https://github.com/grasshopper7/cucumber-pdf-report/issues/28)
 * Fix checkdata function not called [Issue 29](https://github.com/grasshopper7/cucumber-pdf-report/issues/29)
