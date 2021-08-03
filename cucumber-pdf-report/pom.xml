@@ -5,6 +5,7 @@
 	<groupId>tech.grasshopper</groupId>
 	<artifactId>cucumber-pdf-report</artifactId>
 	<version>2.2.4</version>
+	<url>https://ghchirp.tech/2224</url>
 	<description>Generates Cucumber execution report in PDF format
 	</description>
 

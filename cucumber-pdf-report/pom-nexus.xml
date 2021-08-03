@@ -7,7 +7,7 @@
 	<artifactId>cucumber-pdf-report</artifactId>
 	<version>2.2.4</version>
 	<name>cucumber-pdf-report</name>
-	<url>https://ghchirp.tech</url>
+	<url>https://ghchirp.tech/2224</url>
 	<description>Generates Cucumber execution report in PDF format
 	</description>
 
