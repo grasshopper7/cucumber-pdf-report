@@ -21,6 +21,9 @@ import tech.grasshopper.pdf.font.ReportFont;
 import tech.grasshopper.pdf.outline.Outline;
 import tech.grasshopper.pdf.section.dashboard.Dashboard;
 import tech.grasshopper.pdf.section.details.DetailedSection;
+import tech.grasshopper.pdf.section.details.executable.MediaCleanup;
+import tech.grasshopper.pdf.section.details.executable.MediaCleanup.CleanupType;
+import tech.grasshopper.pdf.section.details.executable.MediaCleanup.MediaCleanupOption;
 import tech.grasshopper.pdf.section.expanded.ExpandedSection;
 import tech.grasshopper.pdf.section.feature.FeatureSection;
 import tech.grasshopper.pdf.section.scenario.ScenarioSection;
@@ -34,16 +37,26 @@ public class PDFCucumberReport {
 	private PDDocument document;
 	private DestinationStore destinations;
 	private ReportConfig reportConfig;
+	private MediaCleanupOption mediaCleanupOption;
 
 	public PDFCucumberReport(ReportData reportData, String reportDirectory) {
-		this(reportData, new File(reportDirectory + "/report.pdf"));
+		this(reportData, reportDirectory, MediaCleanupOption.builder().cleanUpType(CleanupType.NONE).build());
 	}
 
 	public PDFCucumberReport(ReportData reportData, File reportFile) {
+		this(reportData, reportFile, MediaCleanupOption.builder().cleanUpType(CleanupType.NONE).build());
+	}
+
+	public PDFCucumberReport(ReportData reportData, String reportDirectory, MediaCleanupOption mediaCleanupOption) {
+		this(reportData, new File(reportDirectory + "/report.pdf"), mediaCleanupOption);
+	}
+
+	public PDFCucumberReport(ReportData reportData, File reportFile, MediaCleanupOption mediaCleanupOption) {
 		this.reportData = reportData;
 		this.reportFile = reportFile;
 		this.document = new PDDocument();
 		this.destinations = new DestinationStore();
+		this.mediaCleanupOption = mediaCleanupOption;
 
 		ReportFont.loadReportFontFamily(document);
 		createReportDirectory(this.reportFile.getParent());
@@ -95,6 +108,9 @@ public class PDFCucumberReport {
 		Annotation.updateDestination(reportData);
 
 		Outline.createDocumentOutline(document, reportConfig, destinations, reportData);
+
+		MediaCleanup.builder().executableData(reportData.getExecutableData()).mediaCleanupOption(mediaCleanupOption)
+				.build().deleteMedia();
 
 		try {
 			document.save(reportFile);
