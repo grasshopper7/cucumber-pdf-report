@@ -1,10 +1,12 @@
 package tech.grasshopper.pdf.section.details.executable;
 
+import static tech.grasshopper.pdf.section.details.executable.DummyCellDisplay.dummyCellLeftBorder;
+import static tech.grasshopper.pdf.section.details.executable.DummyCellDisplay.dummyCellRightBorder;
+
 import java.awt.Color;
 
 import org.vandeseer.easytable.structure.Row;
 import org.vandeseer.easytable.structure.Table.TableBuilder;
-import org.vandeseer.easytable.structure.cell.AbstractCell;
 import org.vandeseer.easytable.structure.cell.TextCell;
 
 import lombok.Data;
@@ -79,10 +81,15 @@ public abstract class ExecutableDisplay extends Display {
 		if (executable.getOutput().isEmpty())
 			return;
 
-		tableBuilder.addRow(Row.builder().add(dummyCellLeftBorder())
-				.add(LogMessageDisplay.builder().executable(executable)
-						.color(reportConfig.getDetailedStepHookConfig().logMsgColor()).build().display())
-				.add(dummyCellRightBorder()).add(dummyCellRightBorder()).build());
+		/*
+		 * tableBuilder.addRow(Row.builder().add(dummyCellLeftBorder())
+		 * .add(LogMessageDisplay.builder().executable(executable)
+		 * .color(reportConfig.getDetailedStepHookConfig().logMsgColor()).build().
+		 * display()) .add(dummyCellRightBorder()).add(dummyCellRightBorder()).build());
+		 */
+
+		LogMessageDisplay.builder().executable(executable).tableBuilder(tableBuilder)
+				.color(reportConfig.getDetailedStepHookConfig().logMsgColor()).build().display();
 	}
 
 	protected void displayStackTrace() {
@@ -112,11 +119,13 @@ public abstract class ExecutableDisplay extends Display {
 				.add(dummyCellRightBorder()).add(dummyCellRightBorder()).build());
 	}
 
-	protected AbstractCell dummyCellLeftBorder() {
-		return TextCell.builder().text("").fontSize(0).borderColor(Color.GRAY).borderWidthLeft(1f).build();
-	}
-
-	protected AbstractCell dummyCellRightBorder() {
-		return TextCell.builder().text("").fontSize(0).borderColor(Color.GRAY).borderWidthRight(1f).build();
-	}
+	/*
+	 * protected AbstractCell dummyCellLeftBorder() { return
+	 * TextCell.builder().text("").fontSize(0).borderColor(Color.GRAY).
+	 * borderWidthLeft(1f).build(); }
+	 * 
+	 * protected AbstractCell dummyCellRightBorder() { return
+	 * TextCell.builder().text("").fontSize(0).borderColor(Color.GRAY).
+	 * borderWidthRight(1f).build(); }
+	 */
 }

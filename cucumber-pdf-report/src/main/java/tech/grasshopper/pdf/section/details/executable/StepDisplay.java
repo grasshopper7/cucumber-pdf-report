@@ -1,5 +1,8 @@
 package tech.grasshopper.pdf.section.details.executable;
 
+import static tech.grasshopper.pdf.section.details.executable.DummyCellDisplay.dummyCellLeftBorder;
+import static tech.grasshopper.pdf.section.details.executable.DummyCellDisplay.dummyCellRightBorder;
+
 import java.awt.Color;
 
 import org.vandeseer.easytable.structure.Row;
