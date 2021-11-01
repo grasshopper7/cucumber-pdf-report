@@ -1,6 +1,10 @@
 # Changelog
 All notable changes to this project will be documented in this file.
 
+## 2.3.0 (2021-8-3)
+* Display html table content in tabular format [Issue 31](https://github.com/grasshopper7/cucumber-pdf-report/issues/31)
+
+
 ## 2.2.4 (2021-8-3)
 * Delete temporary images created for base64 strings [Issue 30](https://github.com/grasshopper7/cucumber-pdf-report/issues/30)
 
