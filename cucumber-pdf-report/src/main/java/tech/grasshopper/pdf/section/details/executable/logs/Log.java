@@ -3,7 +3,6 @@ package tech.grasshopper.pdf.section.details.executable.logs;
 import java.awt.Color;
 
 import org.vandeseer.easytable.structure.cell.AbstractCell;
-import org.vandeseer.easytable.structure.cell.TextCell;
 
 import lombok.Setter;
 import lombok.experimental.SuperBuilder;
@@ -23,12 +22,13 @@ public class Log {
 	protected final TextSanitizer sanitizer = TextSanitizer.builder().build();
 
 	public AbstractCell display() {
-
-		if (content.trim().startsWith("<table"))
-			return TableLog.builder().content(content).color(color).build().display();
-
-		return TextCell.builder().text(content).textColor(color).fontSize(fontsize).borderColor(Color.GRAY)
-				.borderWidthLeft(1f).borderWidthRight(1f).build();
+		return logType(content, color).display();
 	}
 
+	private static Log logType(String content, Color color) {
+		if (content.contains("<table"))
+			return TableLog.builder().content(content).color(color).build();
+
+		return TextLog.builder().content(content).color(color).build();
+	}
 }
