@@ -12,7 +12,16 @@ public class TextLog extends Log {
 
 	@Override
 	public AbstractCell display() {
-		return TextCell.builder().text(sanitizer.sanitizeText(content)).textColor(color).fontSize(fontsize)
-				.borderColor(Color.GRAY).borderWidthLeft(1f).borderWidthRight(1f).build();
+
+		String sanitizedText = sanitizer.sanitizeText(content);
+		String message = sanitizer.getStripMessage();
+
+		if (!message.isEmpty())
+			sanitizedText = sanitizedText.concat(System.lineSeparator()).concat(message);
+
+		System.out.println(sanitizedText);
+
+		return TextCell.builder().text(sanitizedText).textColor(color).fontSize(fontsize).borderColor(Color.GRAY)
+				.borderWidthLeft(1f).borderWidthRight(1f).build();
 	}
 }
