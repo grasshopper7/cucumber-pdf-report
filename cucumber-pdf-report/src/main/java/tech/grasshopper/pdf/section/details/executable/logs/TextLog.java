@@ -19,8 +19,6 @@ public class TextLog extends Log {
 		if (!message.isEmpty())
 			sanitizedText = sanitizedText.concat(System.lineSeparator()).concat(message);
 
-		System.out.println(sanitizedText);
-
 		return TextCell.builder().text(sanitizedText).textColor(color).fontSize(fontsize).borderColor(Color.GRAY)
 				.borderWidthLeft(1f).borderWidthRight(1f).build();
 	}
