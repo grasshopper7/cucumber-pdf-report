@@ -21,6 +21,8 @@ public class TableLog extends Log {
 	@Override
 	public AbstractCell display() {
 
+		String displayOriginal = " Displaying original content.";
+
 		try {
 			List<Row> rows = collectCellData();
 
@@ -30,10 +32,11 @@ public class TableLog extends Log {
 			return TableCellWithMessage.builder().rows(rows).columnTextWidths(columnTextWidths).fontsize(fontsize)
 					.textColor(color).build().createTableCell();
 		} catch (TableCellSpanException e) {
-			String message = e.getMessage().concat(System.lineSeparator()).concat(content);
+			String message = e.getMessage().concat(displayOriginal).concat(System.lineSeparator()).concat(content);
 			return TextLog.builder().content(message).color(color).build().display();
 		} catch (Exception e) {
-			String message = "Exception occured in displaying log.".concat(System.lineSeparator()).concat(content);
+			String message = "Exception occured in displaying log.".concat(displayOriginal)
+					.concat(System.lineSeparator()).concat(content);
 			return TextLog.builder().content(message).color(color).build().display();
 		}
 	}
