@@ -32,11 +32,11 @@ public class PDFCucumberReport {
 
 	private static final Logger logger = Logger.getLogger(PDFCucumberReport.class.getName());
 
-	private ReportData reportData;
-	private File reportFile;
-	private PDDocument document;
+	protected ReportData reportData;
+	protected File reportFile;
+	protected PDDocument document;
 	private DestinationStore destinations;
-	private ReportConfig reportConfig;
+	protected ReportConfig reportConfig;
 	private MediaCleanupOption mediaCleanupOption;
 
 	public PDFCucumberReport(ReportData reportData, String reportDirectory) {
@@ -86,26 +86,17 @@ public class PDFCucumberReport {
 
 	public void createReport() {
 
-		Dashboard.builder().displayData(reportData.getSummaryData()).reportConfig(reportConfig).document(document)
-				.destinations(destinations).build().createSection();
+		createDashboardSection();
 
-		if (reportConfig.isDisplayFeature())
-			FeatureSection.builder().displayData(reportData.getFeatureData()).reportConfig(reportConfig)
-					.document(document).destinations(destinations).build().createSection();
+		createFeatureSection();
 
-		if (reportConfig.isDisplayScenario())
-			ScenarioSection.builder().displayData(reportData.getScenarioData()).reportConfig(reportConfig)
-					.document(document).destinations(destinations).build().createSection();
+		createScenarioSection();
 
-		if (reportConfig.isDisplayDetailed())
-			DetailedSection.builder().displayData(reportData.getFeatureData()).reportConfig(reportConfig)
-					.document(document).build().createSection();
+		createDetailedSection();
 
-		if (reportConfig.isDisplayExpanded())
-			ExpandedSection.builder().displayData(reportData.getExecutableData()).reportConfig(reportConfig)
-					.document(document).build().createSection();
+		createExpandedSection();
 
-		Annotation.updateDestination(reportData);
+		processAnnotations();
 
 		Outline.createDocumentOutline(document, reportConfig, destinations, reportData);
 
@@ -119,5 +110,38 @@ public class PDFCucumberReport {
 			logger.log(Level.SEVERE, "An exception occurred", e);
 			throw new PdfReportException(e);
 		}
+	}
+
+	protected void createDashboardSection() {
+		Dashboard.builder().displayData(reportData.getSummaryData()).reportConfig(reportConfig).document(document)
+				.destinations(destinations).build().createSection();
+	}
+
+	protected void createFeatureSection() {
+		if (reportConfig.isDisplayFeature())
+			FeatureSection.builder().displayData(reportData.getFeatureData()).reportConfig(reportConfig)
+					.document(document).destinations(destinations).build().createSection();
+	}
+
+	protected void createScenarioSection() {
+		if (reportConfig.isDisplayScenario())
+			ScenarioSection.builder().displayData(reportData.getScenarioData()).reportConfig(reportConfig)
+					.document(document).destinations(destinations).build().createSection();
+	}
+
+	protected void createDetailedSection() {
+		if (reportConfig.isDisplayDetailed())
+			DetailedSection.builder().displayData(reportData.getFeatureData()).reportConfig(reportConfig)
+					.document(document).build().createSection();
+	}
+
+	protected void createExpandedSection() {
+		if (reportConfig.isDisplayExpanded())
+			ExpandedSection.builder().displayData(reportData.getExecutableData()).reportConfig(reportConfig)
+					.document(document).build().createSection();
+	}
+
+	protected void processAnnotations() {
+		Annotation.updateDestination(reportData);
 	}
 }

@@ -19,9 +19,11 @@ public class DetailedSection extends Section {
 	static final String SECTION_TITLE = "DETAILED SECTION";
 
 	@Getter
-	private FeatureData detailedData;
+	protected FeatureData detailedData;
 
-	private static final float GAP = 10f;
+	protected static final float GAP = 10f;
+
+	protected static float ylocation = Display.CONTENT_START_Y;
 
 	@Override
 	public void createSection() {
@@ -31,7 +33,7 @@ public class DetailedSection extends Section {
 		PageCreator.builder().document(document).build()
 				.createLandscapePageWithHeaderAndNumberAndAddToDocument(SECTION_TITLE);
 
-		float ylocation = Display.CONTENT_START_Y;
+		// float ylocation = Display.CONTENT_START_Y;
 
 		for (Feature feature : detailedData.getFeatures()) {
 
@@ -41,6 +43,8 @@ public class DetailedSection extends Section {
 
 			ylocation = featureDisplay.getFinalY() - GAP;
 
+			featureAdditionalInfoDisplay(feature);
+
 			for (Scenario scenario : feature.getScenarios()) {
 
 				DetailedScenarioDisplay scenarioDisplay = DetailedScenarioDisplay.builder().feature(feature)
@@ -48,6 +52,8 @@ public class DetailedSection extends Section {
 				scenarioDisplay.display();
 
 				ylocation = scenarioDisplay.getFinalY() - GAP;
+
+				scenarioAdditionalInfoDisplay(scenario);
 
 				DetailedStepHookDisplay stepHookDisplay = DetailedStepHookDisplay.builder()
 						.executables(scenario.getStepsAndHooks()).ylocation(ylocation).document(document)
@@ -57,5 +63,15 @@ public class DetailedSection extends Section {
 				ylocation = stepHookDisplay.getFinalY() - GAP;
 			}
 		}
+	}
+
+	// Overwritten in specialized implementation eg. rest assured
+	protected void featureAdditionalInfoDisplay(Feature feature) {
+
+	}
+
+	// Overwritten in specialized implementation eg. rest assured
+	protected void scenarioAdditionalInfoDisplay(Scenario scenario) {
+
 	}
 }
