@@ -81,13 +81,6 @@ public abstract class ExecutableDisplay extends Display {
 		if (executable.getOutput().isEmpty())
 			return;
 
-		/*
-		 * tableBuilder.addRow(Row.builder().add(dummyCellLeftBorder())
-		 * .add(LogMessageDisplay.builder().executable(executable)
-		 * .color(reportConfig.getDetailedStepHookConfig().logMsgColor()).build().
-		 * display()) .add(dummyCellRightBorder()).add(dummyCellRightBorder()).build());
-		 */
-
 		LogMessageDisplay.builder().executable(executable).tableBuilder(tableBuilder)
 				.color(reportConfig.getDetailedStepHookConfig().logMsgColor()).build().display();
 	}
@@ -115,17 +108,8 @@ public abstract class ExecutableDisplay extends Display {
 
 		tableBuilder.addRow(Row.builder().add(dummyCellLeftBorder())
 				.add(MediaDisplay.builder().executable(executable).document(document)
-						.expandView(reportConfig.isDisplayExpanded()).build().display())
+						.expandView(reportConfig.isDisplayExpanded()).attachView(reportConfig.isDisplayAttached())
+						.build().display())
 				.add(dummyCellRightBorder()).add(dummyCellRightBorder()).build());
 	}
-
-	/*
-	 * protected AbstractCell dummyCellLeftBorder() { return
-	 * TextCell.builder().text("").fontSize(0).borderColor(Color.GRAY).
-	 * borderWidthLeft(1f).build(); }
-	 * 
-	 * protected AbstractCell dummyCellRightBorder() { return
-	 * TextCell.builder().text("").fontSize(0).borderColor(Color.GRAY).
-	 * borderWidthRight(1f).build(); }
-	 */
 }

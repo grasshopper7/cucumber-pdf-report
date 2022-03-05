@@ -18,7 +18,7 @@ import tech.grasshopper.pdf.font.ReportFont;
 import tech.grasshopper.pdf.optimizer.TextLengthOptimizer;
 import tech.grasshopper.pdf.optimizer.TextSanitizer;
 import tech.grasshopper.pdf.pojo.cucumber.Row;
-import tech.grasshopper.pdf.tablecell.TableWithinTableCell;
+import tech.grasshopper.pdf.structure.cell.TableWithinTableCell;
 
 @Builder
 public class TableCellWithMessage {

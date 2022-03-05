@@ -12,7 +12,8 @@ import org.apache.pdfbox.pdmodel.PDDocument;
 import org.yaml.snakeyaml.Yaml;
 import org.yaml.snakeyaml.constructor.Constructor;
 
-import tech.grasshopper.pdf.annotation.Annotation;
+import tech.grasshopper.pdf.annotation.AnnotationProcessor;
+import tech.grasshopper.pdf.annotation.FileAnnotationProcessor;
 import tech.grasshopper.pdf.config.ReportConfig;
 import tech.grasshopper.pdf.data.ReportData;
 import tech.grasshopper.pdf.destination.Destination.DestinationStore;
@@ -96,7 +97,9 @@ public class PDFCucumberReport {
 
 		createExpandedSection();
 
-		processAnnotations();
+		processDestinationAnnotations();
+
+		processFileAnnotations();
 
 		Outline.createDocumentOutline(document, reportConfig, destinations, reportData);
 
@@ -141,7 +144,11 @@ public class PDFCucumberReport {
 					.document(document).build().createSection();
 	}
 
-	protected void processAnnotations() {
-		Annotation.updateDestination(reportData);
+	protected void processDestinationAnnotations() {
+		AnnotationProcessor.builder().reportData(reportData).build().updateDestination();
+	}
+
+	protected void processFileAnnotations() {
+		FileAnnotationProcessor.builder().reportData(reportData).document(document).build().updateAttachments();
 	}
 }

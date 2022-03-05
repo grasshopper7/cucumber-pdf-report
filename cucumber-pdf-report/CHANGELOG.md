@@ -1,6 +1,10 @@
 # Changelog
 All notable changes to this project will be documented in this file.
 
+## 2.5.0 (2022-3-4)
+* Removed duplicate code which is present in table-layout dependency
+* File attachment option added for executables
+
 ## 2.4.0 (2022-3-2)
 * Refactored for Rest Assured pdf report
 

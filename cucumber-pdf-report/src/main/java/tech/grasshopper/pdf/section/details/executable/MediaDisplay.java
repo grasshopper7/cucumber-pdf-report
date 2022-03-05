@@ -1,6 +1,7 @@
 package tech.grasshopper.pdf.section.details.executable;
 
 import java.awt.Color;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.pdfbox.pdmodel.PDDocument;
@@ -18,10 +19,12 @@ import lombok.Data;
 import lombok.Setter;
 import lombok.SneakyThrows;
 import tech.grasshopper.pdf.annotation.Annotation;
-import tech.grasshopper.pdf.annotation.cell.TextLinkCell;
+import tech.grasshopper.pdf.annotation.FileAnnotation;
 import tech.grasshopper.pdf.font.ReportFont;
 import tech.grasshopper.pdf.pojo.cucumber.Executable;
-import tech.grasshopper.pdf.tablecell.TableWithinTableCell;
+import tech.grasshopper.pdf.structure.cell.TableWithinTableCell;
+import tech.grasshopper.pdf.structure.cell.TextFileLinkCell;
+import tech.grasshopper.pdf.structure.cell.TextLinkCell;
 
 @Data
 @Builder
@@ -35,6 +38,9 @@ public class MediaDisplay {
 
 	@Setter
 	private boolean expandView;
+
+	@Setter
+	private boolean attachView;
 
 	private static final int MAX_MEDIA_COUNT_PER_ROW = 4;
 
@@ -69,7 +75,13 @@ public class MediaDisplay {
 				Annotation annotation = Annotation.builder().title(String.valueOf(i)).build();
 				rowBuilder.add(TextLinkCell.builder().text("+").annotation(annotation).font(ReportFont.REGULAR_FONT)
 						.fontSize(15).textColor(Color.RED).showLine(false).padding(0f).build());
-				executable.addMediaAnnotation(annotation);
+				executable.addAnnotation(annotation);
+			} else if (attachView) {
+				// Change drawer code for a single file annotation.
+				List<FileAnnotation> annotations = new ArrayList<>();
+				annotations.add(FileAnnotation.builder().text(" ").link(medias.get(i)).build());
+				rowBuilder.add(TextFileLinkCell.builder().text(" ").annotations(annotations).build());
+				executable.addAttachAnnotation(annotations.get(0));
 			} else {
 				rowBuilder.add(TextCell.builder().text("").fontSize(0).padding(0f).build());
 			}

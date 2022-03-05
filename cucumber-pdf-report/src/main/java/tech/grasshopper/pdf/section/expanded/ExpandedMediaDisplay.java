@@ -26,7 +26,6 @@ import lombok.Setter;
 import lombok.SneakyThrows;
 import lombok.experimental.SuperBuilder;
 import tech.grasshopper.pdf.annotation.Annotation;
-import tech.grasshopper.pdf.annotation.cell.TextLinkCell;
 import tech.grasshopper.pdf.destination.Destination;
 import tech.grasshopper.pdf.destination.DestinationAware;
 import tech.grasshopper.pdf.font.ReportFont;
@@ -36,6 +35,7 @@ import tech.grasshopper.pdf.pojo.cucumber.Executable;
 import tech.grasshopper.pdf.structure.Display;
 import tech.grasshopper.pdf.structure.PageCreator;
 import tech.grasshopper.pdf.structure.TableCreator;
+import tech.grasshopper.pdf.structure.cell.TextLinkCell;
 
 @Data
 @SuperBuilder
@@ -170,6 +170,6 @@ public class ExpandedMediaDisplay extends Display implements DestinationAware {
 	@Override
 	public void createDestination() {
 		Destination destination = Destination.builder().yCoord(destinationY).page(page).build();
-		executable.getMediaDestinations().add(destination);
+		executable.getDestinations().add(destination);
 	}
 }

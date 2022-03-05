@@ -8,6 +8,7 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.experimental.SuperBuilder;
 import tech.grasshopper.pdf.annotation.Annotation;
+import tech.grasshopper.pdf.annotation.FileAnnotation;
 import tech.grasshopper.pdf.destination.Destination;
 import tech.grasshopper.pdf.section.details.executable.ExecutableDisplay;
 
@@ -31,12 +32,18 @@ public abstract class Executable extends BaseEntity {
 	protected String location = "";
 
 	@Default
-	protected List<Annotation> mediaAnnotations = new ArrayList<>();
+	protected List<Annotation> annotations = new ArrayList<>();
 	@Default
-	protected List<Destination> mediaDestinations = new ArrayList<>();
+	protected List<Destination> destinations = new ArrayList<>();
+	@Default
+	protected List<FileAnnotation> attachAnnotations = new ArrayList<>();
 
-	public void addMediaAnnotation(Annotation annotation) {
-		mediaAnnotations.add(annotation);
+	public void addAnnotation(Annotation annotation) {
+		annotations.add(annotation);
+	}
+
+	public void addAttachAnnotation(FileAnnotation annotation) {
+		attachAnnotations.add(annotation);
 	}
 
 	public abstract ExecutableDisplay getDisplay();

@@ -100,10 +100,10 @@ public class Outline {
 							for (int i = 0; i < executable.getMedia().size(); i++) {
 								PDOutlineItem executableOutline = null;
 								if (executable.getMedia().size() == 1) {
-									executableOutline = createOutlineItem(executable.getMediaDestinations().get(0),
+									executableOutline = createOutlineItem(executable.getDestinations().get(0),
 											TextLengthOptimizer.optimizeOutlineText(name));
 								} else {
-									executableOutline = createOutlineItem(executable.getMediaDestinations().get(i),
+									executableOutline = createOutlineItem(executable.getDestinations().get(i),
 											TextLengthOptimizer.optimizeOutlineText(name) + " - Media " + (i + 1));
 								}
 								scenarioOutline.addLast(executableOutline);
