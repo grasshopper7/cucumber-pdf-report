@@ -23,6 +23,7 @@ public abstract class Display {
 	public static final float CONTENT_END_Y = 40f;
 	public static final float DETAILED_CONTENT_END_Y = 20f;
 	public static final float CONTENT_MARGIN_TOP_Y = 40f;
+	public static final float DEFAULT_PADDING = 4f;
 
 	public static final float HEADER_START_Y = 570f;
 	public static final float HEADER_SECTION_DETAILS_START_X = 50f;
