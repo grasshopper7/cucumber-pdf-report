@@ -56,19 +56,29 @@ public class DetailedScenarioDisplay extends Display implements DestinationAware
 
 	private int destinationY;
 
-	private static final float STEP_DURATION_BAR_COLUMN_WIDTH = 340f;
-
-	private static final PDFont NAME_FONT = ReportFont.ITALIC_FONT;
-	private static final int NAME_FONT_SIZE = 11;
+	private static final PDFont FEATURE_FONT = ReportFont.ITALIC_FONT;
+	private static final int FEATURE_FONT_SIZE = 10;
+	private static final PDFont SCENARIO_FONT = ReportFont.BOLD_FONT;
+	private static final int SCENARIO_FONT_SIZE = 11;
+	private static final PDFont TAGS_FONT = ReportFont.REGULAR_FONT;
+	private static final int TAGS_FONT_SIZE = 10;
 
 	private static final float STATUS_COLUMN_WIDTH = 75f;
 	private static final float DURATION_COLUMN_WIDTH = 185f;
-	private static final float FEATURE_NAME_PADDING = 4f;
+	private static final float STEP_DURATION_BAR_COLUMN_WIDTH = 340f;
+	private static final float STEP_COUNT_COLUMN_WIDTH = 60f;
+	private static final float STEP_CHART_COLUMN_WIDTH = 100f;
+	private static final float FEATURE_PADDING = 4f;
+	private static final float SCENARIO_PADDING = 5f;
+	private static final float SCENARIO_LEFT_PADDING = 25f;
 
-	private static final TextLengthOptimizer featureNameTextOptimizer = TextLengthOptimizer.builder().font(NAME_FONT)
-			.fontsize(NAME_FONT_SIZE)
-			.availableSpace((STATUS_COLUMN_WIDTH + DURATION_COLUMN_WIDTH) - 2 * FEATURE_NAME_PADDING).maxLines(2)
-			.build();
+	private static final TextLengthOptimizer featureNameTextOptimizer = TextLengthOptimizer.builder().font(FEATURE_FONT)
+			.fontsize(FEATURE_FONT_SIZE)
+			.availableSpace((STATUS_COLUMN_WIDTH + DURATION_COLUMN_WIDTH) - (2 * FEATURE_PADDING)).maxLines(2).build();
+
+	private static final TextLengthOptimizer tagsTextOptimizer = TextLengthOptimizer.builder().font(TAGS_FONT)
+			.fontsize(TAGS_FONT_SIZE)
+			.availableSpace((STATUS_COLUMN_WIDTH + DURATION_COLUMN_WIDTH) - (2 * DEFAULT_PADDING)).maxLines(3).build();
 
 	@Override
 	public void display() {
@@ -79,22 +89,47 @@ public class DetailedScenarioDisplay extends Display implements DestinationAware
 
 		String tags = scenario.getTags().stream().collect(Collectors.joining(" "));
 
+		TableBuilder nameTableBuilder = Table.builder()
+				.addColumnsOfWidth(STATUS_COLUMN_WIDTH + DURATION_COLUMN_WIDTH + STEP_DURATION_BAR_COLUMN_WIDTH
+						+ STEP_COUNT_COLUMN_WIDTH + STEP_CHART_COLUMN_WIDTH)
+				.horizontalAlignment(HorizontalAlignment.LEFT).verticalAlignment(VerticalAlignment.TOP)
+
+				.addRow(Row.builder().font(SCENARIO_FONT).fontSize(SCENARIO_FONT_SIZE).borderWidth(0f)
+						.padding(SCENARIO_PADDING)
+						.add(TextCell.builder().wordBreak(true).paddingLeft(SCENARIO_LEFT_PADDING)
+								.text(sanitizer.sanitizeText(scenario.getName()))
+								.textColor(reportConfig.getDetailedScenarioConfig().scenarioNameColor()).build())
+						.build());
+
+		TableCreator nameTableCreator = TableCreator.builder().tableBuilder(nameTableBuilder).document(document)
+				.startX(CONTENT_START_X).startY(ylocation).endY(DETAILED_CONTENT_END_Y).splitRow(true).repeatRows(0)
+				.pageSupplier(PageCreator.builder().document(document).build()
+						.landscapePageWithHeaderAndNumberSupplier(DetailedSection.SECTION_TITLE))
+				.build();
+
+		nameTableCreator.displayTable();
+		ylocation = nameTableCreator.getFinalY();
+
 		TableBuilder tableBuilder = Table.builder()
-				.addColumnsOfWidth(STATUS_COLUMN_WIDTH, DURATION_COLUMN_WIDTH, STEP_DURATION_BAR_COLUMN_WIDTH, 60f,
-						100f)
+				.addColumnsOfWidth(STATUS_COLUMN_WIDTH, DURATION_COLUMN_WIDTH, STEP_DURATION_BAR_COLUMN_WIDTH,
+						STEP_COUNT_COLUMN_WIDTH, STEP_CHART_COLUMN_WIDTH)
 				.borderWidth(1f).borderColor(Color.GRAY).horizontalAlignment(HorizontalAlignment.LEFT)
 				.verticalAlignment(VerticalAlignment.TOP).font(ReportFont.REGULAR_FONT)
 
-				.addRow(Row.builder().font(ReportFont.BOLD_FONT).fontSize(14).borderWidth(0f).padding(7f)
-						.add(TextCell.builder().colSpan(5).wordBreak(true)
-								.text("(S)- " + sanitizer.sanitizeText(scenario.getName()))
-								.textColor(reportConfig.getDetailedScenarioConfig().scenarioNameColor()).build())
-						.build())
+				/*
+				 * .addRow(Row.builder().font(SCENARIO_FONT).fontSize(SCENARIO_FONT_SIZE).
+				 * borderWidth(0f) .padding(SCENARIO_PADDING)
+				 * .add(TextCell.builder().colSpan(5).wordBreak(true).paddingLeft(
+				 * SCENARIO_LEFT_PADDING) .text(sanitizer
+				 * .sanitizeText(scenarioNameTextOptimizer.optimizeTextLines(scenario.getName())
+				 * )) .textColor(reportConfig.getDetailedScenarioConfig().scenarioNameColor()).
+				 * build()) .build())
+				 */
 
-				.addRow(Row.builder().fontSize(13).font(ReportFont.ITALIC_FONT)
+				.addRow(Row.builder().fontSize(10).font(ReportFont.ITALIC_FONT)
 						.add(TextCell.builder().text(scenario.getStatus().toString())
 								.backgroundColor(statusColor(scenario.getStatus())).build())
-						.add(TextCell.builder().fontSize(12)
+						.add(TextCell.builder()
 								.text("DURATION - " + DateUtil.durationValue(scenario.calculatedDuration()))
 								.textColor(reportConfig.getDetailedScenarioConfig().durationColor())
 								.backgroundColor(reportConfig.getDetailedScenarioConfig().durationBackgroundColor())
@@ -111,23 +146,26 @@ public class DetailedScenarioDisplay extends Display implements DestinationAware
 								.verticalAlignment(VerticalAlignment.MIDDLE).build())
 						.build())
 
-				.addRow(Row.builder().fontSize(12).font(ReportFont.ITALIC_FONT)
+				.addRow(Row.builder().fontSize(10).font(ReportFont.ITALIC_FONT)
 						.add(TextCell.builder().colSpan(2)
 								.text("/ " + DateUtil.formatTimeWithMillis(scenario.getStartTime()) + " // "
 										+ DateUtil.formatTimeWithMillis(scenario.getEndTime()) + " /")
 								.textColor(reportConfig.getDetailedScenarioConfig().startEndTimeColor()).build())
 						.build())
 
-				.addRow(Row.builder().fontSize(11).add(TextCell.builder().colSpan(2).padding(FEATURE_NAME_PADDING)
-						.wordBreak(true)
+				.addRow(Row.builder().fontSize(FEATURE_FONT_SIZE).font(FEATURE_FONT).add(TextCell.builder().colSpan(2)
+						.padding(FEATURE_PADDING).wordBreak(true)
 						.text(sanitizer.sanitizeText(featureNameTextOptimizer.optimizeTextLines(feature.getName())))
 						.textColor(reportConfig.getDetailedScenarioConfig().featureNameColor()).build()).build())
 
-				.addRow(Row.builder().fontSize(11).add(TextCell.builder().colSpan(2).text(sanitizer.sanitizeText(tags))
-						.textColor(reportConfig.getDetailedScenarioConfig().tagColor()).build()).build());
+				.addRow(Row.builder().fontSize(TAGS_FONT_SIZE).font(TAGS_FONT)
+						.add(TextCell.builder().colSpan(2).wordBreak(true)
+								.text(sanitizer.sanitizeText(tagsTextOptimizer.optimizeTextLines(tags)))
+								.textColor(reportConfig.getDetailedScenarioConfig().tagColor()).build())
+						.build());
 
 		TableCreator tableCreator = TableCreator.builder().tableBuilder(tableBuilder).document(document)
-				.startX(CONTENT_START_X).startY(ylocation).endY(DETAILED_CONTENT_END_Y).repeatRows(5)
+				.startX(CONTENT_START_X).startY(ylocation).endY(DETAILED_CONTENT_END_Y).repeatRows(4)
 				.pageSupplier(PageCreator.builder().document(document).build()
 						.landscapePageWithHeaderAndNumberSupplier(DetailedSection.SECTION_TITLE))
 				.build();
@@ -208,7 +246,7 @@ public class DetailedScenarioDisplay extends Display implements DestinationAware
 			styler.setYAxisMax(Math.floor(maxVal) + 1);
 
 		styler.setSeriesColors(new Color[] { reportConfig.getDetailedScenarioConfig().stepChartBarColor() });
-		
+
 		styler.setAvailableSpaceFill(0.4 * data.size() / 10);
 
 		Font axisFont = new Font(Font.DIALOG, Font.PLAIN, 8);
