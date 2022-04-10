@@ -1,6 +1,10 @@
 # Changelog
 All notable changes to this project will be documented in this file.
 
+## 2.6.0 (2022-3-10)
+* Split lengthy feature & scenario names correctly
+* Restricted tags display length
+
 ## 2.5.0 (2022-3-4)
 * Removed duplicate code which is present in table-layout dependency
 * File attachment option added for executables

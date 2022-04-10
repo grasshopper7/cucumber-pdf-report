@@ -62,13 +62,6 @@ public class DetailedFeatureDisplay extends Display implements DestinationAware 
 	private static final float STEP_CHART_COLUMN_WIDTH = 110f;
 	private static final float FEATURE_PADDING = 7f;
 
-	private static final TextLengthOptimizer featureNameTextOptimizer = TextLengthOptimizer.builder().font(FEATURE_FONT)
-			.fontsize(FEATURE_FONT_SIZE)
-			.availableSpace((STATUS_COLUMN_WIDTH + DURATION_COLUMN_WIDTH + SCENARIO_COUNT_COLUMN_WIDTH
-					+ SCENARIO_CHART_COLUMN_WIDTH + STEP_COUNT_COLUMN_WIDTH + STEP_CHART_COLUMN_WIDTH)
-					- (2 * (FEATURE_PADDING)))
-			.maxLines(2).build();
-
 	private static final TextLengthOptimizer tagsTextOptimizer = TextLengthOptimizer.builder().font(TAGS_FONT)
 			.fontsize(TAGS_FONT_SIZE)
 			.availableSpace((STATUS_COLUMN_WIDTH + DURATION_COLUMN_WIDTH) - (2 * DEFAULT_PADDING)).maxLines(3).build();
@@ -82,19 +75,31 @@ public class DetailedFeatureDisplay extends Display implements DestinationAware 
 
 		String tags = feature.getTags().stream().collect(Collectors.joining(" "));
 
+		TableBuilder nameTableBuilder = Table.builder()
+				.addColumnOfWidth(STATUS_COLUMN_WIDTH + DURATION_COLUMN_WIDTH + SCENARIO_COUNT_COLUMN_WIDTH
+						+ SCENARIO_CHART_COLUMN_WIDTH + STEP_COUNT_COLUMN_WIDTH + STEP_CHART_COLUMN_WIDTH)
+				.horizontalAlignment(HorizontalAlignment.LEFT).verticalAlignment(VerticalAlignment.TOP)
+
+				.addRow(Row.builder().font(FEATURE_FONT).fontSize(FEATURE_FONT_SIZE).borderWidth(0f)
+						.padding(FEATURE_PADDING)
+						.add(TextCell.builder().wordBreak(true).text(sanitizer.sanitizeText(feature.getName()))
+								.textColor(reportConfig.getDetailedFeatureConfig().featureNameColor()).build())
+						.build());
+
+		TableCreator nameTableCreator = TableCreator.builder().tableBuilder(nameTableBuilder).document(document)
+				.startX(CONTENT_START_X).startY(ylocation).endY(DETAILED_CONTENT_END_Y).splitRow(true).repeatRows(0)
+				.pageSupplier(PageCreator.builder().document(document).build()
+						.landscapePageWithHeaderAndNumberSupplier(DetailedSection.SECTION_TITLE))
+				.build();
+
+		nameTableCreator.displayTable();
+		ylocation = nameTableCreator.getFinalY();
+
 		TableBuilder tableBuilder = Table.builder()
 				.addColumnsOfWidth(STATUS_COLUMN_WIDTH, DURATION_COLUMN_WIDTH, SCENARIO_COUNT_COLUMN_WIDTH,
 						SCENARIO_CHART_COLUMN_WIDTH, STEP_COUNT_COLUMN_WIDTH, STEP_CHART_COLUMN_WIDTH)
 				.borderWidth(1f).borderColor(Color.GRAY).horizontalAlignment(HorizontalAlignment.LEFT)
 				.verticalAlignment(VerticalAlignment.TOP).font(ReportFont.REGULAR_FONT)
-
-				.addRow(Row.builder().font(FEATURE_FONT).fontSize(FEATURE_FONT_SIZE).borderWidth(0f)
-						.padding(FEATURE_PADDING)
-						.add(TextCell.builder().colSpan(6).wordBreak(true)
-								.text(sanitizer
-										.sanitizeText(featureNameTextOptimizer.optimizeTextLines(feature.getName())))
-								.textColor(reportConfig.getDetailedFeatureConfig().featureNameColor()).build())
-						.build())
 
 				.addRow(Row.builder().fontSize(10).font(ReportFont.ITALIC_FONT)
 						.add(TextCell.builder().text(feature.getStatus().toString())
@@ -134,7 +139,7 @@ public class DetailedFeatureDisplay extends Display implements DestinationAware 
 						.build());
 
 		TableCreator tableCreator = TableCreator.builder().tableBuilder(tableBuilder).document(document)
-				.startX(CONTENT_START_X).startY(ylocation).endY(DETAILED_CONTENT_END_Y).repeatRows(4)
+				.startX(CONTENT_START_X).startY(ylocation).endY(DETAILED_CONTENT_END_Y).repeatRows(3)
 				.pageSupplier(PageCreator.builder().document(document).build()
 						.landscapePageWithHeaderAndNumberSupplier(DetailedSection.SECTION_TITLE))
 				.build();

@@ -80,13 +80,6 @@ public class DetailedScenarioDisplay extends Display implements DestinationAware
 			.fontsize(TAGS_FONT_SIZE)
 			.availableSpace((STATUS_COLUMN_WIDTH + DURATION_COLUMN_WIDTH) - (2 * DEFAULT_PADDING)).maxLines(3).build();
 
-	private static final TextLengthOptimizer scenarioNameTextOptimizer = TextLengthOptimizer.builder()
-			.font(SCENARIO_FONT).fontsize(SCENARIO_FONT_SIZE)
-			.availableSpace((STATUS_COLUMN_WIDTH + DURATION_COLUMN_WIDTH + STEP_DURATION_BAR_COLUMN_WIDTH
-					+ STEP_COUNT_COLUMN_WIDTH + STEP_CHART_COLUMN_WIDTH)
-					- ((2 * SCENARIO_PADDING) + SCENARIO_LEFT_PADDING))
-			.maxLines(2).build();
-
 	@Override
 	public void display() {
 
@@ -96,19 +89,42 @@ public class DetailedScenarioDisplay extends Display implements DestinationAware
 
 		String tags = scenario.getTags().stream().collect(Collectors.joining(" "));
 
+		TableBuilder nameTableBuilder = Table.builder()
+				.addColumnsOfWidth(STATUS_COLUMN_WIDTH + DURATION_COLUMN_WIDTH + STEP_DURATION_BAR_COLUMN_WIDTH
+						+ STEP_COUNT_COLUMN_WIDTH + STEP_CHART_COLUMN_WIDTH)
+				.horizontalAlignment(HorizontalAlignment.LEFT).verticalAlignment(VerticalAlignment.TOP)
+
+				.addRow(Row.builder().font(SCENARIO_FONT).fontSize(SCENARIO_FONT_SIZE).borderWidth(0f)
+						.padding(SCENARIO_PADDING)
+						.add(TextCell.builder().wordBreak(true).paddingLeft(SCENARIO_LEFT_PADDING)
+								.text(sanitizer.sanitizeText(scenario.getName()))
+								.textColor(reportConfig.getDetailedScenarioConfig().scenarioNameColor()).build())
+						.build());
+
+		TableCreator nameTableCreator = TableCreator.builder().tableBuilder(nameTableBuilder).document(document)
+				.startX(CONTENT_START_X).startY(ylocation).endY(DETAILED_CONTENT_END_Y).splitRow(true).repeatRows(0)
+				.pageSupplier(PageCreator.builder().document(document).build()
+						.landscapePageWithHeaderAndNumberSupplier(DetailedSection.SECTION_TITLE))
+				.build();
+
+		nameTableCreator.displayTable();
+		ylocation = nameTableCreator.getFinalY();
+
 		TableBuilder tableBuilder = Table.builder()
 				.addColumnsOfWidth(STATUS_COLUMN_WIDTH, DURATION_COLUMN_WIDTH, STEP_DURATION_BAR_COLUMN_WIDTH,
 						STEP_COUNT_COLUMN_WIDTH, STEP_CHART_COLUMN_WIDTH)
 				.borderWidth(1f).borderColor(Color.GRAY).horizontalAlignment(HorizontalAlignment.LEFT)
 				.verticalAlignment(VerticalAlignment.TOP).font(ReportFont.REGULAR_FONT)
 
-				.addRow(Row.builder().font(SCENARIO_FONT).fontSize(SCENARIO_FONT_SIZE).borderWidth(0f)
-						.padding(SCENARIO_PADDING)
-						.add(TextCell.builder().colSpan(5).wordBreak(true).paddingLeft(SCENARIO_LEFT_PADDING)
-								.text(sanitizer
-										.sanitizeText(scenarioNameTextOptimizer.optimizeTextLines(scenario.getName())))
-								.textColor(reportConfig.getDetailedScenarioConfig().scenarioNameColor()).build())
-						.build())
+				/*
+				 * .addRow(Row.builder().font(SCENARIO_FONT).fontSize(SCENARIO_FONT_SIZE).
+				 * borderWidth(0f) .padding(SCENARIO_PADDING)
+				 * .add(TextCell.builder().colSpan(5).wordBreak(true).paddingLeft(
+				 * SCENARIO_LEFT_PADDING) .text(sanitizer
+				 * .sanitizeText(scenarioNameTextOptimizer.optimizeTextLines(scenario.getName())
+				 * )) .textColor(reportConfig.getDetailedScenarioConfig().scenarioNameColor()).
+				 * build()) .build())
+				 */
 
 				.addRow(Row.builder().fontSize(10).font(ReportFont.ITALIC_FONT)
 						.add(TextCell.builder().text(scenario.getStatus().toString())
@@ -149,7 +165,7 @@ public class DetailedScenarioDisplay extends Display implements DestinationAware
 						.build());
 
 		TableCreator tableCreator = TableCreator.builder().tableBuilder(tableBuilder).document(document)
-				.startX(CONTENT_START_X).startY(ylocation).endY(DETAILED_CONTENT_END_Y).repeatRows(5)
+				.startX(CONTENT_START_X).startY(ylocation).endY(DETAILED_CONTENT_END_Y).repeatRows(4)
 				.pageSupplier(PageCreator.builder().document(document).build()
 						.landscapePageWithHeaderAndNumberSupplier(DetailedSection.SECTION_TITLE))
 				.build();
