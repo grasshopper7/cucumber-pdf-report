@@ -1,7 +1,7 @@
 # Changelog
 All notable changes to this project will be documented in this file.
 
-## 2.6.0 (2022-3-10)
+## 2.6.0 (2022-4-10)
 * Split lengthy feature & scenario names correctly
 * Restricted tags display length
 
