@@ -14,6 +14,7 @@ import org.yaml.snakeyaml.constructor.Constructor;
 
 import tech.grasshopper.pdf.annotation.AnnotationProcessor;
 import tech.grasshopper.pdf.annotation.FileAnnotationProcessor;
+import tech.grasshopper.pdf.config.ParameterConfig;
 import tech.grasshopper.pdf.config.ReportConfig;
 import tech.grasshopper.pdf.data.ReportData;
 import tech.grasshopper.pdf.destination.Destination.DestinationStore;
@@ -64,6 +65,10 @@ public class PDFCucumberReport {
 		collectReportConfiguration();
 		reportData.populateSectionData();
 		reportData.checkData();
+	}
+
+	public void setParameterConfig(ParameterConfig parameterConfig) {
+		reportConfig.mergeParameterConfig(parameterConfig);
 	}
 
 	private void createReportDirectory(String reportDirectory) {
