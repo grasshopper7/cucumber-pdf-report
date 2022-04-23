@@ -60,6 +60,43 @@ public class ReportConfig {
 		return count;
 	}
 
+	public void mergeParameterConfig(ParameterConfig parameterConfig) {
+		if (validStringParameter(parameterConfig.getTitle()))
+			summaryConfig.setTitle(parameterConfig.getTitle());
+		if (validStringParameter(parameterConfig.getTitleColor()))
+			summaryConfig.setTitleColor(parameterConfig.getTitleColor());
+
+		if (validStringParameter(parameterConfig.getPassColor()))
+			setPassColor(parameterConfig.getPassColor());
+		if (validStringParameter(parameterConfig.getFailColor()))
+			setFailColor(parameterConfig.getFailColor());
+		if (validStringParameter(parameterConfig.getSkipColor()))
+			setSkipColor(parameterConfig.getSkipColor());
+
+		if (validBooleanParameter(parameterConfig.getDisplayFeature()))
+			setDisplayFeature(Boolean.parseBoolean(parameterConfig.getDisplayFeature()));
+		if (validBooleanParameter(parameterConfig.getDisplayScenario()))
+			setDisplayScenario(Boolean.parseBoolean(parameterConfig.getDisplayScenario()));
+		if (validBooleanParameter(parameterConfig.getDisplayDetailed()))
+			setDisplayDetailed(Boolean.parseBoolean(parameterConfig.getDisplayDetailed()));
+		if (validBooleanParameter(parameterConfig.getDisplayExpanded()))
+			setDisplayExpanded(Boolean.parseBoolean(parameterConfig.getDisplayExpanded()));
+		if (validBooleanParameter(parameterConfig.getDisplayAttached()))
+			setDisplayAttached(Boolean.parseBoolean(parameterConfig.getDisplayAttached()));
+	}
+
+	private boolean validStringParameter(String value) {
+		if (value == null || value.isEmpty())
+			return false;
+		return true;
+	}
+
+	private boolean validBooleanParameter(String value) {
+		if (value == null || value.isEmpty() || !(value.equalsIgnoreCase("true") || value.equalsIgnoreCase("false")))
+			return false;
+		return true;
+	}
+
 	@Data
 	public static class FeatureConfig {
 

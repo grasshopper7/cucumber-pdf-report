@@ -1,6 +1,10 @@
 # Changelog
 All notable changes to this project will be documented in this file.
 
+## 2.7.0 (2022-4-23)
+* Added configuration like title, colors to be passed from pom
+* Updated pdfbox version
+
 ## 2.6.1 (2022-4-12)
 * Updated jsoup version to fix vulnerability
 
