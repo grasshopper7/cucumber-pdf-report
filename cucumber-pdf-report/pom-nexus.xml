@@ -5,7 +5,7 @@
 
 	<groupId>tech.grasshopper</groupId>
 	<artifactId>cucumber-pdf-report</artifactId>
-	<version>2.6.2</version>
+	<version>2.7.0</version>
 	<name>cucumber-pdf-report</name>
 	<url>https://ghchirp.tech/2224</url>
 	<description>Generates Cucumber execution report in PDF format
@@ -34,7 +34,7 @@
 		<project.build.resourceEncoding>UTF-8</project.build.resourceEncoding>
 
 		<lombok.version>1.18.18</lombok.version>
-		<pdfbox.version>2.0.25</pdfbox.version>
+		<pdfbox.version>2.0.26</pdfbox.version>
 		<xchart.version>3.8.0</xchart.version>
 		<snakeyaml.version>1.28</snakeyaml.version>
 		<table-layout.version>1.5.0</table-layout.version>
