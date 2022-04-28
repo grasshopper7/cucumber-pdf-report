@@ -110,21 +110,18 @@ public class DetailedScenarioDisplay extends Display implements DestinationAware
 		nameTableCreator.displayTable();
 		ylocation = nameTableCreator.getFinalY();
 
+		page = nameTableCreator.getTableStartPage();
+
+		if (!initialPage.equals(page))
+			destinationY = (int) Display.CONTENT_START_Y;
+
+		createDestination();
+
 		TableBuilder tableBuilder = Table.builder()
 				.addColumnsOfWidth(STATUS_COLUMN_WIDTH, DURATION_COLUMN_WIDTH, STEP_DURATION_BAR_COLUMN_WIDTH,
 						STEP_COUNT_COLUMN_WIDTH, STEP_CHART_COLUMN_WIDTH)
 				.borderWidth(1f).borderColor(Color.GRAY).horizontalAlignment(HorizontalAlignment.LEFT)
 				.verticalAlignment(VerticalAlignment.TOP).font(ReportFont.REGULAR_FONT)
-
-				/*
-				 * .addRow(Row.builder().font(SCENARIO_FONT).fontSize(SCENARIO_FONT_SIZE).
-				 * borderWidth(0f) .padding(SCENARIO_PADDING)
-				 * .add(TextCell.builder().colSpan(5).wordBreak(true).paddingLeft(
-				 * SCENARIO_LEFT_PADDING) .text(sanitizer
-				 * .sanitizeText(scenarioNameTextOptimizer.optimizeTextLines(scenario.getName())
-				 * )) .textColor(reportConfig.getDetailedScenarioConfig().scenarioNameColor()).
-				 * build()) .build())
-				 */
 
 				.addRow(Row.builder().fontSize(10).font(ReportFont.ITALIC_FONT)
 						.add(TextCell.builder().text(scenario.getStatus().toString())
@@ -172,13 +169,6 @@ public class DetailedScenarioDisplay extends Display implements DestinationAware
 		tableCreator.displayTable();
 
 		finalY = tableCreator.getFinalY();
-
-		page = tableCreator.getTableStartPage();
-
-		if (!initialPage.equals(page))
-			destinationY = (int) Display.CONTENT_START_Y;
-
-		createDestination();
 	}
 
 	@Override

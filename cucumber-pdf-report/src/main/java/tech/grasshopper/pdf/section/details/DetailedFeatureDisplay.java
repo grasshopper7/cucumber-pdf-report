@@ -95,6 +95,13 @@ public class DetailedFeatureDisplay extends Display implements DestinationAware 
 		nameTableCreator.displayTable();
 		ylocation = nameTableCreator.getFinalY();
 
+		page = nameTableCreator.getTableStartPage();
+
+		if (!initialPage.equals(page))
+			destinationY = (int) Display.CONTENT_START_Y;
+
+		createDestination();
+
 		TableBuilder tableBuilder = Table.builder()
 				.addColumnsOfWidth(STATUS_COLUMN_WIDTH, DURATION_COLUMN_WIDTH, SCENARIO_COUNT_COLUMN_WIDTH,
 						SCENARIO_CHART_COLUMN_WIDTH, STEP_COUNT_COLUMN_WIDTH, STEP_CHART_COLUMN_WIDTH)
@@ -146,13 +153,6 @@ public class DetailedFeatureDisplay extends Display implements DestinationAware 
 		tableCreator.displayTable();
 
 		finalY = tableCreator.getFinalY();
-
-		page = tableCreator.getTableStartPage();
-
-		if (!initialPage.equals(page))
-			destinationY = (int) Display.CONTENT_START_Y;
-
-		createDestination();
 	}
 
 	@Override
