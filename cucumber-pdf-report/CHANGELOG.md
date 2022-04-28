@@ -1,6 +1,10 @@
 # Changelog
 All notable changes to this project will be documented in this file.
 
+## 2.7.1 (2022-4-23)
+* Fixed destination for lengthy multi page feature & scenario names
+* Updated table-layout artifact version
+
 ## 2.7.0 (2022-4-23)
 * Added configuration like title, colors to be passed from pom
 * Updated pdfbox version
