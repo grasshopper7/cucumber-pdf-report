@@ -20,6 +20,8 @@ import tech.grasshopper.pdf.pojo.cucumber.Scenario;
 public class Outline {
 
 	public static final String DASHBOARD_SECTION_TEXT = "DASHBOARD";
+	public static final String SUMMARY_SECTION_TEXT = "SUMMARY";
+	public static final String TAGS_SECTION_TEXT = "TAGS";
 	public static final String FEATURES_SECTION_TEXT = "FEATURES";
 	public static final String SCENARIOS_SECTION_TEXT = "SCENARIOS";
 	public static final String DETAILED_SECTION_TEXT = "DETAILS";
@@ -30,6 +32,14 @@ public class Outline {
 
 		PDDocumentOutline outline = new PDDocumentOutline();
 		outline.addLast(createOutlineItem(destinations.getDashboardDestination()));
+
+		PDOutlineItem summaryOutlineitem = createChapterOutlineItems(destinations.getSummaryDestinations(),
+				Outline.SUMMARY_SECTION_TEXT);
+		outline.addLast(summaryOutlineitem);
+
+		PDOutlineItem tagOutlineitem = createChapterOutlineItems(destinations.getTagsDestinations(),
+				Outline.TAGS_SECTION_TEXT);
+		outline.addLast(tagOutlineitem);
 
 		if (reportConfig.isDisplayFeature()) {
 			PDOutlineItem featureOutlineitem = createChapterOutlineItems(destinations.getFeaturesDestinations(),
