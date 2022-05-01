@@ -14,7 +14,7 @@ import lombok.AccessLevel;
 import lombok.Setter;
 import lombok.experimental.SuperBuilder;
 import tech.grasshopper.pdf.chart.ReportDonutChart;
-import tech.grasshopper.pdf.data.SummaryData;
+import tech.grasshopper.pdf.data.DashboardData;
 import tech.grasshopper.pdf.image.ImageCreator;
 import tech.grasshopper.pdf.structure.Display;
 
@@ -24,7 +24,7 @@ public class DashboardDonutDisplay extends Display {
 	@Setter(value = AccessLevel.PACKAGE)
 	private TableBuilder tableBuilder;
 
-	private final SummaryData summaryData = (SummaryData) displayData;
+	private final DashboardData summaryData = (DashboardData) displayData;
 
 	@Override
 	public void display() {

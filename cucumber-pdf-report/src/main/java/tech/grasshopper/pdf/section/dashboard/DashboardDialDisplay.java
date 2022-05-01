@@ -10,8 +10,8 @@ import lombok.AccessLevel;
 import lombok.Setter;
 import lombok.experimental.SuperBuilder;
 import tech.grasshopper.pdf.chart.ReportDialChart;
-import tech.grasshopper.pdf.config.SummaryConfig;
-import tech.grasshopper.pdf.data.SummaryData;
+import tech.grasshopper.pdf.config.DashboardConfig;
+import tech.grasshopper.pdf.data.DashboardData;
 import tech.grasshopper.pdf.image.ImageCreator;
 import tech.grasshopper.pdf.structure.Display;
 import tech.grasshopper.pdf.util.NumberUtil;
@@ -22,8 +22,8 @@ public class DashboardDialDisplay extends Display {
 	@Setter(value = AccessLevel.PACKAGE)
 	private TableBuilder tableBuilder;
 
-	private final SummaryConfig summaryConfig = reportConfig.getSummaryConfig();
-	private final SummaryData summaryData = (SummaryData) displayData;
+	private final DashboardConfig summaryConfig = reportConfig.getDashboardConfig();
+	private final DashboardData summaryData = (DashboardData) displayData;
 
 	@Override
 	public void display() {
@@ -60,13 +60,13 @@ public class DashboardDialDisplay extends Display {
 
 	private void updateDialChartStyler(DialStyler styler, double[] range) {
 
-		styler.setGreenColor(reportConfig.getSummaryConfig().getDial().badColor());
+		styler.setGreenColor(reportConfig.getDashboardConfig().getDial().badColor());
 		styler.setGreenFrom(0);
 		styler.setGreenTo(range[0]);
-		styler.setNormalColor(reportConfig.getSummaryConfig().getDial().averageColor());
+		styler.setNormalColor(reportConfig.getDashboardConfig().getDial().averageColor());
 		styler.setNormalFrom(range[0]);
 		styler.setNormalTo(range[1]);
-		styler.setRedColor(reportConfig.getSummaryConfig().getDial().goodColor());
+		styler.setRedColor(reportConfig.getDashboardConfig().getDial().goodColor());
 		styler.setRedFrom(range[1]);
 		styler.setRedTo(1);
 	}

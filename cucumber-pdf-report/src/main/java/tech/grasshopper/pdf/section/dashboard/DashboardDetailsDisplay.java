@@ -18,8 +18,8 @@ import org.vandeseer.easytable.structure.cell.TextCell;
 import lombok.AccessLevel;
 import lombok.Setter;
 import lombok.experimental.SuperBuilder;
-import tech.grasshopper.pdf.config.SummaryConfig;
-import tech.grasshopper.pdf.data.SummaryData;
+import tech.grasshopper.pdf.config.DashboardConfig;
+import tech.grasshopper.pdf.data.DashboardData;
 import tech.grasshopper.pdf.font.ReportFont;
 import tech.grasshopper.pdf.optimizer.TextLengthOptimizer;
 import tech.grasshopper.pdf.optimizer.TextSanitizer;
@@ -42,8 +42,8 @@ public class DashboardDetailsDisplay extends Display {
 			.fontsize(TITLE_FONT_SIZE).availableSpace(2 * (DATA_COLUMN_WIDTH + SPACE_COLUMN_WIDTH - TITLE_PADDING))
 			.build();
 
-	private final SummaryConfig summaryConfig = reportConfig.getSummaryConfig();
-	private final SummaryData summaryData = (SummaryData) displayData;
+	private final DashboardConfig summaryConfig = reportConfig.getDashboardConfig();
+	private final DashboardData summaryData = (DashboardData) displayData;
 
 	private static final String CROPPED_MESSAGE = "* The report title has been cropped to fit in the available space.";
 
