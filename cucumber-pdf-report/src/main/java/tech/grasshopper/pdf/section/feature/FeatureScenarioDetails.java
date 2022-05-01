@@ -159,9 +159,10 @@ public class FeatureScenarioDetails extends Display {
 			feature.addAnnotation(annotation);
 
 			return TextLinkCell.builder().annotation(annotation).text(featureName)
-					.horizontalAlignment(HorizontalAlignment.LEFT).build();
+					.textColor(statusColor(feature.getStatus())).horizontalAlignment(HorizontalAlignment.LEFT).build();
 		}
-		return TextCell.builder().text(featureName).horizontalAlignment(HorizontalAlignment.LEFT).build();
+		return TextCell.builder().text(featureName).textColor(statusColor(feature.getStatus()))
+				.horizontalAlignment(HorizontalAlignment.LEFT).build();
 	}
 
 	private void croppedMessageDisplay() {

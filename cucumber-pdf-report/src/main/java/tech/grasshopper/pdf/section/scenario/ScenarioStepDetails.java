@@ -174,9 +174,10 @@ public class ScenarioStepDetails extends Display {
 			feature.addAnnotation(annotation);
 
 			return TextLinkCell.builder().annotation(annotation).text(featureName)
-					.horizontalAlignment(HorizontalAlignment.LEFT).build();
+					.textColor(statusColor(feature.getStatus())).horizontalAlignment(HorizontalAlignment.LEFT).build();
 		}
-		return TextCell.builder().text(featureName).horizontalAlignment(HorizontalAlignment.LEFT).build();
+		return TextCell.builder().text(featureName).textColor(statusColor(feature.getStatus()))
+				.horizontalAlignment(HorizontalAlignment.LEFT).build();
 	}
 
 	private AbstractCell createScenarioNameCell(Scenario scenario) {
@@ -192,9 +193,10 @@ public class ScenarioStepDetails extends Display {
 			scenario.addAnnotation(annotation);
 
 			return TextLinkCell.builder().annotation(annotation).text(scenarioName)
-					.horizontalAlignment(HorizontalAlignment.LEFT).build();
+					.textColor(statusColor(scenario.getStatus())).horizontalAlignment(HorizontalAlignment.LEFT).build();
 		}
-		return TextCell.builder().text(scenarioName).horizontalAlignment(HorizontalAlignment.LEFT).build();
+		return TextCell.builder().text(scenarioName).textColor(statusColor(scenario.getStatus()))
+				.horizontalAlignment(HorizontalAlignment.LEFT).build();
 	}
 
 	private void croppedMessageDisplay() {
