@@ -29,6 +29,8 @@ import tech.grasshopper.pdf.section.details.executable.MediaCleanup.MediaCleanup
 import tech.grasshopper.pdf.section.expanded.ExpandedSection;
 import tech.grasshopper.pdf.section.feature.FeatureSection;
 import tech.grasshopper.pdf.section.scenario.ScenarioSection;
+import tech.grasshopper.pdf.section.summary.SummarySection;
+import tech.grasshopper.pdf.section.tag.TagSection;
 
 public class PDFCucumberReport {
 
@@ -94,6 +96,10 @@ public class PDFCucumberReport {
 
 		createDashboardSection();
 
+		createSummarySection();
+
+		createTagSection();
+
 		createFeatureSection();
 
 		createScenarioSection();
@@ -123,6 +129,17 @@ public class PDFCucumberReport {
 	protected void createDashboardSection() {
 		Dashboard.builder().displayData(reportData.getSummaryData()).reportConfig(reportConfig).document(document)
 				.destinations(destinations).build().createSection();
+	}
+
+	protected void createSummarySection() {
+		SummarySection.builder().displayData(reportData.getFeatureData()).reportConfig(reportConfig).document(document)
+				.destinations(destinations).build().createSection();
+	}
+
+	protected void createTagSection() {
+		if (!reportData.getTagData().getTags().isEmpty())
+			TagSection.builder().displayData(reportData.getTagData()).reportConfig(reportConfig).document(document)
+					.destinations(destinations).build().createSection();
 	}
 
 	protected void createFeatureSection() {
