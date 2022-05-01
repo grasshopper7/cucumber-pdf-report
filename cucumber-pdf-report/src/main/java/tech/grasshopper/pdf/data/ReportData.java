@@ -1,5 +1,6 @@
 package tech.grasshopper.pdf.data;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -12,6 +13,7 @@ import tech.grasshopper.pdf.pojo.cucumber.Feature;
 import tech.grasshopper.pdf.pojo.cucumber.Scenario;
 import tech.grasshopper.pdf.pojo.cucumber.Status;
 import tech.grasshopper.pdf.pojo.cucumber.Step;
+import tech.grasshopper.pdf.pojo.cucumber.Tag;
 
 @Getter
 @Builder
@@ -19,13 +21,15 @@ public class ReportData {
 
 	private List<Feature> features;
 
-	private SummaryData summaryData;
+	private DashboardData summaryData;
 
 	private FeatureData featureData;
 
 	private ScenarioData scenarioData;
 
 	private ExecutableData executableData;
+
+	private TagData tagData;
 
 	public void checkData() {
 
@@ -50,6 +54,7 @@ public class ReportData {
 		populateCounts();
 		populateDashboardData();
 		populateFeaturesScenariosStepsData();
+		populateTagData();
 	}
 
 	private void populateCounts() {
@@ -92,7 +97,7 @@ public class ReportData {
 
 	private void populateDashboardData() {
 
-		summaryData = SummaryData.builder()
+		summaryData = DashboardData.builder()
 				.testRunStartTime(
 						Collections.min(features.stream().map(Feature::getStartTime).collect(Collectors.toList())))
 				.testRunEndTime(
@@ -122,11 +127,8 @@ public class ReportData {
 	}
 
 	private void populateFeaturesScenariosStepsData() {
-
 		featureData = FeatureData.builder().features(features).build();
-
 		scenarioData = ScenarioData.builder().build();
-
 		executableData = ExecutableData.builder().build();
 
 		for (Feature feature : features) {
@@ -141,6 +143,61 @@ public class ReportData {
 					executableData.getExecutables().add(executable);
 				}
 			}
+		}
+	}
+
+	private void populateTagData() {
+		tagData = TagData.builder().build();
+		List<Tag> tags = tagData.getTags();
+
+		for (Feature feature : features) {
+			List<String> featureTag = new ArrayList<>();
+
+			for (Scenario scenario : feature.getScenarios()) {
+				Tag tag = null;
+
+				for (String tagName : scenario.getTags()) {
+					tag = new Tag(tagName);
+					int tagIndex = tags.indexOf(tag);
+
+					if (tagIndex > -1)
+						tag = tags.get(tagIndex);
+					else
+						tags.add(tag);
+
+					if (scenario.getStatus() == Status.PASSED)
+						tag.setPassedScenarios(tag.getPassedScenarios() + 1);
+					else if (scenario.getStatus() == Status.FAILED)
+						tag.setFailedScenarios(tag.getFailedScenarios() + 1);
+					else
+						tag.setSkippedScenarios(tag.getSkippedScenarios() + 1);
+
+					tag.setTotalScenarios(tag.getTotalScenarios() + 1);
+
+					if (!featureTag.contains(tagName)) {
+						if (feature.getStatus() == Status.PASSED)
+							tag.setPassedFeatures(tag.getPassedFeatures() + 1);
+						else if (feature.getStatus() == Status.FAILED)
+							tag.setFailedFeatures(tag.getFailedFeatures() + 1);
+						else
+							tag.setSkippedFeatures(tag.getSkippedFeatures() + 1);
+
+						tag.setTotalFeatures(tag.getTotalFeatures() + 1);
+						featureTag.add(tagName);
+					}
+				}
+			}
+		}
+
+		for (Tag tag : tagData.getTags()) {
+
+			if (tag.getFailedScenarios() > 0 || tag.getFailedFeatures() > 0)
+				tag.setStatus(Status.FAILED);
+			else if ((tag.getPassedScenarios() == tag.getTotalScenarios() && tag.getFailedScenarios() == 0)
+					&& tag.getPassedFeatures() == tag.getTotalFeatures() && tag.getFailedFeatures() == 0)
+				tag.setStatus(Status.PASSED);
+			else
+				tag.setStatus(Status.SKIPPED);
 		}
 	}
 }

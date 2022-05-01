@@ -20,9 +20,11 @@ public class ReportConfig {
 	private boolean displayExpanded = false;
 	private boolean displayAttached = true;
 
-	private SummaryConfig summaryConfig = new SummaryConfig();
+	private DashboardConfig dashboardConfig = new DashboardConfig();
 	private FeatureConfig featureConfig = new FeatureConfig();
 	private ScenarioConfig scenarioConfig = new ScenarioConfig();
+	private SummaryConfig summaryConfig = new SummaryConfig();
+	private TagConfig tagConfig = new TagConfig();
 
 	private DetailedFeatureConfig detailedFeatureConfig = new DetailedFeatureConfig();
 	private DetailedScenarioConfig detailedScenarioConfig = new DetailedScenarioConfig();
@@ -62,9 +64,9 @@ public class ReportConfig {
 
 	public void mergeParameterConfig(ParameterConfig parameterConfig) {
 		if (validStringParameter(parameterConfig.getTitle()))
-			summaryConfig.setTitle(parameterConfig.getTitle());
+			dashboardConfig.setTitle(parameterConfig.getTitle());
 		if (validStringParameter(parameterConfig.getTitleColor()))
-			summaryConfig.setTitleColor(parameterConfig.getTitleColor());
+			dashboardConfig.setTitleColor(parameterConfig.getTitleColor());
 
 		if (validStringParameter(parameterConfig.getPassColor()))
 			setPassColor(parameterConfig.getPassColor());
@@ -128,6 +130,44 @@ public class ReportConfig {
 
 		public int scenarioCount() {
 			return createCount(scenarioCount, defaultCount);
+		}
+
+		public Color totalColor() {
+			return createColor(totalColor, Color.BLACK);
+		}
+
+		public Color durationColor() {
+			return createColor(durationColor, Color.BLACK);
+		}
+	}
+
+	@Data
+	public static class SummaryConfig {
+
+		private String totalColor;
+		private String durationColor;
+
+		public int dataCount() {
+			return 20;
+		}
+
+		public Color totalColor() {
+			return createColor(totalColor, Color.BLACK);
+		}
+
+		public Color durationColor() {
+			return createColor(durationColor, Color.BLACK);
+		}
+	}
+
+	@Data
+	public static class TagConfig {
+
+		private String totalColor;
+		private String durationColor;
+
+		public int dataCount() {
+			return 20;
 		}
 
 		public Color totalColor() {
