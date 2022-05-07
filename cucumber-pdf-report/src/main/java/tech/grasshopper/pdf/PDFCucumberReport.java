@@ -26,7 +26,6 @@ import tech.grasshopper.pdf.section.details.DetailedSection;
 import tech.grasshopper.pdf.section.details.executable.MediaCleanup;
 import tech.grasshopper.pdf.section.details.executable.MediaCleanup.CleanupType;
 import tech.grasshopper.pdf.section.details.executable.MediaCleanup.MediaCleanupOption;
-import tech.grasshopper.pdf.section.expanded.ExpandedSection;
 import tech.grasshopper.pdf.section.feature.FeatureSection;
 import tech.grasshopper.pdf.section.scenario.ScenarioSection;
 import tech.grasshopper.pdf.section.summary.SummarySection;
@@ -106,8 +105,6 @@ public class PDFCucumberReport {
 
 		createDetailedSection();
 
-		createExpandedSection();
-
 		processDestinationAnnotations();
 
 		processFileAnnotations();
@@ -157,12 +154,6 @@ public class PDFCucumberReport {
 	protected void createDetailedSection() {
 		if (reportConfig.isDisplayDetailed())
 			DetailedSection.builder().displayData(reportData.getFeatureData()).reportConfig(reportConfig)
-					.document(document).build().createSection();
-	}
-
-	protected void createExpandedSection() {
-		if (reportConfig.isDisplayExpanded())
-			ExpandedSection.builder().displayData(reportData.getExecutableData()).reportConfig(reportConfig)
 					.document(document).build().createSection();
 	}
 

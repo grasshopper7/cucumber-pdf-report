@@ -18,13 +18,10 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.Setter;
 import lombok.SneakyThrows;
-import tech.grasshopper.pdf.annotation.Annotation;
 import tech.grasshopper.pdf.annotation.FileAnnotation;
-import tech.grasshopper.pdf.font.ReportFont;
 import tech.grasshopper.pdf.pojo.cucumber.Executable;
 import tech.grasshopper.pdf.structure.cell.TableWithinTableCell;
 import tech.grasshopper.pdf.structure.cell.TextFileLinkCell;
-import tech.grasshopper.pdf.structure.cell.TextLinkCell;
 
 @Data
 @Builder
@@ -35,9 +32,6 @@ public class MediaDisplay {
 
 	@Setter
 	private PDDocument document;
-
-	@Setter
-	private boolean expandView;
 
 	@Setter
 	private boolean attachView;
@@ -71,12 +65,7 @@ public class MediaDisplay {
 			rowBuilder.add(
 					ImageCell.builder().image(image).width(mediaWidth).padding(padding).maxHeight(mediaHeigth).build());
 
-			if (expandView) {
-				Annotation annotation = Annotation.builder().title(String.valueOf(i)).build();
-				rowBuilder.add(TextLinkCell.builder().text("+").annotation(annotation).font(ReportFont.REGULAR_FONT)
-						.fontSize(15).textColor(Color.RED).showLine(false).padding(0f).build());
-				executable.addAnnotation(annotation);
-			} else if (attachView) {
+			if (attachView) {
 				// Change drawer code for a single file annotation.
 				List<FileAnnotation> annotations = new ArrayList<>();
 				annotations.add(FileAnnotation.builder().text(" ").link(medias.get(i)).build());

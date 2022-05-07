@@ -17,7 +17,6 @@ public class ReportConfig {
 	private boolean displayFeature = true;
 	private boolean displayScenario = true;
 	private boolean displayDetailed = true;
-	private boolean displayExpanded = false;
 	private boolean displayAttached = true;
 
 	private DashboardConfig dashboardConfig = new DashboardConfig();
@@ -81,8 +80,6 @@ public class ReportConfig {
 			setDisplayScenario(Boolean.parseBoolean(parameterConfig.getDisplayScenario()));
 		if (validBooleanParameter(parameterConfig.getDisplayDetailed()))
 			setDisplayDetailed(Boolean.parseBoolean(parameterConfig.getDisplayDetailed()));
-		if (validBooleanParameter(parameterConfig.getDisplayExpanded()))
-			setDisplayExpanded(Boolean.parseBoolean(parameterConfig.getDisplayExpanded()));
 		if (validBooleanParameter(parameterConfig.getDisplayAttached()))
 			setDisplayAttached(Boolean.parseBoolean(parameterConfig.getDisplayAttached()));
 	}
@@ -164,7 +161,6 @@ public class ReportConfig {
 	public static class TagConfig {
 
 		private String totalColor;
-		private String durationColor;
 
 		public int dataCount() {
 			return 20;
@@ -172,10 +168,6 @@ public class ReportConfig {
 
 		public Color totalColor() {
 			return createColor(totalColor, Color.BLACK);
-		}
-
-		public Color durationColor() {
-			return createColor(durationColor, Color.BLACK);
 		}
 	}
 }

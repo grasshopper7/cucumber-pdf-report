@@ -1,8 +1,5 @@
 package tech.grasshopper.pdf.section.details.executable;
 
-import static tech.grasshopper.pdf.section.details.DetailedStepHookDisplay.STEP_HOOK_TEXT_COLUMN_WIDTH;
-import static tech.grasshopper.pdf.section.details.DetailedStepHookDisplay.STEP_HOOK_TEXT_PADDING;
-
 import java.awt.Color;
 import java.util.List;
 
@@ -41,11 +38,6 @@ public class DataTableDisplay {
 	@Getter(value = AccessLevel.NONE)
 	@Setter(value = AccessLevel.NONE)
 	private List<Float> maximumColumnTextWidths;
-
-	private static final float MAX_COLUMN_WIDTH = 100f;
-	private static final float PADDING = 3f;
-	private static final float INDICATOR_COLUMN_WIDTH = 4f;
-	private static final float AVAILABLE_COLUMN_WIDTH = STEP_HOOK_TEXT_COLUMN_WIDTH - (2 * STEP_HOOK_TEXT_PADDING);
 
 	public AbstractCell display() {
 
