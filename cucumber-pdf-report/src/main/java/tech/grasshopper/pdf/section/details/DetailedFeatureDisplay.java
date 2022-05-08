@@ -50,7 +50,7 @@ public class DetailedFeatureDisplay extends Display implements DestinationAware 
 	private int destinationY;
 
 	private static final PDFont FEATURE_FONT = ReportFont.BOLD_FONT;
-	private static final int FEATURE_FONT_SIZE = 11;
+	private static final int FEATURE_FONT_SIZE = 14;
 	private static final PDFont TAGS_FONT = ReportFont.REGULAR_FONT;
 	private static final int TAGS_FONT_SIZE = 10;
 

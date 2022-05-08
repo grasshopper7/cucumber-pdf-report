@@ -59,7 +59,7 @@ public class DetailedScenarioDisplay extends Display implements DestinationAware
 	private static final PDFont FEATURE_FONT = ReportFont.ITALIC_FONT;
 	private static final int FEATURE_FONT_SIZE = 10;
 	private static final PDFont SCENARIO_FONT = ReportFont.BOLD_FONT;
-	private static final int SCENARIO_FONT_SIZE = 11;
+	private static final int SCENARIO_FONT_SIZE = 13;
 	private static final PDFont TAGS_FONT = ReportFont.REGULAR_FONT;
 	private static final int TAGS_FONT_SIZE = 10;
 
