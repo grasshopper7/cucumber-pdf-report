@@ -5,6 +5,7 @@ All notable changes to this project will be documented in this file.
 * Added feature, scenario, step breakdown summary section
 * Added tag breakdown section
 * Added text color for feature and scenario names based on status
+* Minor display changes
 
 ## 2.7.1 (2022-4-23)
 * Fixed destination for lengthy multi page feature & scenario names
