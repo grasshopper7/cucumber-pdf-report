@@ -52,6 +52,7 @@ public class FeatureScenarioDetails extends Display {
 	private static final float FEATURE_NAME_COLUMN_WIDTH = 490f;
 	private static final float HEADER_PADDING = 7f;
 	private static final float DATA_PADDING = 6f;
+	private static final float NAME_BOTTOM_PADDING = 8f;
 
 	public static final float TABLE_SPACE = TABLE_Y_AXIS_START - Display.CONTENT_END_Y;
 
@@ -158,11 +159,11 @@ public class FeatureScenarioDetails extends Display {
 			Annotation annotation = Annotation.builder().title(sanitizer.sanitizeText(feature.getName())).build();
 			feature.addAnnotation(annotation);
 
-			return TextLinkCell.builder().annotation(annotation).text(featureName)
+			return TextLinkCell.builder().annotation(annotation).text(featureName).paddingBottom(NAME_BOTTOM_PADDING)
 					.textColor(statusColor(feature.getStatus())).horizontalAlignment(HorizontalAlignment.LEFT).build();
 		}
-		return TextCell.builder().text(featureName).textColor(statusColor(feature.getStatus()))
-				.horizontalAlignment(HorizontalAlignment.LEFT).build();
+		return TextCell.builder().text(featureName).paddingBottom(NAME_BOTTOM_PADDING)
+				.textColor(statusColor(feature.getStatus())).horizontalAlignment(HorizontalAlignment.LEFT).build();
 	}
 
 	private void croppedMessageDisplay() {

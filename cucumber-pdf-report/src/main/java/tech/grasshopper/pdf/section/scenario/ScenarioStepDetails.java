@@ -54,6 +54,7 @@ public class ScenarioStepDetails extends Display {
 	private static final float SCENARIO_NAME_COLUMN_WIDTH = 310f;
 	private static final float HEADER_PADDING = 7f;
 	private static final float DATA_PADDING = 6f;
+	private static final float NAME_BOTTOM_PADDING = 9f;
 
 	public static final float TABLE_SPACE = TABLE_Y_AXIS_START - Display.CONTENT_END_Y;
 
@@ -173,11 +174,11 @@ public class ScenarioStepDetails extends Display {
 			Annotation annotation = Annotation.builder().title(sanitizer.sanitizeText(feature.getName())).build();
 			feature.addAnnotation(annotation);
 
-			return TextLinkCell.builder().annotation(annotation).text(featureName)
+			return TextLinkCell.builder().annotation(annotation).text(featureName).paddingBottom(NAME_BOTTOM_PADDING)
 					.textColor(statusColor(feature.getStatus())).horizontalAlignment(HorizontalAlignment.LEFT).build();
 		}
-		return TextCell.builder().text(featureName).textColor(statusColor(feature.getStatus()))
-				.horizontalAlignment(HorizontalAlignment.LEFT).build();
+		return TextCell.builder().text(featureName).paddingBottom(NAME_BOTTOM_PADDING)
+				.textColor(statusColor(feature.getStatus())).horizontalAlignment(HorizontalAlignment.LEFT).build();
 	}
 
 	private AbstractCell createScenarioNameCell(Scenario scenario) {
@@ -192,11 +193,11 @@ public class ScenarioStepDetails extends Display {
 			Annotation annotation = Annotation.builder().title(sanitizer.sanitizeText(scenario.getName())).build();
 			scenario.addAnnotation(annotation);
 
-			return TextLinkCell.builder().annotation(annotation).text(scenarioName)
+			return TextLinkCell.builder().annotation(annotation).text(scenarioName).paddingBottom(NAME_BOTTOM_PADDING)
 					.textColor(statusColor(scenario.getStatus())).horizontalAlignment(HorizontalAlignment.LEFT).build();
 		}
-		return TextCell.builder().text(scenarioName).textColor(statusColor(scenario.getStatus()))
-				.horizontalAlignment(HorizontalAlignment.LEFT).build();
+		return TextCell.builder().text(scenarioName).paddingBottom(NAME_BOTTOM_PADDING)
+				.textColor(statusColor(scenario.getStatus())).horizontalAlignment(HorizontalAlignment.LEFT).build();
 	}
 
 	private void croppedMessageDisplay() {
