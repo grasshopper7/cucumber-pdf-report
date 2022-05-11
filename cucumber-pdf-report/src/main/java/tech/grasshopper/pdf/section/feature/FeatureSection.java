@@ -23,8 +23,10 @@ public class FeatureSection extends PaginatedSection {
 
 	@Override
 	public void createSection() {
-
 		featureData = (FeatureData) displayData;
+		if (featureData.getFeatures().isEmpty())
+			return;
+
 		FeaturePaginator paginator = FeaturePaginator.builder().data(featureData).maxFeaturesPerPage(maxFeaturesPerPage)
 				.section(this).build();
 		paginator.paginate();

@@ -38,6 +38,9 @@ public class SummarySection extends PaginatedSection {
 	@Override
 	public void createSection() {
 		featureData = (FeatureData) displayData;
+		if (featureData.getFeatures().isEmpty())
+			return;
+
 		SummaryPaginator paginator = SummaryPaginator.builder().data(featureData)
 				.maxDataCountPerPage(maxDataCountPerPage).section(this).build();
 		paginator.paginate();

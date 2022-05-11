@@ -27,8 +27,9 @@ public class DetailedSection extends Section {
 
 	@Override
 	public void createSection() {
-
 		detailedData = (FeatureData) displayData;
+		if (detailedData.getFeatures().isEmpty())
+			return;
 
 		PageCreator.builder().document(document).build()
 				.createLandscapePageWithHeaderAndNumberAndAddToDocument(SECTION_TITLE);

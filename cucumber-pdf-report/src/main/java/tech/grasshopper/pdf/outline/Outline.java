@@ -31,27 +31,22 @@ public class Outline {
 		PDDocumentOutline outline = new PDDocumentOutline();
 		outline.addLast(createOutlineItem(destinations.getDashboardDestination()));
 
-		PDOutlineItem summaryOutlineitem = createChapterOutlineItems(destinations.getSummaryDestinations(),
-				Outline.SUMMARY_SECTION_TEXT);
-		outline.addLast(summaryOutlineitem);
+		if (!destinations.getSummaryDestinations().isEmpty())
+			outline.addLast(
+					createChapterOutlineItems(destinations.getSummaryDestinations(), Outline.SUMMARY_SECTION_TEXT));
 
-		PDOutlineItem tagOutlineitem = createChapterOutlineItems(destinations.getTagsDestinations(),
-				Outline.TAGS_SECTION_TEXT);
-		outline.addLast(tagOutlineitem);
+		if (!destinations.getTagsDestinations().isEmpty())
+			outline.addLast(createChapterOutlineItems(destinations.getTagsDestinations(), Outline.TAGS_SECTION_TEXT));
 
-		if (reportConfig.isDisplayFeature()) {
-			PDOutlineItem featureOutlineitem = createChapterOutlineItems(destinations.getFeaturesDestinations(),
-					Outline.FEATURES_SECTION_TEXT);
-			outline.addLast(featureOutlineitem);
-		}
+		if (reportConfig.isDisplayFeature() && !destinations.getFeaturesDestinations().isEmpty())
+			outline.addLast(
+					createChapterOutlineItems(destinations.getFeaturesDestinations(), Outline.FEATURES_SECTION_TEXT));
 
-		if (reportConfig.isDisplayScenario()) {
-			PDOutlineItem scenarioOutlineItem = createChapterOutlineItems(destinations.getScenariosDestinations(),
-					Outline.SCENARIOS_SECTION_TEXT);
-			outline.addLast(scenarioOutlineItem);
-		}
+		if (reportConfig.isDisplayScenario() && !destinations.getScenariosDestinations().isEmpty())
+			outline.addLast(
+					createChapterOutlineItems(destinations.getScenariosDestinations(), Outline.SCENARIOS_SECTION_TEXT));
 
-		if (reportConfig.isDisplayDetailed()) {
+		if (reportConfig.isDisplayDetailed() && !reportData.getFeatures().isEmpty()) {
 			PDOutlineItem detailedOutlineItem = new PDOutlineItem();
 			detailedOutlineItem.setTitle(Outline.DETAILED_SECTION_TEXT);
 

@@ -38,6 +38,9 @@ public class TagSection extends PaginatedSection {
 	@Override
 	public void createSection() {
 		tagData = (TagData) displayData;
+		if (tagData.getTags().isEmpty())
+			return;
+
 		TagPaginator paginator = TagPaginator.builder().data(tagData).maxDataCountPerPage(maxDataCountPerPage)
 				.section(this).build();
 		paginator.paginate();

@@ -24,6 +24,8 @@ public class ScenarioSection extends PaginatedSection {
 	@Override
 	public void createSection() {
 		scenarioData = (ScenarioData) displayData;
+		if (scenarioData.getScenarios().isEmpty())
+			return;
 
 		ScenarioPaginator paginator = ScenarioPaginator.builder().data(scenarioData)
 				.maxScenariosPerPage(maxScenariosPerPage).section(this).build();
