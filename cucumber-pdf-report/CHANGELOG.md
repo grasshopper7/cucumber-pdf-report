@@ -1,6 +1,10 @@
 # Changelog
 All notable changes to this project will be documented in this file.
 
+## 2.8.1 (2022-5-11)
+* Fixed tag section error when no tags added
+* Added extra checks for TOC outline
+
 ## 2.8.0 (2022-5-1)
 * Added feature, scenario, step breakdown summary section
 * Added tag breakdown section
