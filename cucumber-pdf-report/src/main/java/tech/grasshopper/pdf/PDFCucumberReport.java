@@ -26,6 +26,7 @@ import tech.grasshopper.pdf.section.details.DetailedSection;
 import tech.grasshopper.pdf.section.details.executable.MediaCleanup;
 import tech.grasshopper.pdf.section.details.executable.MediaCleanup.CleanupType;
 import tech.grasshopper.pdf.section.details.executable.MediaCleanup.MediaCleanupOption;
+import tech.grasshopper.pdf.section.expanded.ExpandedSection;
 import tech.grasshopper.pdf.section.feature.FeatureSection;
 import tech.grasshopper.pdf.section.scenario.ScenarioSection;
 import tech.grasshopper.pdf.section.summary.SummarySection;
@@ -92,6 +93,8 @@ public class PDFCucumberReport {
 	}
 
 	public void createReport() {
+		
+		verifyReportConfig();
 
 		createDashboardSection();
 
@@ -104,6 +107,8 @@ public class PDFCucumberReport {
 		createScenarioSection();
 
 		createDetailedSection();
+
+		createExpandedSection();
 
 		processDestinationAnnotations();
 
@@ -121,6 +126,10 @@ public class PDFCucumberReport {
 			logger.log(Level.SEVERE, "An exception occurred", e);
 			throw new PdfReportException(e);
 		}
+	}
+	
+	protected void verifyReportConfig() {
+		reportConfig.verify();
 	}
 
 	protected void createDashboardSection() {
@@ -154,6 +163,12 @@ public class PDFCucumberReport {
 	protected void createDetailedSection() {
 		if (reportConfig.isDisplayDetailed())
 			DetailedSection.builder().displayData(reportData.getFeatureData()).reportConfig(reportConfig)
+					.document(document).build().createSection();
+	}
+
+	protected void createExpandedSection() {
+		if (reportConfig.isDisplayExpanded())
+			ExpandedSection.builder().displayData(reportData.getExecutableData()).reportConfig(reportConfig)
 					.document(document).build().createSection();
 	}
 

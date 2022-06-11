@@ -18,10 +18,13 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.Setter;
 import lombok.SneakyThrows;
+import tech.grasshopper.pdf.annotation.Annotation;
 import tech.grasshopper.pdf.annotation.FileAnnotation;
+import tech.grasshopper.pdf.font.ReportFont;
 import tech.grasshopper.pdf.pojo.cucumber.Executable;
 import tech.grasshopper.pdf.structure.cell.TableWithinTableCell;
 import tech.grasshopper.pdf.structure.cell.TextFileLinkCell;
+import tech.grasshopper.pdf.structure.cell.TextLinkCell;
 
 @Data
 @Builder
@@ -35,6 +38,9 @@ public class MediaDisplay {
 
 	@Setter
 	private boolean attachView;
+
+	@Setter
+	private boolean expandView;
 
 	private static final int MAX_MEDIA_COUNT_PER_ROW = 4;
 
@@ -71,6 +77,11 @@ public class MediaDisplay {
 				annotations.add(FileAnnotation.builder().text(" ").link(medias.get(i)).build());
 				rowBuilder.add(TextFileLinkCell.builder().text(" ").annotations(annotations).build());
 				executable.addAttachAnnotation(annotations.get(0));
+			} else if (expandView) {
+				Annotation annotation = Annotation.builder().title(String.valueOf(i)).build();
+				rowBuilder.add(TextLinkCell.builder().text("+").annotation(annotation).font(ReportFont.REGULAR_FONT)
+						.fontSize(15).textColor(Color.RED).showLine(false).padding(0f).build());
+				executable.addAnnotation(annotation);
 			} else {
 				rowBuilder.add(TextCell.builder().text("").fontSize(0).padding(0f).build());
 			}

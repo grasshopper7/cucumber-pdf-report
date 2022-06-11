@@ -13,6 +13,7 @@ import tech.grasshopper.pdf.data.ReportData;
 import tech.grasshopper.pdf.destination.Destination;
 import tech.grasshopper.pdf.destination.Destination.DestinationStore;
 import tech.grasshopper.pdf.optimizer.TextLengthOptimizer;
+import tech.grasshopper.pdf.pojo.cucumber.Executable;
 import tech.grasshopper.pdf.pojo.cucumber.Feature;
 import tech.grasshopper.pdf.pojo.cucumber.Scenario;
 
@@ -24,6 +25,7 @@ public class Outline {
 	public static final String FEATURES_SECTION_TEXT = "FEATURES";
 	public static final String SCENARIOS_SECTION_TEXT = "SCENARIOS";
 	public static final String DETAILED_SECTION_TEXT = "DETAILS";
+	public static final String EXPANDED_SECTION_TEXT = "EXPANDED";
 
 	public static void createDocumentOutline(PDDocument document, ReportConfig reportConfig,
 			DestinationStore destinations, ReportData reportData) {
@@ -62,6 +64,63 @@ public class Outline {
 				}
 			}
 			outline.addLast(detailedOutlineItem);
+		}
+
+		if (reportConfig.isDisplayExpanded()) {
+			PDOutlineItem expandedOutlineItem = new PDOutlineItem();
+			expandedOutlineItem.setTitle(Outline.EXPANDED_SECTION_TEXT);
+			boolean anyExecutableHasMedia = false;
+
+			for (Feature feature : reportData.getFeatures()) {
+
+				PDOutlineItem featureOutline = new PDOutlineItem();
+				if (reportConfig.isDisplayDetailed() && feature.getDestination() != null) {
+					featureOutline = createOutlineItem(feature.getDestination(),
+							TextLengthOptimizer.optimizeOutlineText(feature.getName()));
+				} else {
+					featureOutline.setTitle(TextLengthOptimizer.optimizeOutlineText(feature.getName()));
+				}
+
+				boolean executableHasMedia = false;
+
+				for (Scenario scenario : feature.getScenarios()) {
+
+					PDOutlineItem scenarioOutline = new PDOutlineItem();
+					if (reportConfig.isDisplayDetailed() && scenario.getDestination() != null) {
+						scenarioOutline = createOutlineItem(scenario.getDestination(),
+								TextLengthOptimizer.optimizeOutlineText(scenario.getName()));
+					} else {
+						scenarioOutline.setTitle(TextLengthOptimizer.optimizeOutlineText(scenario.getName()));
+					}
+					featureOutline.addLast(scenarioOutline);
+
+					for (Executable executable : scenario.getStepsAndHooks()) {
+						if (!executable.getMedia().isEmpty()) {
+							executableHasMedia = true;
+							if (!anyExecutableHasMedia)
+								anyExecutableHasMedia = true;
+
+							String name = executable.getDisplay().executableName();
+
+							for (int i = 0; i < executable.getMedia().size(); i++) {
+								PDOutlineItem executableOutline = null;
+								if (executable.getMedia().size() == 1) {
+									executableOutline = createOutlineItem(executable.getDestinations().get(0),
+											TextLengthOptimizer.optimizeOutlineText(name));
+								} else {
+									executableOutline = createOutlineItem(executable.getDestinations().get(i),
+											TextLengthOptimizer.optimizeOutlineText(name) + " - Media " + (i + 1));
+								}
+								scenarioOutline.addLast(executableOutline);
+							}
+						}
+					}
+				}
+				if (executableHasMedia)
+					expandedOutlineItem.addLast(featureOutline);
+			}
+			if (anyExecutableHasMedia)
+				outline.addLast(expandedOutlineItem);
 		}
 
 		document.getDocumentCatalog().setDocumentOutline(outline);

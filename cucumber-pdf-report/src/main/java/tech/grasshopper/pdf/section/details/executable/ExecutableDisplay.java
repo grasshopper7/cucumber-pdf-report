@@ -102,13 +102,13 @@ public abstract class ExecutableDisplay extends Display {
 
 	@SneakyThrows
 	protected void displayMedia() {
-
 		if (executable.getMedia().isEmpty())
 			return;
 
 		tableBuilder.addRow(Row.builder().add(dummyCellLeftBorder())
 				.add(MediaDisplay.builder().executable(executable).document(document)
-						.attachView(reportConfig.isDisplayAttached()).build().display())
+						.attachView(reportConfig.isDisplayAttached()).expandView(reportConfig.isDisplayExpanded())
+						.build().display())
 				.add(dummyCellRightBorder()).add(dummyCellRightBorder()).build());
 	}
 }

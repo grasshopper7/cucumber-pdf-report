@@ -1,6 +1,9 @@
 # Changelog
 All notable changes to this project will be documented in this file.
 
+## 2.9.0 (2022-6-11)
+* Expanded media display added back
+
 ## 2.8.1 (2022-5-11)
 * Fixed tag section error when no tags added
 * Added extra checks for TOC outline
