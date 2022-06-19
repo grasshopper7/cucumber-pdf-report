@@ -1,6 +1,9 @@
 # Changelog
 All notable changes to this project will be documented in this file.
 
+## 2.10.0 (2022-6-19)
+* Customize hook display options
+
 ## 2.9.0 (2022-6-11)
 * Expanded media display added back
 
