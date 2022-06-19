@@ -185,7 +185,7 @@ public class SummaryDisplay extends PaginatedDisplay implements DestinationAware
 		if (featureNameTextOptimizer.isTextTrimmed())
 			nameCropped = true;
 
-		if (reportConfig.isDisplayFeature() && reportConfig.isDisplayDetailed()) {
+		if (reportConfig.isDisplayDetailed()) {
 			Annotation annotation = Annotation.builder().title(sanitizer.sanitizeText(feature.getName())).build();
 			feature.addAnnotation(annotation);
 
