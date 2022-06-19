@@ -5,6 +5,7 @@ import org.apache.pdfbox.pdmodel.interactive.annotation.PDAnnotationLink;
 
 import lombok.Builder;
 import lombok.SneakyThrows;
+import tech.grasshopper.pdf.config.ReportConfig;
 import tech.grasshopper.pdf.data.ReportData;
 import tech.grasshopper.pdf.destination.Destination;
 import tech.grasshopper.pdf.pojo.cucumber.Executable;
@@ -15,6 +16,8 @@ import tech.grasshopper.pdf.pojo.cucumber.Scenario;
 public class AnnotationProcessor {
 
 	private ReportData reportData;
+
+	private ReportConfig reportConfig;
 
 	@SneakyThrows
 	public void updateDestination() {
@@ -29,7 +32,7 @@ public class AnnotationProcessor {
 					updateDestination(a, scenario.getDestination());
 				});
 
-				for (Executable executable : scenario.getStepsAndHooks()) {
+				for (Executable executable : scenario.getFilteredStepsAndHooks(reportConfig)) {
 					for (int i = 0; i < executable.getAnnotations().size(); i++) {
 						updateDestination(executable.getAnnotations().get(i), executable.getDestinations().get(i));
 					}

@@ -65,6 +65,8 @@ public class PDFCucumberReport {
 		ReportFont.loadReportFontFamily(document);
 		createReportDirectory(this.reportFile.getParent());
 		collectReportConfiguration();
+		
+		reportData.setReportConfig(reportConfig);
 		reportData.populateSectionData();
 		reportData.checkData();
 	}
@@ -93,7 +95,7 @@ public class PDFCucumberReport {
 	}
 
 	public void createReport() {
-		
+
 		verifyReportConfig();
 
 		createDashboardSection();
@@ -127,9 +129,9 @@ public class PDFCucumberReport {
 			throw new PdfReportException(e);
 		}
 	}
-	
+
 	protected void verifyReportConfig() {
-		reportConfig.verify();
+		reportConfig.verifyAndUpdate();
 	}
 
 	protected void createDashboardSection() {
@@ -173,7 +175,7 @@ public class PDFCucumberReport {
 	}
 
 	protected void processDestinationAnnotations() {
-		AnnotationProcessor.builder().reportData(reportData).build().updateDestination();
+		AnnotationProcessor.builder().reportData(reportData).reportConfig(reportConfig).build().updateDestination();
 	}
 
 	protected void processFileAnnotations() {

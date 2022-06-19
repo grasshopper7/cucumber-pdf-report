@@ -94,7 +94,7 @@ public class Outline {
 					}
 					featureOutline.addLast(scenarioOutline);
 
-					for (Executable executable : scenario.getStepsAndHooks()) {
+					for (Executable executable : scenario.getFilteredStepsAndHooks(reportConfig)) {
 						if (!executable.getMedia().isEmpty()) {
 							executableHasMedia = true;
 							if (!anyExecutableHasMedia)

@@ -7,6 +7,8 @@ import lombok.Builder.Default;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.experimental.SuperBuilder;
+import tech.grasshopper.pdf.config.ReportConfig;
+import tech.grasshopper.pdf.config.StepHookFilter;
 import tech.grasshopper.pdf.exception.PdfReportException;
 
 @Data
@@ -42,17 +44,11 @@ public class Scenario extends NonExecutable {
 	}
 
 	public List<Executable> getStepsAndHooks() {
-		List<Executable> executables = new ArrayList<>();
+		return StepHookFilter.allExecutables(steps, before, after);
+	}
 
-		before.forEach(h -> executables.add(h));
-		steps.forEach(s -> {
-			s.getBefore().forEach(h -> executables.add(h));
-			executables.add(s);
-			s.getAfter().forEach(h -> executables.add(h));
-		});
-		after.forEach(h -> executables.add(h));
-
-		return executables;
+	public List<Executable> getFilteredStepsAndHooks(ReportConfig reportConfig) {
+		return StepHookFilter.filterExecutables(reportConfig, steps, before, after);
 	}
 
 	@Override

@@ -1,18 +1,16 @@
 package tech.grasshopper.pdf.config;
 
 import java.awt.Color;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 import lombok.Data;
 import tech.grasshopper.pdf.config.DetailedConfig.DetailedFeatureConfig;
 import tech.grasshopper.pdf.config.DetailedConfig.DetailedScenarioConfig;
 import tech.grasshopper.pdf.config.DetailedConfig.DetailedStepHookConfig;
+import tech.grasshopper.pdf.config.verify.VerifyDisplayConfiguration;
+import tech.grasshopper.pdf.config.verify.VerifyHookConfiguration;
 
 @Data
 public class ReportConfig {
-
-	private static final Logger logger = Logger.getLogger(ReportConfig.class.getName());
 
 	private String passColor;
 	private String failColor;
@@ -34,24 +32,11 @@ public class ReportConfig {
 	private DetailedScenarioConfig detailedScenarioConfig = new DetailedScenarioConfig();
 	private DetailedStepHookConfig detailedStepHookConfig = new DetailedStepHookConfig();
 
-	public void verify() {
-		if (displayDetailed) {
+	public void verifyAndUpdate() {
 
-			if (displayExpanded && displayAttached) {
-				displayExpanded = false;
-				logger.log(Level.WARNING,
-						"Media display as attachment (displayAttached) and expanded (displayExpanded) both set to true. Only one can be selected. Defaulting to attachment display.");
-			}
-		} else {
-			// No media display if no detailed display selected
-			if (displayExpanded || displayAttached) {
-				logger.log(Level.INFO,
-						"Detailed section display is not set to true, no attachment or expanded media display will be available.");
+		VerifyDisplayConfiguration.builder().reportConfig(this).build().verify();
 
-				displayExpanded = false;
-				displayAttached = false;
-			}
-		}
+		VerifyHookConfiguration.builder().reportConfig(this).build().verify();
 	}
 
 	public Color passedColor() {
@@ -87,40 +72,7 @@ public class ReportConfig {
 	}
 
 	public void mergeParameterConfig(ParameterConfig parameterConfig) {
-		if (validStringParameter(parameterConfig.getTitle()))
-			dashboardConfig.setTitle(parameterConfig.getTitle());
-		if (validStringParameter(parameterConfig.getTitleColor()))
-			dashboardConfig.setTitleColor(parameterConfig.getTitleColor());
-
-		if (validStringParameter(parameterConfig.getPassColor()))
-			setPassColor(parameterConfig.getPassColor());
-		if (validStringParameter(parameterConfig.getFailColor()))
-			setFailColor(parameterConfig.getFailColor());
-		if (validStringParameter(parameterConfig.getSkipColor()))
-			setSkipColor(parameterConfig.getSkipColor());
-
-		if (validBooleanParameter(parameterConfig.getDisplayFeature()))
-			setDisplayFeature(Boolean.parseBoolean(parameterConfig.getDisplayFeature()));
-		if (validBooleanParameter(parameterConfig.getDisplayScenario()))
-			setDisplayScenario(Boolean.parseBoolean(parameterConfig.getDisplayScenario()));
-		if (validBooleanParameter(parameterConfig.getDisplayDetailed()))
-			setDisplayDetailed(Boolean.parseBoolean(parameterConfig.getDisplayDetailed()));
-		if (validBooleanParameter(parameterConfig.getDisplayAttached()))
-			setDisplayAttached(Boolean.parseBoolean(parameterConfig.getDisplayAttached()));
-		if (validBooleanParameter(parameterConfig.getDisplayExpanded()))
-			setDisplayExpanded(Boolean.parseBoolean(parameterConfig.getDisplayExpanded()));
-	}
-
-	private boolean validStringParameter(String value) {
-		if (value == null || value.isEmpty())
-			return false;
-		return true;
-	}
-
-	private boolean validBooleanParameter(String value) {
-		if (value == null || value.isEmpty() || !(value.equalsIgnoreCase("true") || value.equalsIgnoreCase("false")))
-			return false;
-		return true;
+		parameterConfig.mergeConfigurations(this);
 	}
 
 	@Data

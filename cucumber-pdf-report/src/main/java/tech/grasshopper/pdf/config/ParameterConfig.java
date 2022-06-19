@@ -23,4 +23,52 @@ public class ParameterConfig {
 	private String displayDetailed;
 	private String displayExpanded;
 	private String displayAttached;
+
+	private String skipHooks;
+	private String skipScenarioHooks;
+	private String skipStepHooks;
+
+	public void mergeConfigurations(ReportConfig reportConfig) {
+		if (validStringParameter(title))
+			reportConfig.getDashboardConfig().setTitle(title);
+		if (validStringParameter(titleColor))
+			reportConfig.getDashboardConfig().setTitleColor(titleColor);
+
+		if (validStringParameter(passColor))
+			reportConfig.setPassColor(passColor);
+		if (validStringParameter(failColor))
+			reportConfig.setFailColor(failColor);
+		if (validStringParameter(skipColor))
+			reportConfig.setSkipColor(skipColor);
+
+		if (validBooleanParameter(displayFeature))
+			reportConfig.setDisplayFeature(Boolean.parseBoolean(displayFeature));
+		if (validBooleanParameter(displayScenario))
+			reportConfig.setDisplayScenario(Boolean.parseBoolean(displayScenario));
+		if (validBooleanParameter(displayDetailed))
+			reportConfig.setDisplayDetailed(Boolean.parseBoolean(displayDetailed));
+		if (validBooleanParameter(displayAttached))
+			reportConfig.setDisplayAttached(Boolean.parseBoolean(displayAttached));
+		if (validBooleanParameter(displayExpanded))
+			reportConfig.setDisplayExpanded(Boolean.parseBoolean(displayExpanded));
+
+		if (validBooleanParameter(skipScenarioHooks))
+			reportConfig.getDetailedStepHookConfig().setSkipScenarioHooks(Boolean.parseBoolean(skipScenarioHooks));
+		if (validBooleanParameter(skipStepHooks))
+			reportConfig.getDetailedStepHookConfig().setSkipStepHooks(Boolean.parseBoolean(skipStepHooks));
+		if (validBooleanParameter(skipHooks))
+			reportConfig.getDetailedStepHookConfig().setSkipHooks(Boolean.parseBoolean(skipHooks));
+	}
+
+	private boolean validStringParameter(String value) {
+		if (value == null || value.isEmpty())
+			return false;
+		return true;
+	}
+
+	private boolean validBooleanParameter(String value) {
+		if (value == null || value.isEmpty() || !(value.equalsIgnoreCase("true") || value.equalsIgnoreCase("false")))
+			return false;
+		return true;
+	}
 }

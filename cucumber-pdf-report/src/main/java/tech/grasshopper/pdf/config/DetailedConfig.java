@@ -88,6 +88,13 @@ public abstract class DetailedConfig {
 		private String errorMsgColor;
 		private String logMsgColor;
 		private final int defaultCount = 15;
+		private boolean skipHooks = false;
+		private boolean skipScenarioHooks = false;
+		private boolean skipStepHooks = false;
+		private boolean skipScenarioBeforeHooks = false;
+		private boolean skipScenarioAfterHooks = false;
+		private boolean skipStepBeforeHooks = false;
+		private boolean skipStepAfterHooks = false;
 
 		public int stepCount() {
 			int count = 0;

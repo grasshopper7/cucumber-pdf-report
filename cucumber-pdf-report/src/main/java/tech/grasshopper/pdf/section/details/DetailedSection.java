@@ -57,8 +57,8 @@ public class DetailedSection extends Section {
 				scenarioAdditionalInfoDisplay(scenario);
 
 				DetailedStepHookDisplay stepHookDisplay = DetailedStepHookDisplay.builder()
-						.executables(scenario.getStepsAndHooks()).ylocation(ylocation).document(document)
-						.reportConfig(reportConfig).build();
+						.executables(scenario.getFilteredStepsAndHooks(reportConfig)).ylocation(ylocation)
+						.document(document).reportConfig(reportConfig).build();
 				stepHookDisplay.display();
 
 				ylocation = stepHookDisplay.getFinalY() - GAP;
