@@ -65,7 +65,7 @@ public class PDFCucumberReport {
 		ReportFont.loadReportFontFamily(document);
 		createReportDirectory(this.reportFile.getParent());
 		collectReportConfiguration();
-		
+
 		reportData.setReportConfig(reportConfig);
 		reportData.populateSectionData();
 		reportData.checkData();
@@ -145,7 +145,7 @@ public class PDFCucumberReport {
 	}
 
 	protected void createTagSection() {
-		if (!reportData.getTagData().getTags().isEmpty())
+		if (reportConfig.isDisplayTag() && !reportData.getTagData().getTags().isEmpty())
 			TagSection.builder().displayData(reportData.getTagData()).reportConfig(reportConfig).document(document)
 					.destinations(destinations).build().createSection();
 	}

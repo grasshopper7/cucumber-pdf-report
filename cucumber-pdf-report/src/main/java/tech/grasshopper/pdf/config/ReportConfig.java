@@ -16,6 +16,7 @@ public class ReportConfig {
 	private String failColor;
 	private String skipColor;
 
+	private boolean displayTag = true;
 	private boolean displayFeature = true;
 	private boolean displayScenario = true;
 	private boolean displayDetailed = true;

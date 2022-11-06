@@ -4,8 +4,8 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>tech.grasshopper</groupId>
 	<artifactId>cucumber-pdf-report</artifactId>
-	<version>2.10.0</version>
-	<url>https://ghchirp.tech/2224</url>
+	<version>2.11.0</version>
+	<url>https://ghchirp.online/2224</url>
 	<description>Generates Cucumber execution report in PDF format
 	</description>
 

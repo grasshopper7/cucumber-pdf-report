@@ -18,6 +18,7 @@ public class ParameterConfig {
 	private String failColor;
 	private String skipColor;
 
+	private String displayTag;
 	private String displayFeature;
 	private String displayScenario;
 	private String displayDetailed;
@@ -41,6 +42,8 @@ public class ParameterConfig {
 		if (validStringParameter(skipColor))
 			reportConfig.setSkipColor(skipColor);
 
+		if (validBooleanParameter(displayTag))
+			reportConfig.setDisplayTag(Boolean.parseBoolean(displayTag));
 		if (validBooleanParameter(displayFeature))
 			reportConfig.setDisplayFeature(Boolean.parseBoolean(displayFeature));
 		if (validBooleanParameter(displayScenario))
