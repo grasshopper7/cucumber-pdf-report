@@ -1,6 +1,9 @@
 # Changelog
 All notable changes to this project will be documented in this file.
 
+## 2.11.0 (2022-11-6)
+* Tag summary section display toggle setting
+
 ## 2.10.0 (2022-6-19)
 * Customize hook display options
 
