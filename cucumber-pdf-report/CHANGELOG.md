@@ -1,6 +1,9 @@
 # Changelog
 All notable changes to this project will be documented in this file.
 
+## 2.11.1 (2022-11-14)
+* Updated jsoup dependency version
+
 ## 2.11.0 (2022-11-6)
 * Tag summary section display toggle setting
 
