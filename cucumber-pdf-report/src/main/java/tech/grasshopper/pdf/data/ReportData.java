@@ -3,13 +3,20 @@ package tech.grasshopper.pdf.data;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 import tech.grasshopper.pdf.config.ReportConfig;
+import tech.grasshopper.pdf.data.AttributeData.AuthorData;
+import tech.grasshopper.pdf.data.AttributeData.DeviceData;
+import tech.grasshopper.pdf.data.AttributeData.TagData;
 import tech.grasshopper.pdf.exception.PdfReportException;
+import tech.grasshopper.pdf.pojo.cucumber.Attribute;
+import tech.grasshopper.pdf.pojo.cucumber.Author;
+import tech.grasshopper.pdf.pojo.cucumber.Device;
 import tech.grasshopper.pdf.pojo.cucumber.Executable;
 import tech.grasshopper.pdf.pojo.cucumber.Feature;
 import tech.grasshopper.pdf.pojo.cucumber.Scenario;
@@ -32,6 +39,10 @@ public class ReportData {
 	private ExecutableData executableData;
 
 	private TagData tagData;
+
+	private DeviceData deviceData;
+
+	private AuthorData authorData;
 
 	@Setter
 	private ReportConfig reportConfig;
@@ -60,6 +71,8 @@ public class ReportData {
 		populateDashboardData();
 		populateFeaturesScenariosStepsData();
 		populateTagData();
+		populateDeviceData();
+		populateAuthorData();
 	}
 
 	private void populateCounts() {
@@ -155,54 +168,75 @@ public class ReportData {
 		tagData = TagData.builder().build();
 		List<Tag> tags = tagData.getTags();
 
+		populateAttributeData(Tag::new, tags);
+	}
+
+	private void populateDeviceData() {
+		deviceData = DeviceData.builder().build();
+		List<Device> devices = deviceData.getDevices();
+
+		populateAttributeData(Device::new, devices);
+	}
+
+	private void populateAuthorData() {
+		authorData = AuthorData.builder().build();
+		List<Author> authors = authorData.getAuthors();
+
+		populateAttributeData(Author::new, authors);
+	}
+
+	private <T extends Attribute> void populateAttributeData(Function<String, T> newAttribute, List<T> attributes) {
+
+		Class<? extends Attribute> clzAttr = newAttribute.apply("").getClass();
+
 		for (Feature feature : features) {
-			List<String> featureTag = new ArrayList<>();
+			List<String> featureAttr = new ArrayList<>();
 
 			for (Scenario scenario : feature.getScenarios()) {
-				Tag tag = null;
 
-				for (String tagName : scenario.getTags()) {
-					tag = new Tag(tagName);
-					int tagIndex = tags.indexOf(tag);
+				for (String attrName : scenario.getAttributes(clzAttr)) {
 
-					if (tagIndex > -1)
-						tag = tags.get(tagIndex);
+					T attr = newAttribute.apply(attrName);
+					int attrIndex = attributes.indexOf(attr);
+
+					if (attrIndex > -1)
+						attr = attributes.get(attrIndex);
 					else
-						tags.add(tag);
+						attributes.add(attr);
 
 					if (scenario.getStatus() == Status.PASSED)
-						tag.setPassedScenarios(tag.getPassedScenarios() + 1);
+						attr.setPassedScenarios(attr.getPassedScenarios() + 1);
 					else if (scenario.getStatus() == Status.FAILED)
-						tag.setFailedScenarios(tag.getFailedScenarios() + 1);
+						attr.setFailedScenarios(attr.getFailedScenarios() + 1);
 					else
-						tag.setSkippedScenarios(tag.getSkippedScenarios() + 1);
+						attr.setSkippedScenarios(attr.getSkippedScenarios() + 1);
 
-					tag.setTotalScenarios(tag.getTotalScenarios() + 1);
+					attr.setTotalScenarios(attr.getTotalScenarios() + 1);
 
-					if (!featureTag.contains(tagName)) {
+					if (!featureAttr.contains(attrName)) {
 						if (feature.getStatus() == Status.PASSED)
-							tag.setPassedFeatures(tag.getPassedFeatures() + 1);
+							attr.setPassedFeatures(attr.getPassedFeatures() + 1);
 						else if (feature.getStatus() == Status.FAILED)
-							tag.setFailedFeatures(tag.getFailedFeatures() + 1);
+							attr.setFailedFeatures(attr.getFailedFeatures() + 1);
 						else
-							tag.setSkippedFeatures(tag.getSkippedFeatures() + 1);
+							attr.setSkippedFeatures(attr.getSkippedFeatures() + 1);
 
-						tag.setTotalFeatures(tag.getTotalFeatures() + 1);
-						featureTag.add(tagName);
+						attr.setTotalFeatures(attr.getTotalFeatures() + 1);
+						featureAttr.add(attrName);
 					}
 				}
 			}
 		}
 
-		for (Tag tag : tagData.getTags()) {
+		for (T attr : attributes) {
 
-			if (tag.getFailedScenarios() > 0 || tag.getFailedFeatures() > 0)
-				tag.setStatus(Status.FAILED);
-			else if ((tag.getPassedScenarios() == tag.getTotalScenarios() && tag.getFailedScenarios() == 0)
-					&& tag.getPassedFeatures() == tag.getTotalFeatures() && tag.getFailedFeatures() == 0)
-				tag.setStatus(Status.PASSED);
+			if (attr.getFailedScenarios() > 0 || attr.getFailedFeatures() > 0)
+				attr.setStatus(Status.FAILED);
+			else if ((attr.getPassedScenarios() == attr.getTotalScenarios() && attr.getFailedScenarios() == 0)
+					&& attr.getPassedFeatures() == attr.getTotalFeatures() && attr.getFailedFeatures() == 0)
+				attr.setStatus(Status.PASSED);
 			else
-				tag.setStatus(Status.SKIPPED);
+				attr.setStatus(Status.SKIPPED);
 		}
 	}
 }

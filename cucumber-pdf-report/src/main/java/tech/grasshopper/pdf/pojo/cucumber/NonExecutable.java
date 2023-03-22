@@ -22,6 +22,12 @@ public abstract class NonExecutable extends BaseEntity {
 	protected List<String> tags = new ArrayList<>();
 
 	@Default
+	protected List<String> devices = new ArrayList<>();
+
+	@Default
+	protected List<String> authors = new ArrayList<>();
+
+	@Default
 	protected List<Annotation> annotations = new ArrayList<>();
 	protected Destination destination;
 
@@ -38,5 +44,16 @@ public abstract class NonExecutable extends BaseEntity {
 
 	public Optional<Object> getAdditionalDataValue(String key) {
 		return Optional.ofNullable(additionalData.get(key));
+	}
+
+	public List<String> getAttributes(Class<? extends Attribute> cls) {
+		if (cls.equals(Tag.class))
+			return tags;
+		else if (cls.equals(Device.class))
+			return devices;
+		else if (cls.equals(Author.class))
+			return authors;
+		else
+			return null;
 	}
 }

@@ -21,6 +21,9 @@ import tech.grasshopper.pdf.destination.Destination.DestinationStore;
 import tech.grasshopper.pdf.exception.PdfReportException;
 import tech.grasshopper.pdf.font.ReportFont;
 import tech.grasshopper.pdf.outline.Outline;
+import tech.grasshopper.pdf.section.attributes.AuthorSection;
+import tech.grasshopper.pdf.section.attributes.DeviceSection;
+import tech.grasshopper.pdf.section.attributes.TagSection;
 import tech.grasshopper.pdf.section.dashboard.Dashboard;
 import tech.grasshopper.pdf.section.details.DetailedSection;
 import tech.grasshopper.pdf.section.details.executable.MediaCleanup;
@@ -30,7 +33,6 @@ import tech.grasshopper.pdf.section.expanded.ExpandedSection;
 import tech.grasshopper.pdf.section.feature.FeatureSection;
 import tech.grasshopper.pdf.section.scenario.ScenarioSection;
 import tech.grasshopper.pdf.section.summary.SummarySection;
-import tech.grasshopper.pdf.section.tag.TagSection;
 
 public class PDFCucumberReport {
 
@@ -104,6 +106,10 @@ public class PDFCucumberReport {
 
 		createTagSection();
 
+		createDeviceSection();
+
+		createAuthorSection();
+
 		createFeatureSection();
 
 		createScenarioSection();
@@ -148,6 +154,18 @@ public class PDFCucumberReport {
 		if (reportConfig.isDisplayTag() && !reportData.getTagData().getTags().isEmpty())
 			TagSection.builder().displayData(reportData.getTagData()).reportConfig(reportConfig).document(document)
 					.destinations(destinations).build().createSection();
+	}
+
+	protected void createDeviceSection() {
+		if (reportConfig.isDisplayDevice() && !reportData.getDeviceData().getDevices().isEmpty())
+			DeviceSection.builder().displayData(reportData.getDeviceData()).reportConfig(reportConfig)
+					.document(document).destinations(destinations).build().createSection();
+	}
+
+	protected void createAuthorSection() {
+		if (reportConfig.isDisplayAuthor() && !reportData.getAuthorData().getAuthors().isEmpty())
+			AuthorSection.builder().displayData(reportData.getAuthorData()).reportConfig(reportConfig)
+					.document(document).destinations(destinations).build().createSection();
 	}
 
 	protected void createFeatureSection() {

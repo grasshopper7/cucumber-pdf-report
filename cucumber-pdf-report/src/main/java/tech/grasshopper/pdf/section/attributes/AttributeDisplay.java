@@ -1,7 +1,8 @@
-package tech.grasshopper.pdf.section.tag;
+package tech.grasshopper.pdf.section.attributes;
 
 import java.awt.Color;
 import java.util.List;
+import java.util.function.Consumer;
 
 import org.apache.pdfbox.pdmodel.PDPageContentStream;
 import org.apache.pdfbox.pdmodel.PDPageContentStream.AppendMode;
@@ -20,14 +21,13 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.SneakyThrows;
 import lombok.experimental.SuperBuilder;
-import tech.grasshopper.pdf.data.TagData;
+import tech.grasshopper.pdf.data.AttributeData;
 import tech.grasshopper.pdf.destination.Destination;
 import tech.grasshopper.pdf.destination.DestinationAware;
 import tech.grasshopper.pdf.font.ReportFont;
 import tech.grasshopper.pdf.optimizer.TextLengthOptimizer;
 import tech.grasshopper.pdf.optimizer.TextSanitizer;
-import tech.grasshopper.pdf.outline.Outline;
-import tech.grasshopper.pdf.pojo.cucumber.Tag;
+import tech.grasshopper.pdf.pojo.cucumber.Attribute;
 import tech.grasshopper.pdf.structure.Display;
 import tech.grasshopper.pdf.structure.PageCreator;
 import tech.grasshopper.pdf.structure.TableCreator;
@@ -37,9 +37,13 @@ import tech.grasshopper.pdf.util.TextUtil;
 
 @SuperBuilder
 @EqualsAndHashCode(callSuper = false)
-public class TagDisplay extends PaginatedDisplay implements DestinationAware {
+public class AttributeDisplay extends PaginatedDisplay implements DestinationAware {
 
 	private TableBuilder tableBuilder;
+
+	private String attributeType;
+
+	private Consumer<Destination> attributeDestinationConsumer;
 
 	// private static final int TABLE_X_AXIS_START = 40;
 	private static final int TABLE_Y_AXIS_START = 530;
@@ -54,30 +58,30 @@ public class TagDisplay extends PaginatedDisplay implements DestinationAware {
 	private static final PDFont DATA_FONT = ReportFont.ITALIC_FONT;
 	private static final int DATA_FONT_SIZE = 11;
 
-	private static final float TAG_NAME_COLUMN_WIDTH = 400f;
+	private static final float ATTRIBUTE_NAME_COLUMN_WIDTH = 400f;
 	private static final float HEADER_PADDING = 9f;
-	private static final float TAG_PADDING = 8f;
+	private static final float ATTRIBUTE_PADDING = 8f;
 	private static final float DATA_PADDING = 5f;
 
 	public static final float TABLE_SPACE = TABLE_Y_AXIS_START - TABLE_Y_AXIS_END;
 
-	public static final TextLengthOptimizer tagNameTextOptimizer = TextLengthOptimizer.builder().font(NAME_FONT)
-			.fontsize(NAME_FONT_SIZE).availableSpace(TAG_NAME_COLUMN_WIDTH - 2 * TAG_PADDING).maxLines(2).build();
-
-	private static final String CROPPED_MESSAGE = "* The tag name has been cropped to fit in the available space.";
+	public static final TextLengthOptimizer attributeNameTextOptimizer = TextLengthOptimizer.builder().font(NAME_FONT)
+			.fontsize(NAME_FONT_SIZE).availableSpace(ATTRIBUTE_NAME_COLUMN_WIDTH - 2 * ATTRIBUTE_PADDING).maxLines(2)
+			.build();
 
 	@Getter(AccessLevel.NONE)
 	@Setter(AccessLevel.NONE)
 	private boolean nameCropped;
 
 	public static float headerRowHeight() {
-		return TextUtil.builder().font(HEADER_FONT).fontSize(HEADER_FONT_SIZE).text("Tag").width(TAG_NAME_COLUMN_WIDTH)
-				.padding(HEADER_PADDING).build().tableRowHeight() * 2;
+		// Text does not matter
+		return TextUtil.builder().font(HEADER_FONT).fontSize(HEADER_FONT_SIZE).text("Attribute")
+				.width(ATTRIBUTE_NAME_COLUMN_WIDTH).padding(HEADER_PADDING).build().tableRowHeight() * 2;
 	}
 
-	public static TextUtil tagNameTextUtil() {
-		return TextUtil.builder().font(NAME_FONT).fontSize(NAME_FONT_SIZE).text("").width(TAG_NAME_COLUMN_WIDTH)
-				.padding(TAG_PADDING).build();
+	public static TextUtil attributeNameTextUtil() {
+		return TextUtil.builder().font(NAME_FONT).fontSize(NAME_FONT_SIZE).text("").width(ATTRIBUTE_NAME_COLUMN_WIDTH)
+				.padding(ATTRIBUTE_PADDING).build();
 	}
 
 	@Override
@@ -85,7 +89,7 @@ public class TagDisplay extends PaginatedDisplay implements DestinationAware {
 	public void display() {
 
 		page = PageCreator.builder().document(document).build()
-				.createLandscapePageWithHeaderAndNumberAndAddToDocument(TagSection.SECTION_TITLE);
+				.createLandscapePageWithHeaderAndNumberAndAddToDocument(attributeType + " SUMMARY");
 
 		content = new PDPageContentStream(document, page, AppendMode.APPEND, true);
 
@@ -101,15 +105,18 @@ public class TagDisplay extends PaginatedDisplay implements DestinationAware {
 
 	private void createTableBuilder() {
 		// 760f
-		tableBuilder = Table.builder().addColumnsOfWidth(TAG_NAME_COLUMN_WIDTH, 45f, 45f, 45f, 45f, 45f, 45f, 45f, 45f)
+		tableBuilder = Table.builder()
+				.addColumnsOfWidth(ATTRIBUTE_NAME_COLUMN_WIDTH, 45f, 45f, 45f, 45f, 45f, 45f, 45f, 45f)
 				.borderColor(Color.LIGHT_GRAY).borderWidth(1);
 	}
 
 	private void createHeaderRow() {
-		tableBuilder.addRow(Row.builder().padding(HEADER_PADDING).horizontalAlignment(HorizontalAlignment.CENTER)
-				.font(HEADER_FONT).fontSize(HEADER_FONT_SIZE).verticalAlignment(VerticalAlignment.MIDDLE)
-				.add(TextCell.builder().text("Tag").build()).add(TextCell.builder().text("Scenario").colSpan(4).build())
-				.add(TextCell.builder().text("Feature").colSpan(4).build()).build())
+		tableBuilder
+				.addRow(Row.builder().padding(HEADER_PADDING).horizontalAlignment(HorizontalAlignment.CENTER)
+						.font(HEADER_FONT).fontSize(HEADER_FONT_SIZE).verticalAlignment(VerticalAlignment.MIDDLE)
+						.add(TextCell.builder().text(attributeType).build())
+						.add(TextCell.builder().text("Scenario").colSpan(4).build())
+						.add(TextCell.builder().text("Feature").colSpan(4).build()).build())
 
 				.addRow(Row.builder().padding(HEADER_PADDING).horizontalAlignment(HorizontalAlignment.CENTER)
 						.font(HEADER_FONT).fontSize(HEADER_FONT_SIZE).verticalAlignment(VerticalAlignment.MIDDLE)
@@ -127,33 +134,33 @@ public class TagDisplay extends PaginatedDisplay implements DestinationAware {
 	}
 
 	private void createDataRows() {
-		TagData tagData = (TagData) displayData;
-		List<Tag> tags = tagData.getTags();
+		AttributeData attributeData = (AttributeData) displayData;
+		List<? extends Attribute> attributes = attributeData.getAttributes();
 
-		for (int i = 0; i < tags.size(); i++) {
-			Tag tag = tags.get(i);
+		for (int i = 0; i < attributes.size(); i++) {
+			Attribute attribute = attributes.get(i);
 
 			tableBuilder.addRow(Row.builder().padding(DATA_PADDING).font(DATA_FONT).fontSize(DATA_FONT_SIZE)
 					.horizontalAlignment(HorizontalAlignment.CENTER).verticalAlignment(VerticalAlignment.TOP)
 
-					.add(createTagNameCell(tag))
+					.add(createAttributeNameCell(attribute))
 
-					.add(TextCell.builder().text(String.valueOf(tag.getTotalScenarios()))
+					.add(TextCell.builder().text(String.valueOf(attribute.getTotalScenarios()))
 							.textColor(reportConfig.getScenarioConfig().totalColor()).build())
-					.add(TextCell.builder().text(String.valueOf(tag.getPassedScenarios()))
+					.add(TextCell.builder().text(String.valueOf(attribute.getPassedScenarios()))
 							.textColor(reportConfig.passedColor()).build())
-					.add(TextCell.builder().text(String.valueOf(tag.getFailedScenarios()))
+					.add(TextCell.builder().text(String.valueOf(attribute.getFailedScenarios()))
 							.textColor(reportConfig.failedColor()).build())
-					.add(TextCell.builder().text(String.valueOf(tag.getSkippedScenarios()))
+					.add(TextCell.builder().text(String.valueOf(attribute.getSkippedScenarios()))
 							.textColor(reportConfig.skippedColor()).build())
 
-					.add(TextCell.builder().text(String.valueOf(tag.getTotalFeatures()))
+					.add(TextCell.builder().text(String.valueOf(attribute.getTotalFeatures()))
 							.textColor(reportConfig.getFeatureConfig().totalColor()).build())
-					.add(TextCell.builder().text(String.valueOf(tag.getPassedFeatures()))
+					.add(TextCell.builder().text(String.valueOf(attribute.getPassedFeatures()))
 							.textColor(reportConfig.passedColor()).build())
-					.add(TextCell.builder().text(String.valueOf(tag.getFailedFeatures()))
+					.add(TextCell.builder().text(String.valueOf(attribute.getFailedFeatures()))
 							.textColor(reportConfig.failedColor()).build())
-					.add(TextCell.builder().text(String.valueOf(tag.getSkippedFeatures()))
+					.add(TextCell.builder().text(String.valueOf(attribute.getSkippedFeatures()))
 							.textColor(reportConfig.skippedColor()).build())
 
 					.build());
@@ -167,29 +174,33 @@ public class TagDisplay extends PaginatedDisplay implements DestinationAware {
 		tableDrawer.displayTable();
 	}
 
-	private AbstractCell createTagNameCell(Tag tag) {
+	private AbstractCell createAttributeNameCell(Attribute attr) {
 		TextSanitizer sanitizer = TextSanitizer.builder().build();
 
-		String tagName = sanitizer.sanitizeText(tagNameTextOptimizer.optimizeTextLines(tag.getName()));
+		String attrName = sanitizer.sanitizeText(attributeNameTextOptimizer.optimizeTextLines(attr.getName()));
 
-		if (tagNameTextOptimizer.isTextTrimmed())
+		if (attributeNameTextOptimizer.isTextTrimmed())
 			nameCropped = true;
 
-		return TextCell.builder().text(tagName).padding(TAG_PADDING).font(NAME_FONT).fontSize(NAME_FONT_SIZE)
-				.horizontalAlignment(HorizontalAlignment.LEFT).textColor(statusColor(tag.getStatus())).build();
+		return TextCell.builder().text(attrName).padding(ATTRIBUTE_PADDING).font(NAME_FONT).fontSize(NAME_FONT_SIZE)
+				.horizontalAlignment(HorizontalAlignment.LEFT).textColor(statusColor(attr.getStatus())).build();
 	}
 
 	private void croppedMessageDisplay() {
 		if (nameCropped)
-			CroppedMessage.builder().content(content).message(CROPPED_MESSAGE).build().displayMessage();
+			CroppedMessage.builder().content(content)
+					.message("* The " + attributeType + " name has been cropped to fit in the available space.").build()
+					.displayMessage();
 	}
 
 	@Override
 	public void createDestination() {
 		Destination destination = Destination.builder()
-				.name(Outline.TAGS_SECTION_TEXT + " - " + (paginationData.getItemFromIndex() + 1) + " to "
+				.name(attributeType + "S - " + (paginationData.getItemFromIndex() + 1) + " to "
 						+ paginationData.getItemToIndex())
 				.yCoord((int) page.getMediaBox().getHeight()).page(page).build();
-		destinations.addTagDestination(destination);
+		// destinations.addTagDestination(destination);
+
+		attributeDestinationConsumer.accept(destination);
 	}
 }

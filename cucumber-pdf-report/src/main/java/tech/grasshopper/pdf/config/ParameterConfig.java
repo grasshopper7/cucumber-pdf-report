@@ -19,6 +19,8 @@ public class ParameterConfig {
 	private String skipColor;
 
 	private String displayTag;
+	private String displayDevice;
+	private String displayAuthor;
 	private String displayFeature;
 	private String displayScenario;
 	private String displayDetailed;
@@ -44,6 +46,10 @@ public class ParameterConfig {
 
 		if (validBooleanParameter(displayTag))
 			reportConfig.setDisplayTag(Boolean.parseBoolean(displayTag));
+		if (validBooleanParameter(displayDevice))
+			reportConfig.setDisplayDevice(Boolean.parseBoolean(displayDevice));
+		if (validBooleanParameter(displayAuthor))
+			reportConfig.setDisplayAuthor(Boolean.parseBoolean(displayAuthor));
 		if (validBooleanParameter(displayFeature))
 			reportConfig.setDisplayFeature(Boolean.parseBoolean(displayFeature));
 		if (validBooleanParameter(displayScenario))

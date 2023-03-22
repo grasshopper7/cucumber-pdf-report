@@ -22,6 +22,8 @@ public class Outline {
 	public static final String DASHBOARD_SECTION_TEXT = "DASHBOARD";
 	public static final String SUMMARY_SECTION_TEXT = "SUMMARY";
 	public static final String TAGS_SECTION_TEXT = "TAGS";
+	public static final String DEVICES_SECTION_TEXT = "DEVICES";
+	public static final String AUTHORS_SECTION_TEXT = "AUTHORS";
 	public static final String FEATURES_SECTION_TEXT = "FEATURES";
 	public static final String SCENARIOS_SECTION_TEXT = "SCENARIOS";
 	public static final String DETAILED_SECTION_TEXT = "DETAILS";
@@ -39,6 +41,14 @@ public class Outline {
 
 		if (!destinations.getTagsDestinations().isEmpty())
 			outline.addLast(createChapterOutlineItems(destinations.getTagsDestinations(), Outline.TAGS_SECTION_TEXT));
+
+		if (!destinations.getDevicesDestinations().isEmpty())
+			outline.addLast(
+					createChapterOutlineItems(destinations.getDevicesDestinations(), Outline.DEVICES_SECTION_TEXT));
+
+		if (!destinations.getAuthorsDestinations().isEmpty())
+			outline.addLast(
+					createChapterOutlineItems(destinations.getAuthorsDestinations(), Outline.AUTHORS_SECTION_TEXT));
 
 		if (reportConfig.isDisplayFeature() && !destinations.getFeaturesDestinations().isEmpty())
 			outline.addLast(

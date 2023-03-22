@@ -17,6 +17,8 @@ public class ReportConfig {
 	private String skipColor;
 
 	private boolean displayTag = true;
+	private boolean displayDevice = true;
+	private boolean displayAuthor = true;
 	private boolean displayFeature = true;
 	private boolean displayScenario = true;
 	private boolean displayDetailed = true;
@@ -28,6 +30,8 @@ public class ReportConfig {
 	private ScenarioConfig scenarioConfig = new ScenarioConfig();
 	private SummaryConfig summaryConfig = new SummaryConfig();
 	private TagConfig tagConfig = new TagConfig();
+	private DeviceConfig deviceConfig = new DeviceConfig();
+	private AuthorConfig authorConfig = new AuthorConfig();
 
 	private DetailedFeatureConfig detailedFeatureConfig = new DetailedFeatureConfig();
 	private DetailedScenarioConfig detailedScenarioConfig = new DetailedScenarioConfig();
@@ -138,7 +142,7 @@ public class ReportConfig {
 	}
 
 	@Data
-	public static class TagConfig {
+	public abstract static class AttributeConfig {
 
 		private String totalColor;
 
@@ -149,5 +153,14 @@ public class ReportConfig {
 		public Color totalColor() {
 			return createColor(totalColor, Color.BLACK);
 		}
+	}
+
+	public static class TagConfig extends AttributeConfig {
+	}
+
+	public static class DeviceConfig extends AttributeConfig {
+	}
+
+	public static class AuthorConfig extends AttributeConfig {
 	}
 }

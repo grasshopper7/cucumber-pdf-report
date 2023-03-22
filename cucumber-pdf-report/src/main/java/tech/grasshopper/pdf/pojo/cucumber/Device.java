@@ -5,9 +5,9 @@ import java.util.Objects;
 import lombok.experimental.SuperBuilder;
 
 @SuperBuilder
-public class Tag extends Attribute {
+public class Device extends Attribute {
 
-	public Tag(String name) {
+	public Device(String name) {
 		super(name);
 	}
 
@@ -19,7 +19,7 @@ public class Tag extends Attribute {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		Tag other = (Tag) obj;
+		Device other = (Device) obj;
 		return Objects.equals(name, other.name);
 	}
 

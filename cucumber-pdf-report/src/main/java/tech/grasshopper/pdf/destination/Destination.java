@@ -38,6 +38,8 @@ public class Destination {
 		private List<Destination> featuresDestinations = new ArrayList<>();
 		private List<Destination> scenariosDestinations = new ArrayList<>();
 		private List<Destination> tagsDestinations = new ArrayList<>();
+		private List<Destination> devicesDestinations = new ArrayList<>();
+		private List<Destination> authorsDestinations = new ArrayList<>();
 
 		public void addSummaryDestination(Destination destination) {
 			summaryDestinations.add(destination);
@@ -45,6 +47,14 @@ public class Destination {
 
 		public void addTagDestination(Destination destination) {
 			tagsDestinations.add(destination);
+		}
+
+		public void addDeviceDestination(Destination destination) {
+			devicesDestinations.add(destination);
+		}
+
+		public void addAuthorDestination(Destination destination) {
+			authorsDestinations.add(destination);
 		}
 
 		public void addFeatureDestination(Destination destination) {
