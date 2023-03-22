@@ -3,6 +3,7 @@ package tech.grasshopper.pdf.section.scenario;
 import java.util.List;
 
 import lombok.EqualsAndHashCode;
+import lombok.Setter;
 import lombok.experimental.SuperBuilder;
 import tech.grasshopper.pdf.data.DisplayData;
 import tech.grasshopper.pdf.data.ScenarioData;
@@ -21,6 +22,9 @@ public class ScenarioSection extends PaginatedSection {
 
 	private ScenarioData scenarioData;
 
+	@Setter
+	private List<Integer> featureNameRowSpans;
+
 	@Override
 	public void createSection() {
 		scenarioData = (ScenarioData) displayData;
@@ -37,7 +41,7 @@ public class ScenarioSection extends PaginatedSection {
 		ScenarioDisplay.builder().displayData(createDisplayData(fromIndex, toIndex)).document(document)
 				.reportConfig(reportConfig).destinations(destinations).paginationData(PaginationData.builder()
 						.itemsPerPage(maxScenariosPerPage).itemFromIndex(fromIndex).itemToIndex(toIndex).build())
-				.build().display();
+				.featureNameRowSpans(featureNameRowSpans).build().display();
 	}
 
 	@Override

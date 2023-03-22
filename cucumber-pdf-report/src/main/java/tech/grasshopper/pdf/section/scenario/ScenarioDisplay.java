@@ -1,5 +1,7 @@
 package tech.grasshopper.pdf.section.scenario;
 
+import java.util.List;
+
 import org.apache.pdfbox.pdmodel.PDPageContentStream;
 import org.apache.pdfbox.pdmodel.PDPageContentStream.AppendMode;
 
@@ -13,6 +15,8 @@ import tech.grasshopper.pdf.structure.paginate.PaginatedDisplay;
 
 @SuperBuilder
 public class ScenarioDisplay extends PaginatedDisplay implements DestinationAware {
+
+	private List<Integer> featureNameRowSpans;
 
 	@Override
 	@SneakyThrows
@@ -38,7 +42,8 @@ public class ScenarioDisplay extends PaginatedDisplay implements DestinationAwar
 
 	private void createTable() {
 		ScenarioStepDetails.builder().displayData(displayData).content(content).reportConfig(reportConfig)
-				.document(document).paginationData(paginationData).build().display();
+				.document(document).paginationData(paginationData).featureNameRowSpans(featureNameRowSpans).build()
+				.display();
 	}
 
 	@Override

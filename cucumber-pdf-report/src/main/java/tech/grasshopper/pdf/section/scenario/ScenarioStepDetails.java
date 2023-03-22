@@ -41,6 +41,8 @@ public class ScenarioStepDetails extends Display {
 
 	private TableBuilder tableBuilder;
 
+	private List<Integer> featureNameRowSpans;
+
 	private static final int TABLE_X_AXIS_START = 40;
 	private static final int TABLE_Y_AXIS_START = 330;
 
@@ -123,6 +125,7 @@ public class ScenarioStepDetails extends Display {
 		int sNo = paginationData.getItemFromIndex() + 1;
 		ScenarioData scenarioData = (ScenarioData) displayData;
 		List<Scenario> scenarios = scenarioData.getScenarios();
+		int featureRowSpanSize = featureNameRowSpans.size();
 
 		for (int i = 0; i < scenarios.size(); i++) {
 			Scenario scenario = scenarios.get(i);
@@ -135,7 +138,9 @@ public class ScenarioStepDetails extends Display {
 
 					.add(TextCell.builder().text(String.valueOf(sNo)).fontSize(8).build())
 
-					.add(createFeatureNameCell(scenario.getFeature())).add(createScenarioNameCell(scenario))
+					.add(createFeatureNameCell(scenario.getFeature(), featureNameRowSpans.get(i),
+							i == featureRowSpanSize - 1))
+					.add(createScenarioNameCell(scenario))
 
 					.add(TextCell.builder().text(String.valueOf(scenario.getTotalSteps()))
 							.textColor(reportConfig.getFeatureConfig().totalColor()).build())
@@ -162,7 +167,7 @@ public class ScenarioStepDetails extends Display {
 		tableDrawer.displayTable();
 	}
 
-	private AbstractCell createFeatureNameCell(Feature feature) {
+	private AbstractCell createFeatureNameCell(Feature feature, int rowspan, boolean lastRow) {
 
 		TextSanitizer sanitizer = TextSanitizer.builder().build();
 		String featureName = sanitizer.sanitizeText(featureNameTextOptimizer.optimizeTextLines(feature.getName()));
@@ -170,15 +175,26 @@ public class ScenarioStepDetails extends Display {
 		if (featureNameTextOptimizer.isTextTrimmed())
 			nameCropped = true;
 
-		if (reportConfig.isDisplayScenario() && reportConfig.isDisplayDetailed()) {
-			Annotation annotation = Annotation.builder().title(sanitizer.sanitizeText(feature.getName())).build();
-			feature.addAnnotation(annotation);
+		if (rowspan > 0) {
+			float borderWidthBottom = rowspan > 1 ? 0f : 1f;
 
-			return TextLinkCell.builder().annotation(annotation).text(featureName).paddingBottom(NAME_BOTTOM_PADDING)
-					.textColor(statusColor(feature.getStatus())).horizontalAlignment(HorizontalAlignment.LEFT).build();
+			if (reportConfig.isDisplayScenario() && reportConfig.isDisplayDetailed()) {
+				Annotation annotation = Annotation.builder().title(sanitizer.sanitizeText(feature.getName())).build();
+				feature.addAnnotation(annotation);
+
+				return TextLinkCell.builder().annotation(annotation).text(featureName)
+						.paddingBottom(NAME_BOTTOM_PADDING).textColor(statusColor(feature.getStatus()))
+						.horizontalAlignment(HorizontalAlignment.LEFT).borderWidthBottom(borderWidthBottom).build();
+			}
+			return TextCell.builder().text(featureName).paddingBottom(NAME_BOTTOM_PADDING)
+					.textColor(statusColor(feature.getStatus())).horizontalAlignment(HorizontalAlignment.LEFT)
+					.borderWidthBottom(borderWidthBottom).build();
+		} else {
+			float borderWidthBottom = lastRow ? 1f : 0f;
+
+			return TextCell.builder().text("").paddingBottom(NAME_BOTTOM_PADDING).borderWidthTop(0)
+					.borderWidthBottom(borderWidthBottom).horizontalAlignment(HorizontalAlignment.LEFT).build();
 		}
-		return TextCell.builder().text(featureName).paddingBottom(NAME_BOTTOM_PADDING)
-				.textColor(statusColor(feature.getStatus())).horizontalAlignment(HorizontalAlignment.LEFT).build();
 	}
 
 	private AbstractCell createScenarioNameCell(Scenario scenario) {
