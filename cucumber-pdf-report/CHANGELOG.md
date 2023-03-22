@@ -1,6 +1,10 @@
 # Changelog
 All notable changes to this project will be documented in this file.
 
+## 2.12.0 (2023-3-23)
+* Feature name display row span in scenario summary
+* Added device and author summary
+
 ## 2.11.1 (2022-11-14)
 * Updated jsoup dependency version
 
