@@ -32,6 +32,7 @@ import tech.grasshopper.pdf.section.details.executable.MediaCleanup.MediaCleanup
 import tech.grasshopper.pdf.section.expanded.ExpandedSection;
 import tech.grasshopper.pdf.section.feature.FeatureSection;
 import tech.grasshopper.pdf.section.scenario.ScenarioSection;
+import tech.grasshopper.pdf.section.scenario.nopass.NoPassScenarioSection;
 import tech.grasshopper.pdf.section.summary.SummarySection;
 
 public class PDFCucumberReport {
@@ -104,6 +105,8 @@ public class PDFCucumberReport {
 
 		createSummarySection();
 
+		createNotPassedScenarioSection();
+
 		createTagSection();
 
 		createDeviceSection();
@@ -148,6 +151,12 @@ public class PDFCucumberReport {
 	protected void createSummarySection() {
 		SummarySection.builder().displayData(reportData.getFeatureData()).reportConfig(reportConfig).document(document)
 				.destinations(destinations).build().createSection();
+	}
+
+	protected void createNotPassedScenarioSection() {
+		if (!reportData.getNotPassedScenarioData().getScenarios().isEmpty())
+			NoPassScenarioSection.builder().displayData(reportData.getNotPassedScenarioData())
+					.reportConfig(reportConfig).document(document).destinations(destinations).build().createSection();
 	}
 
 	protected void createTagSection() {

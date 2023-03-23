@@ -38,6 +38,8 @@ public class ReportData {
 
 	private ExecutableData executableData;
 
+	private ScenarioData notPassedScenarioData;
+
 	private TagData tagData;
 
 	private DeviceData deviceData;
@@ -149,11 +151,16 @@ public class ReportData {
 		scenarioData = ScenarioData.builder().build();
 		executableData = ExecutableData.builder().build();
 
+		notPassedScenarioData = ScenarioData.builder().build();
+
 		for (Feature feature : features) {
 
 			for (Scenario scenario : feature.getScenarios()) {
 				scenario.setFeature(feature);
 				scenarioData.getScenarios().add(scenario);
+
+				if (scenario.getStatus() != Status.PASSED)
+					notPassedScenarioData.getScenarios().add(scenario);
 
 				for (Executable executable : scenario.getFilteredStepsAndHooks(reportConfig)) {
 					executable.setScenario(scenario);

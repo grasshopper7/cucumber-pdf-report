@@ -37,26 +37,26 @@ import tech.grasshopper.pdf.util.TextUtil;
 @EqualsAndHashCode(callSuper = false)
 public class ScenarioStepDetails extends Display {
 
-	private PaginationData paginationData;
+	protected PaginationData paginationData;
 
-	private TableBuilder tableBuilder;
+	protected TableBuilder tableBuilder;
 
-	private List<Integer> featureNameRowSpans;
+	protected List<Integer> featureNameRowSpans;
 
 	private static final int TABLE_X_AXIS_START = 40;
 	private static final int TABLE_Y_AXIS_START = 330;
 
-	private static final PDFont HEADER_FONT = ReportFont.BOLD_ITALIC_FONT;
-	private static final int HEADER_FONT_SIZE = 12;
+	protected static final PDFont HEADER_FONT = ReportFont.BOLD_ITALIC_FONT;
+	protected static final int HEADER_FONT_SIZE = 12;
 
-	private static final PDFont NAME_FONT = ReportFont.ITALIC_FONT;
-	private static final int NAME_FONT_SIZE = 11;
+	protected static final PDFont NAME_FONT = ReportFont.ITALIC_FONT;
+	protected static final int NAME_FONT_SIZE = 11;
 
 	private static final float FEATURE_NAME_COLUMN_WIDTH = 210f;
 	private static final float SCENARIO_NAME_COLUMN_WIDTH = 310f;
-	private static final float HEADER_PADDING = 7f;
-	private static final float DATA_PADDING = 6f;
-	private static final float NAME_BOTTOM_PADDING = 9f;
+	protected static final float HEADER_PADDING = 7f;
+	protected static final float DATA_PADDING = 6f;
+	protected static final float NAME_BOTTOM_PADDING = 9f;
 
 	public static final float TABLE_SPACE = TABLE_Y_AXIS_START - Display.CONTENT_END_Y;
 
@@ -70,21 +70,23 @@ public class ScenarioStepDetails extends Display {
 
 	@Getter(AccessLevel.NONE)
 	@Setter(AccessLevel.NONE)
-	private boolean nameCropped;
+	protected boolean nameCropped;
 
-	public static float headerRowHeight() {
-		return TextUtil.builder().font(HEADER_FONT).fontSize(HEADER_FONT_SIZE).text("Scenario Name")
-				.width(SCENARIO_NAME_COLUMN_WIDTH).padding(HEADER_PADDING).build().tableRowHeight();
+	public static final TextUtil headerRowTextUtil = TextUtil.builder().font(HEADER_FONT).fontSize(HEADER_FONT_SIZE)
+			.text("Scenario Name").width(SCENARIO_NAME_COLUMN_WIDTH).padding(HEADER_PADDING).build();
+
+	public static final TextUtil featureNameTextUtil = TextUtil.builder().font(NAME_FONT).fontSize(NAME_FONT_SIZE)
+			.text("").width(FEATURE_NAME_COLUMN_WIDTH).padding(DATA_PADDING).build();
+
+	public static final TextUtil scenarioNameTextUtil = TextUtil.builder().font(NAME_FONT).fontSize(NAME_FONT_SIZE)
+			.text("").width(SCENARIO_NAME_COLUMN_WIDTH).padding(DATA_PADDING).build();
+
+	protected TextLengthOptimizer featureNameTextOptimizer() {
+		return featureNameTextOptimizer;
 	}
 
-	public static TextUtil featureNameTextUtil() {
-		return TextUtil.builder().font(NAME_FONT).fontSize(NAME_FONT_SIZE).text("").width(FEATURE_NAME_COLUMN_WIDTH)
-				.padding(DATA_PADDING).build();
-	}
-
-	public static TextUtil scenarioNameTextUtil() {
-		return TextUtil.builder().font(NAME_FONT).fontSize(NAME_FONT_SIZE).text("").width(SCENARIO_NAME_COLUMN_WIDTH)
-				.padding(DATA_PADDING).build();
+	protected TextLengthOptimizer scenarioNameTextOptimizer() {
+		return scenarioNameTextOptimizer;
 	}
 
 	@Override
@@ -167,18 +169,22 @@ public class ScenarioStepDetails extends Display {
 		tableDrawer.displayTable();
 	}
 
-	private AbstractCell createFeatureNameCell(Feature feature, int rowspan, boolean lastRow) {
+	protected boolean annotationFilter() {
+		return reportConfig.isDisplayScenario() && reportConfig.isDisplayDetailed();
+	}
+
+	protected AbstractCell createFeatureNameCell(Feature feature, int rowspan, boolean lastRow) {
 
 		TextSanitizer sanitizer = TextSanitizer.builder().build();
-		String featureName = sanitizer.sanitizeText(featureNameTextOptimizer.optimizeTextLines(feature.getName()));
+		String featureName = sanitizer.sanitizeText(featureNameTextOptimizer().optimizeTextLines(feature.getName()));
 
-		if (featureNameTextOptimizer.isTextTrimmed())
+		if (featureNameTextOptimizer().isTextTrimmed())
 			nameCropped = true;
 
 		if (rowspan > 0) {
 			float borderWidthBottom = rowspan > 1 ? 0f : 1f;
 
-			if (reportConfig.isDisplayScenario() && reportConfig.isDisplayDetailed()) {
+			if (annotationFilter()) {
 				Annotation annotation = Annotation.builder().title(sanitizer.sanitizeText(feature.getName())).build();
 				feature.addAnnotation(annotation);
 
@@ -197,15 +203,15 @@ public class ScenarioStepDetails extends Display {
 		}
 	}
 
-	private AbstractCell createScenarioNameCell(Scenario scenario) {
+	protected AbstractCell createScenarioNameCell(Scenario scenario) {
 
 		TextSanitizer sanitizer = TextSanitizer.builder().build();
-		String scenarioName = sanitizer.sanitizeText(scenarioNameTextOptimizer.optimizeTextLines(scenario.getName()));
+		String scenarioName = sanitizer.sanitizeText(scenarioNameTextOptimizer().optimizeTextLines(scenario.getName()));
 
-		if (scenarioNameTextOptimizer.isTextTrimmed())
+		if (scenarioNameTextOptimizer().isTextTrimmed())
 			nameCropped = true;
 
-		if (reportConfig.isDisplayScenario() && reportConfig.isDisplayDetailed()) {
+		if (annotationFilter()) {
 			Annotation annotation = Annotation.builder().title(sanitizer.sanitizeText(scenario.getName())).build();
 			scenario.addAnnotation(annotation);
 
@@ -216,7 +222,7 @@ public class ScenarioStepDetails extends Display {
 				.textColor(statusColor(scenario.getStatus())).horizontalAlignment(HorizontalAlignment.LEFT).build();
 	}
 
-	private void croppedMessageDisplay() {
+	protected void croppedMessageDisplay() {
 
 		if (nameCropped)
 			CroppedMessage.builder().content(content).message(CROPPED_MESSAGE).build().displayMessage();

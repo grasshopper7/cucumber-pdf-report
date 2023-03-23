@@ -16,6 +16,8 @@ import tech.grasshopper.pdf.structure.paginate.PaginatedDisplay;
 @SuperBuilder
 public class ScenarioDisplay extends PaginatedDisplay implements DestinationAware {
 
+	private static final String SECTION_TITLE = "SCENARIOS SUMMARY";
+
 	private List<Integer> featureNameRowSpans;
 
 	@Override
@@ -23,7 +25,7 @@ public class ScenarioDisplay extends PaginatedDisplay implements DestinationAwar
 	public void display() {
 
 		page = PageCreator.builder().document(document).build()
-				.createLandscapePageWithHeaderAndNumberAndAddToDocument(ScenarioSection.SECTION_TITLE);
+				.createLandscapePageWithHeaderAndNumberAndAddToDocument(SECTION_TITLE);
 
 		content = new PDPageContentStream(document, page, AppendMode.APPEND, true);
 

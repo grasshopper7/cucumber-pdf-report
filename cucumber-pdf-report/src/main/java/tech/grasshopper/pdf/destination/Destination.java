@@ -35,6 +35,7 @@ public class Destination {
 
 		private Destination dashboardDestination;
 		private List<Destination> summaryDestinations = new ArrayList<>();
+		private List<Destination> failSkipScenariosDestinations = new ArrayList<>();
 		private List<Destination> featuresDestinations = new ArrayList<>();
 		private List<Destination> scenariosDestinations = new ArrayList<>();
 		private List<Destination> tagsDestinations = new ArrayList<>();
@@ -43,6 +44,10 @@ public class Destination {
 
 		public void addSummaryDestination(Destination destination) {
 			summaryDestinations.add(destination);
+		}
+
+		public void addFailSkipScenarioDestination(Destination destination) {
+			failSkipScenariosDestinations.add(destination);
 		}
 
 		public void addTagDestination(Destination destination) {

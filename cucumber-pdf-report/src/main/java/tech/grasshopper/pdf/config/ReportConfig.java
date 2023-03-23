@@ -28,6 +28,7 @@ public class ReportConfig {
 	private DashboardConfig dashboardConfig = new DashboardConfig();
 	private FeatureConfig featureConfig = new FeatureConfig();
 	private ScenarioConfig scenarioConfig = new ScenarioConfig();
+	private NoPassScenarioConfig noPassScenarioConfig = new NoPassScenarioConfig();
 	private SummaryConfig summaryConfig = new SummaryConfig();
 	private TagConfig tagConfig = new TagConfig();
 	private DeviceConfig deviceConfig = new DeviceConfig();
@@ -119,6 +120,17 @@ public class ReportConfig {
 
 		public Color durationColor() {
 			return createColor(durationColor, Color.BLACK);
+		}
+	}
+
+	@Data
+	public static class NoPassScenarioConfig {
+
+		private String scenarioCount;
+		private final int defaultCount = 10;
+
+		public int scenarioCount() {
+			return createCount(scenarioCount, defaultCount);
 		}
 	}
 
