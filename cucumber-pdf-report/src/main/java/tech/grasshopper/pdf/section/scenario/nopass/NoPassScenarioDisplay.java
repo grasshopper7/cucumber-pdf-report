@@ -136,7 +136,7 @@ public class NoPassScenarioDisplay extends ScenarioStepDetails implements Destin
 	@Override
 	public void createDestination() {
 		Destination destination = Destination.builder()
-				.name(Outline.FAIL_SKIP_SCENARIOS_SECTION_TEXT + " - " + (paginationData.getItemFromIndex() + 1)
+				.name(Outline.FAIL_SCENARIOS_SECTION_TEXT + " - " + (paginationData.getItemFromIndex() + 1)
 						+ " to " + paginationData.getItemToIndex())
 				.yCoord((int) page.getMediaBox().getHeight()).page(page).build();
 		destinations.addFailSkipScenarioDestination(destination);
