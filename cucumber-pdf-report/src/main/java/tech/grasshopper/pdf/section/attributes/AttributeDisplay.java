@@ -199,7 +199,6 @@ public class AttributeDisplay extends PaginatedDisplay implements DestinationAwa
 				.name(attributeType + "S - " + (paginationData.getItemFromIndex() + 1) + " to "
 						+ paginationData.getItemToIndex())
 				.yCoord((int) page.getMediaBox().getHeight()).page(page).build();
-		// destinations.addTagDestination(destination);
 
 		attributeDestinationConsumer.accept(destination);
 	}

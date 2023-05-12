@@ -10,7 +10,6 @@ import java.util.logging.Logger;
 
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.yaml.snakeyaml.Yaml;
-import org.yaml.snakeyaml.constructor.Constructor;
 
 import tech.grasshopper.pdf.annotation.AnnotationProcessor;
 import tech.grasshopper.pdf.annotation.FileAnnotationProcessor;
@@ -86,11 +85,11 @@ public class PDFCucumberReport {
 
 	private void collectReportConfiguration() {
 
-		Yaml yaml = new Yaml(new Constructor(ReportConfig.class));
+		Yaml yaml = new Yaml();
 		InputStream inputStream = null;
 		try {
 			inputStream = new FileInputStream("src/test/resources/pdf-config.yaml");
-			reportConfig = yaml.load(inputStream);
+			reportConfig = yaml.loadAs(inputStream, ReportConfig.class);
 		} catch (FileNotFoundException e) {
 			logger.log(Level.INFO, "PDF report configuration YAML file not found. Using default settings.");
 			reportConfig = new ReportConfig();

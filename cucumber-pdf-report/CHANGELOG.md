@@ -1,6 +1,9 @@
 # Changelog
 All notable changes to this project will be documented in this file.
 
+## 2.13.0 (2023-5-12)
+* Updated snakeyaml version
+
 ## 2.12.0 (2023-3-23)
 * Feature name display row span in scenario summary
 * Added device and author summary

@@ -127,7 +127,7 @@ public class ReportConfig {
 	public static class NoPassScenarioConfig {
 
 		private String scenarioCount;
-		private final int defaultCount = 10;
+		private final int defaultCount = 20;
 
 		public int scenarioCount() {
 			return createCount(scenarioCount, defaultCount);
